@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+  />
+  <meta name="theme-color" content="#05070f" />
+  <title>Bharat Quest — Select Your State</title>
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <style>
+    :root {
+      --bg-0: #05070f;
+      --bg-1: #0a0f1e;
+      --neon: #22d3ee;
+      --neon-soft: rgba(34, 211, 238, 0.55);
+      --locked: #2b3040;
+      --text: #e8eefc;
+      --muted: #7c88a5;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      background: var(--bg-0);
+      color: var(--text);
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      overflow: hidden;
+      overscroll-behavior: none;
+    }
+
+    /* ---------- Map ---------- */
+    #map {
+      position: absolute;
+      inset: 0;
+      height: 100%;
+      width: 100%;
+      background: radial-gradient(circle at 50% 30%, #0d1730 0%, var(--bg-0) 70%);
+      z-index: 1;
+    }
+    .leaflet-container { background: transparent; outline: none; }
+
+    /* ---------- HUD Overlay ---------- */
+    .hud {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      z-index: 500;
+      padding: 20px 18px 34px;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(5,7,15,0.92) 0%, rgba(5,7,15,0.55) 60%, rgba(5,7,15,0) 100%);
+    }
+    .hud .eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--neon);
+      margin: 0 0 6px;
+      font-weight: 600;
+    }
+    .hud h1 {
+      margin: 0;
+      font-size: clamp(22px, 6vw, 34px);
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      text-shadow: 0 0 18px rgba(34, 211, 238, 0.25);
+    }
+    .hud p {
+      margin: 6px 0 0;
+      font-size: 13px;
+      color: var(--muted);
+      max-width: 32ch;
+    }
+
+    /* ---------- Bottom prompt ---------- */
+    .prompt {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      z-index: 500;
+      padding: 40px 18px 26px;
+      text-align: center;
+      pointer-events: none;
+      background: linear-gradient(0deg, rgba(5,7,15,0.92) 0%, rgba(5,7,15,0) 100%);
+    }
+    .prompt .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border: 1px solid var(--neon-soft);
+      border-radius: 999px;
+      background: rgba(34, 211, 238, 0.08);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 600;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 0 22px rgba(34, 211, 238, 0.18);
+    }
+    .prompt .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--neon);
+      box-shadow: 0 0 10px var(--neon);
+      animation: dotpulse 1.6s ease-in-out infinite;
+    }
+    @keyframes dotpulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(0.7); }
+    }
+
+    /* ---------- Loading ---------- */
+    .loader {
+      position: absolute;
+      inset: 0;
+      z-index: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 16px;
+      background: var(--bg-0);
+      transition: opacity 0.5s ease;
+    }
+    .loader.hide { opacity: 0; pointer-events: none; }
+    .spinner {
+      width: 42px; height: 42px;
+      border: 3px solid rgba(34, 211, 238, 0.18);
+      border-top-color: var(--neon);
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loader span {
+      font-size: 12px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ---------- State path styling ---------- */
+    .state-locked {
+      filter: grayscale(1);
+      transition: opacity 0.3s ease;
+    }
+    @keyframes odishaPulse {
+      0%, 100% {
+        stroke-opacity: 1;
+        fill-opacity: 0.55;
+        filter: drop-shadow(0 0 3px var(--neon)) drop-shadow(0 0 8px var(--neon-soft));
+      }
+      50% {
+        stroke-opacity: 1;
+        fill-opacity: 0.85;
+        filter: drop-shadow(0 0 10px var(--neon)) drop-shadow(0 0 22px var(--neon));
+      }
+    }
+    .state-odisha {
+      animation: odishaPulse 1.8s ease-in-out infinite;
+      cursor: pointer;
+    }
+
+    /* ---------- State name labels ---------- */
+    .state-label {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .state-label.leaflet-tooltip:before,
+    .state-label.leaflet-tooltip-top:before,
+    .state-label.leaflet-tooltip-bottom:before,
+    .state-label.leaflet-tooltip-left:before,
+    .state-label.leaflet-tooltip-right:before {
+      display: none !important;
+    }
+    .state-label-locked {
+      color: #8b97b4;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+      opacity: 0.75;
+    }
+    .state-label-odisha {
+      color: #eafcff;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      text-shadow: 0 0 6px var(--neon), 0 0 12px var(--neon-soft), 0 1px 3px rgba(0, 0, 0, 0.9);
+    }
+
+    /* Redirect flash */
+    .flash {
+      position: absolute;
+      inset: 0;
+      z-index: 1000;
+      background: radial-gradient(circle at 50% 50%, rgba(34,211,238,0.35), rgba(5,7,15,0.95));
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.9s ease;
+    }
+    .flash.show { opacity: 1; }
+  </style>
+</head>
+<body>
+  <div id="map" role="application" aria-label="Interactive map of India"></div>
+
+  <header class="hud">
+    <p class="eyebrow">Bharat Quest</p>
+    <h1>Select Your State</h1>
+    <p>All regions are locked. Odisha is now live — tap the glowing state to enter.</p>
+  </header>
+
+  <div class="prompt" aria-hidden="true">
+    <span class="chip"><span class="dot"></span> Tap Odisha to continue</span>
+  </div>
+
+  <div class="flash" id="flash" aria-hidden="true"></div>
+
+  <div class="loader" id="loader">
+    <div class="spinner"></div>
+    <span>Loading Map</span>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- TopoJSON client -->
+  <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+
+  <script>
+    (function () {
+      "use strict";
+
+      var TARGET_ALIASES = ["odisha", "orissa"];
+      var isMobile = window.matchMedia("(max-width: 768px)").matches || "ontouchstart" in window;
+
+      // ---------- Init Leaflet map ----------
+      var map = L.map("map", {
+        zoomControl: false,
+        attributionControl: false,
+        scrollWheelZoom: true,
+        touchZoom: true,          // 2-finger pinch zoom
+        doubleClickZoom: true,
+        boxZoom: false,
+        keyboard: false,
+        dragging: true,
+        tap: true,
+        bounceAtZoomLimits: false,
+        zoomSnap: 0.25,
+        zoomDelta: 0.5,
+        minZoom: 3,
+        maxZoom: 9,
+      });
+
+      map.setView([22.9, 82.5], isMobile ? 4 : 5);
+      // No basemap tiles — only India's state polygons are drawn.
+
+      function stateName(props) {
+        if (!props) return "";
+        var keys = ["NAME_1", "ST_NM", "st_nm", "name", "State", "STATE", "state_name", "NAME", "st_name"];
+        for (var i = 0; i < keys.length; i++) {
+          if (props[keys[i]]) return String(props[keys[i]]);
+        }
+        return "";
+      }
+
+      function isTarget(name) {
+        return TARGET_ALIASES.indexOf((name || "").toLowerCase().trim()) !== -1;
+      }
+
+      var lockedStyle = { color: "#3a4256", weight: 1, opacity: 0.6, fillColor: "#1b2130", fillOpacity: 0.35 };
+      var odishaStyle = { color: "#22d3ee", weight: 2, opacity: 1, fillColor: "#22d3ee", fillOpacity: 0.55 };
+
+      var geoLayer;
+
+      function styleFn(feature) {
+        return isTarget(stateName(feature.properties)) ? odishaStyle : lockedStyle;
+      }
+
+      function flyAndRedirect(layer) {
+        map.flyToBounds(layer.getBounds(), { padding: [40, 40], duration: 1, easeLinearity: 0.25 });
+        var flash = document.getElementById("flash");
+        setTimeout(function () { flash.classList.add("show"); }, 650);
+        setTimeout(function () { window.location.href = "odisha_games.html"; }, 1100);
+      }
+
+      // ---------- Labels + zoom scaling ----------
+      var labelRegistry = [];
+      var baseZoom = null;
+
+      function baseFontForLayer(layer, isOdisha) {
+        var min = 8, max = 17;
+        try {
+          var b = layer.getBounds();
+          var w = Math.abs(b.getEast() - b.getWest());
+          var h = Math.abs(b.getNorth() - b.getSouth());
+          var metric = Math.sqrt(w * h);
+          var t = Math.max(0, Math.min(1, (metric - 0.6) / (10 - 0.6)));
+          var size = min + t * (max - min);
+          if (isOdisha) size = Math.max(size, 13) + 1;
+          return Math.round(size);
+        } catch (e) {
+          return isOdisha ? 14 : 11;
+        }
+      }
+
+      function addLabel(feature, layer, name, isOdisha) {
+        if (!name) return;
+        try {
+          layer.bindTooltip(name, {
+            permanent: true,
+            direction: "center",
+            className: "state-label " + (isOdisha ? "state-label-odisha" : "state-label-locked"),
+            opacity: 1,
+          });
+          labelRegistry.push({ layer: layer, baseFont: baseFontForLayer(layer, isOdisha), isOdisha: isOdisha });
+        } catch (e) {}
+      }
+
+      function updateLabelSizes() {
+        if (baseZoom === null) return;
+        var scale = Math.pow(2, map.getZoom() - baseZoom);
+        scale = Math.max(0.85, Math.min(4.5, scale));
+        for (var i = 0; i < labelRegistry.length; i++) {
+          var item = labelRegistry[i];
+          var tip = item.layer.getTooltip && item.layer.getTooltip();
+          var el = tip && tip.getElement && tip.getElement();
+          if (el) el.style.fontSize = Math.round(item.baseFont * scale) + "px";
+        }
+      }
+
+      function onEachFeature(feature, layer) {
+        var name = stateName(feature.properties);
+        addLabel(feature, layer, name, isTarget(name));
+
+        if (isTarget(name)) {
+          layer.on("add", function () {
+            if (layer._path) {
+              layer._path.classList.add("state-odisha");
+              layer._path.setAttribute("tabindex", "0");
+              layer._path.setAttribute("role", "button");
+              layer._path.setAttribute("aria-label", "Enter Odisha games");
+            }
+          });
+          layer.on("click", function () { flyAndRedirect(layer); });
+          layer.on("keydown", function (e) {
+            if (e.originalEvent && (e.originalEvent.key === "Enter" || e.originalEvent.key === " ")) {
+              flyAndRedirect(layer);
+            }
+          });
+        } else {
+          layer.on("add", function () {
+            if (layer._path) {
+              layer._path.classList.add("state-locked");
+              layer._path.style.pointerEvents = "none";
+            }
+          });
+        }
+      }
+
+      // ---------- Load GeoJSON ----------
+      var SOURCES = [
+        { url: "https://cdn.jsdelivr.net/gh/Anujarya300/bubble_maps@master/data/geography-data/india.topo.json", type: "topojson", object: "india" },
+        { url: "https://cdn.jsdelivr.net/gh/udit-001/india-maps-data@main/geojson/india.geojson", type: "geojson" },
+      ];
+
+      function toFeatureCollection(src, data) {
+        if (src.type === "topojson") {
+          if (typeof topojson === "undefined") throw new Error("topojson-client not loaded");
+          var objName = src.object;
+          if (!data.objects[objName]) objName = Object.keys(data.objects)[0];
+          return topojson.feature(data, data.objects[objName]);
+        }
+        return data;
+      }
+
+      function tryLoad(index) {
+        if (index >= SOURCES.length) {
+          document.getElementById("loader").querySelector("span").textContent = "Map failed to load";
+          return;
+        }
+        var src = SOURCES[index];
+        fetch(src.url)
+          .then(function (res) { if (!res.ok) throw new Error("HTTP " + res.status); return res.json(); })
+          .then(function (raw) {
+            var data = toFeatureCollection(src, raw);
+            geoLayer = L.geoJSON(data, { style: styleFn, onEachFeature: onEachFeature }).addTo(map);
+
+            try {
+              var gBounds = geoLayer.getBounds();
+              map.fitBounds(gBounds, { paddingTopLeft: [6, 70], paddingBottomRight: [6, 40] });
+              baseZoom = map.getZoom();
+              map.setMinZoom(baseZoom);
+              map.setMaxZoom(baseZoom + 4);
+              map.setMaxBounds(gBounds.pad(0.25));
+              updateLabelSizes();
+              map.on("zoom zoomend", updateLabelSizes);
+            } catch (e) {}
+
+            document.getElementById("loader").classList.add("hide");
+          })
+          .catch(function (err) {
+            console.log("[v0] map source failed:", src.url, err.message);
+            tryLoad(index + 1);
+          });
+      }
+
+      tryLoad(0);
+    })();
+  </script>
+</body>
+</html>
