@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Heritage Quest</title>
+
+
+    <style>
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        html,
+        body {
+
+            width: 100%;
+            height: 100%;
+
+            overflow: hidden;
+
+            background: #000;
+
+        }
+
+
+        /* =====================================================
+           MAIN SCREEN
+        ===================================================== */
+
+        .screen {
+
+            position: relative;
+
+            width: 100vw;
+            height: 100vh;
+
+            overflow: hidden;
+
+            background: #000;
+
+        }
+
+
+        /* =====================================================
+           FULL HERITAGE IMAGE
+
+           IMPORTANT:
+           heritage.jpeg must be in the same folder.
+        ===================================================== */
+
+        .artwork {
+
+            position: absolute;
+
+            left: 50%;
+            top: 50%;
+
+            transform:
+                translate(-50%, -50%);
+
+            width:
+                min(100vw, 150vh);
+
+            height:
+                min(66.6667vw, 100vh);
+
+            background-image:
+                url("heritage.jpeg");
+
+            background-size:
+                100% 100%;
+
+            background-position:
+                center;
+
+            background-repeat:
+                no-repeat;
+
+        }
+
+
+        /* =====================================================
+           LOGIN FORM
+        ===================================================== */
+
+        .login-area {
+
+            position: absolute;
+
+            left: 36.3%;
+
+            top: 37%;
+
+            width: 27.4%;
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 8px;
+
+            z-index: 100;
+
+        }
+
+
+        /* =====================================================
+           INPUT FIELD
+        ===================================================== */
+
+        .field {
+
+            position: relative;
+
+            width: 100%;
+
+            height: 47px;
+
+            flex-shrink: 0;
+
+        }
+
+
+        .field input {
+
+            position: relative;
+
+            display: block;
+
+            width: 100%;
+            height: 100%;
+
+            border:
+                1px solid
+                rgba(180, 120, 65, 0.95);
+
+            border-radius: 8px;
+
+            outline: none;
+
+            /*
+             * OPAQUE BACKGROUND
+             * Prevents the text/icons already inside
+             * heritage.jpeg from showing through.
+             */
+
+            background:
+                #08090b;
+
+            color:
+                #f0d6a2;
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-size: 15px;
+
+            padding:
+                0 15px 0 50px;
+
+            z-index: 2;
+
+        }
+
+
+        .field input::placeholder {
+
+            color:
+                #a9977c;
+
+            opacity: 1;
+
+        }
+
+
+        .field input:focus {
+
+            border-color:
+                #e3ae5d;
+
+            box-shadow:
+                0 0 10px
+                rgba(227, 174, 93, 0.35);
+
+        }
+
+
+        /* =====================================================
+           INPUT ICON
+        ===================================================== */
+
+        .icon {
+
+            position: absolute;
+
+            left: 16px;
+
+            top: 50%;
+
+            transform:
+                translateY(-50%);
+
+            color:
+                #e5b45f;
+
+            font-size: 18px;
+
+            line-height: 1;
+
+            z-index: 10;
+
+            pointer-events: none;
+
+        }
+
+
+        /* =====================================================
+           START ADVENTURE BUTTON
+
+           The visible golden button is already in
+           heritage.jpeg.
+
+           This invisible button sits over it and makes
+           it clickable.
+        ===================================================== */
+
+        .start-button {
+
+            position: relative;
+
+            width: 78%;
+
+            height: 54px;
+
+            margin:
+                1px auto 0;
+
+            border: none;
+
+            outline: none;
+
+            background:
+                transparent;
+
+            cursor: pointer;
+
+            color: transparent;
+
+            font-size: 0;
+
+            z-index: 200;
+
+        }
+
+
+        .start-button:hover {
+
+            filter:
+                drop-shadow(
+                    0 0 12px
+                    rgba(242, 176, 65, 0.85)
+                );
+
+        }
+
+
+        .start-button:active {
+
+            transform:
+                scale(0.98);
+
+        }
+
+
+        /* =====================================================
+           MUSIC PANEL
+        ===================================================== */
+
+        .music-panel {
+
+            position: absolute;
+
+            left: 3%;
+
+            bottom: 3%;
+
+            width: 25.5%;
+
+            min-height: 82px;
+
+            padding:
+                9px 12px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            background:
+                rgba(8, 6, 8, 0.97);
+
+            border:
+                1px solid
+                rgba(157, 103, 48, 0.95);
+
+            border-radius: 14px;
+
+            z-index: 300;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0, 0, 0, 0.45);
+
+        }
+
+
+        /* MUSIC ICON */
+
+        .music-icon {
+
+            width: 44px;
+
+            height: 44px;
+
+            min-width: 44px;
+
+            border:
+                1px solid #9d6932;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            color:
+                #f0b75d;
+
+            font-size: 24px;
+
+        }
+
+
+        /* MUSIC INFORMATION */
+
+        .music-info {
+
+            flex: 1;
+
+            min-width: 0;
+
+        }
+
+
+        .music-label {
+
+            color:
+                #e8c78d;
+
+            font-size: 10px;
+
+            font-weight: bold;
+
+            margin-bottom: 3px;
+
+        }
+
+
+        .music-title {
+
+            color:
+                #f1d49c;
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+        }
+
+
+        .music-subtitle {
+
+            color:
+                #b39a76;
+
+            font-size: 9px;
+
+            margin-top: 2px;
+
+        }
+
+
+        /* =====================================================
+           CURRENT PLAYING TIME
+
+           ONLY CURRENT TIME.
+           NO TOTAL DURATION.
+        ===================================================== */
+
+        .music-time {
+
+            color:
+                #d9aa62;
+
+            font-size: 9px;
+
+            margin-top: 4px;
+
+        }
+
+
+        /* =====================================================
+           PLAY BUTTON
+        ===================================================== */
+
+        .music-button {
+
+            width: 43px;
+
+            height: 43px;
+
+            min-width: 43px;
+
+            border:
+                1px solid #9d6932;
+
+            border-radius: 50%;
+
+            background:
+                transparent;
+
+            color:
+                #f0b75d;
+
+            cursor: pointer;
+
+            font-size: 17px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+        }
+
+
+        .music-button:hover {
+
+            background:
+                rgba(190, 120, 35, 0.15);
+
+            box-shadow:
+                0 0 10px
+                rgba(235, 170, 70, 0.35);
+
+        }
+
+
+        /* =====================================================
+           SOUND PANEL
+        ===================================================== */
+
+        .sound-panel {
+
+            position: absolute;
+
+            right: 3%;
+
+            bottom: 3%;
+
+            width: 25.5%;
+
+            min-height: 82px;
+
+            padding:
+                10px 14px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            background:
+                rgba(8, 6, 8, 0.97);
+
+            border:
+                1px solid
+                rgba(157, 103, 48, 0.95);
+
+            border-radius: 14px;
+
+            z-index: 300;
+
+        }
+
+
+        .sound-icon {
+
+            font-size: 26px;
+
+            color:
+                #e8b45d;
+
+        }
+
+
+        .sound-title {
+
+            color:
+                #e5c48b;
+
+            font-size: 12px;
+
+            font-weight: bold;
+
+            margin-bottom: 3px;
+
+        }
+
+
+        .sound-text {
+
+            color:
+                #a99476;
+
+            font-size: 10px;
+
+            line-height: 1.35;
+
+        }
+
+
+        /* =====================================================
+           SMALL SCREENS
+        ===================================================== */
+
+        @media (max-width: 800px) {
+
+            .login-area {
+
+                left: 35.5%;
+
+                width: 29%;
+
+                top: 36.5%;
+
+            }
+
+
+            .field {
+
+                height: 45px;
+
+            }
+
+
+            .field input {
+
+                font-size: 13px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="screen">
+
+
+    <!-- =====================================================
+         BACKGROUND ARTWORK
+    ====================================================== -->
+
+    <div class="artwork">
+
+
+        <!-- =================================================
+             LOGIN FORM
+        ================================================== -->
+
+        <form
+            class="login-area"
+            id="loginForm"
+        >
+
+
+            <!-- NAME -->
+
+            <div class="field">
+
+                <span class="icon">👤</span>
+
+                <input
+                    type="text"
+                    id="name"
+                    placeholder="Enter your name"
+                    autocomplete="name"
+                    required
+                >
+
+            </div>
+
+
+            <!-- AGE -->
+
+            <div class="field">
+
+                <span class="icon">▣</span>
+
+                <input
+                    type="number"
+                    id="age"
+                    placeholder="Enter your age"
+                    min="5"
+                    max="100"
+                    required
+                >
+
+            </div>
+
+
+            <!-- EMAIL -->
+
+            <div class="field">
+
+                <span class="icon">✉</span>
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter your email id"
+                    autocomplete="email"
+                    required
+                >
+
+            </div>
+
+
+            <!-- PHONE -->
+
+            <div class="field">
+
+                <span class="icon">☎</span>
+
+                <input
+                    type="tel"
+                    id="phone"
+                    placeholder="Enter your phone number"
+                    autocomplete="tel"
+                    required
+                >
+
+            </div>
+
+
+            <!-- START ADVENTURE -->
+
+            <button
+                type="submit"
+                class="start-button"
+                aria-label="Start Adventure"
+            >
+                START ADVENTURE
+            </button>
+
+
+        </form>
+
+
+
+        <!-- =================================================
+             MUSIC PLAYER
+        ================================================== -->
+
+        <div class="music-panel">
+
+
+            <div class="music-icon">
+                ♪
+            </div>
+
+
+            <div class="music-info">
+
+
+                <div class="music-label">
+                    NOW PLAYING
+                </div>
+
+
+                <div class="music-title">
+                    Melodies of India
+                </div>
+
+
+                <div class="music-subtitle">
+                    Soft Indian Instrumental
+                </div>
+
+
+                <div
+                    class="music-time"
+                    id="musicTime"
+                >
+                    Click ▶ to play
+                </div>
+
+
+            </div>
+
+
+            <button
+                type="button"
+                class="music-button"
+                id="musicButton"
+                aria-label="Play music"
+            >
+                ▶
+            </button>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             SOUND INFORMATION
+        ================================================== -->
+
+        <div class="sound-panel">
+
+
+            <div class="sound-icon">
+                🔊
+            </div>
+
+
+            <div>
+
+
+                <div class="sound-title">
+                    Best Experience with Sound
+                </div>
+
+
+                <div class="sound-text">
+                    Enjoy the soul of India with
+                    our soothing cultural music.
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         MUSIC FILE
+
+         YOUR FILE IS:
+         music.mp3
+    ====================================================== -->
+
+    <audio
+        id="backgroundMusic"
+        preload="auto"
+    >
+
+        <source
+            src="music.mp3"
+            type="audio/mpeg"
+        >
+
+    </audio>
+
+
+</div>
+
+
+
+<script>
+
+
+/* =========================================================
+   LOGIN
+   LOGIN → states.html
+========================================================= */
+
+const form =
+    document.getElementById(
+        "loginForm"
+    );
+
+
+form.addEventListener(
+    "submit",
+    function(event) {
+
+        event.preventDefault();
+
+
+        const name =
+            document
+            .getElementById("name")
+            .value
+            .trim();
+
+
+        const age =
+            document
+            .getElementById("age")
+            .value
+            .trim();
+
+
+        const email =
+            document
+            .getElementById("email")
+            .value
+            .trim();
+
+
+        const phone =
+            document
+            .getElementById("phone")
+            .value
+            .trim();
+
+
+        /* -----------------------------------------------
+           CHECK ALL FIELDS
+        ------------------------------------------------ */
+
+        if (
+            !name ||
+            !age ||
+            !email ||
+            !phone
+        ) {
+
+            alert(
+                "Please fill in all your details before starting your adventure."
+            );
+
+            return;
+
+        }
+
+
+        /* -----------------------------------------------
+           SAVE PLAYER DETAILS
+        ------------------------------------------------ */
+
+        localStorage.setItem(
+            "playerName",
+            name
+        );
+
+
+        localStorage.setItem(
+            "playerAge",
+            age
+        );
+
+
+        localStorage.setItem(
+            "playerEmail",
+            email
+        );
+
+
+        localStorage.setItem(
+            "playerPhone",
+            phone
+        );
+
+
+        /* -----------------------------------------------
+           GO TO MAP
+        ------------------------------------------------ */
+
+        window.location.href =
+            "states.html";
+
+    }
+);
+
+
+
+/* =========================================================
+   MUSIC PLAYER
+========================================================= */
+
+const music =
+    document.getElementById(
+        "backgroundMusic"
+    );
+
+
+const musicButton =
+    document.getElementById(
+        "musicButton"
+    );
+
+
+const musicTime =
+    document.getElementById(
+        "musicTime"
+    );
+
+
+/* =========================================================
+   FORMAT CURRENT TIME
+
+   Example:
+
+   0:01
+   0:24
+   1:05
+   2:31
+
+   It NEVER shows the total duration.
+========================================================= */
+
+function formatTime(seconds) {
+
+    if (
+        !Number.isFinite(seconds)
+    ) {
+
+        return "0:00";
+
+    }
+
+
+    const minutes =
+        Math.floor(
+            seconds / 60
+        );
+
+
+    const secondsPart =
+        Math.floor(
+            seconds % 60
+        );
+
+
+    return (
+        minutes +
+        ":" +
+        String(secondsPart)
+            .padStart(2, "0")
+    );
+
+}
+
+
+
+/* =========================================================
+   PLAY / PAUSE BUTTON
+========================================================= */
+
+musicButton.addEventListener(
+    "click",
+    async function() {
+
+
+        /* -----------------------------------------------
+           IF MUSIC IS CURRENTLY PAUSED
+        ------------------------------------------------ */
+
+        if (music.paused) {
+
+            try {
+
+                await music.play();
+
+
+                musicButton.textContent =
+                    "Ⅱ";
+
+
+                musicButton.setAttribute(
+                    "aria-label",
+                    "Pause music"
+                );
+
+
+                musicTime.textContent =
+                    "Playing • " +
+                    formatTime(
+                        music.currentTime
+                    );
+
+            }
+
+
+            catch (error) {
+
+                console.error(
+                    "Music playback error:",
+                    error
+                );
+
+
+                /*
+                 * This gives the REAL reason instead of
+                 * incorrectly saying that the file is
+                 * missing.
+                 */
+
+                if (music.error) {
+
+                    switch (
+                        music.error.code
+                    ) {
+
+
+                        case 1:
+
+                            alert(
+                                "The music loading was aborted."
+                            );
+
+                            break;
+
+
+                        case 2:
+
+                            alert(
+                                "There was a problem loading music.mp3."
+                            );
+
+                            break;
+
+
+                        case 3:
+
+                            alert(
+                                "music.mp3 could not be decoded. Please make sure it is a valid MP3 file."
+                            );
+
+                            break;
+
+
+                        case 4:
+
+                            alert(
+                                "The browser cannot play music.mp3. Check the filename and audio format."
+                            );
+
+                            break;
+
+
+                        default:
+
+                            alert(
+                                "The music could not be played."
+                            );
+
+                    }
+
+                }
+
+                else {
+
+                    alert(
+                        "The browser could not start the music. Check that music.mp3 is in the same folder as index.html."
+                    );
+
+                }
+
+            }
+
+        }
+
+
+        /* -----------------------------------------------
+           IF MUSIC IS PLAYING → PAUSE
+        ------------------------------------------------ */
+
+        else {
+
+            music.pause();
+
+
+            musicButton.textContent =
+                "▶";
+
+
+            musicButton.setAttribute(
+                "aria-label",
+                "Play music"
+            );
+
+
+            musicTime.textContent =
+                "Paused • " +
+                formatTime(
+                    music.currentTime
+                );
+
+        }
+
+    }
+);
+
+
+
+/* =========================================================
+   UPDATE CURRENT PLAYING TIME
+========================================================= */
+
+music.addEventListener(
+    "timeupdate",
+    function() {
+
+
+        if (!music.paused) {
+
+            musicTime.textContent =
+                "Playing • " +
+                formatTime(
+                    music.currentTime
+                );
+
+        }
+
+    }
+);
+
+
+
+/* =========================================================
+   AUDIO LOADED SUCCESSFULLY
+========================================================= */
+
+music.addEventListener(
+    "loadedmetadata",
+    function() {
+
+        console.log(
+            "✓ music.mp3 loaded successfully."
+        );
+
+    }
+);
+
+
+
+/* =========================================================
+   AUDIO ERROR
+========================================================= */
+
+music.addEventListener(
+    "error",
+    function() {
+
+        console.error(
+            "Audio element error:",
+            music.error
+        );
+
+    }
+);
+
+
+
+/* =========================================================
+   SONG FINISHED
+========================================================= */
+
+music.addEventListener(
+    "ended",
+    function() {
+
+        musicButton.textContent =
+            "▶";
+
+
+        musicButton.setAttribute(
+            "aria-label",
+            "Play music"
+        );
+
+
+        musicTime.textContent =
+            "Click ▶ to play";
+
+    }
+);
+
+
+</script>
+
+
+</body>
+
+</html>

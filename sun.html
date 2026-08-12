@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bharat Quest — The Sun</title>
+
+<style>
+/* =========================================================
+   BHARAT QUEST — THE SUN
+   Self-contained page
+   ========================================================= */
+
+:root {
+    --bg: #05070f;
+    --bg2: #091326;
+    --cyan: #22d3ee;
+    --cyan-soft: rgba(34,211,238,.35);
+    --gold: #f6c453;
+    --gold-bright: #ffd86a;
+    --text: #eef6ff;
+    --muted: #8d9ab5;
+    --panel: rgba(8,18,35,.82);
+    --border: rgba(34,211,238,.22);
+    --danger: #ff6577;
+    --green: #63e6a8;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 50% 25%, rgba(24,87,120,.28), transparent 35%),
+        radial-gradient(circle at 50% 100%, rgba(17,65,91,.18), transparent 40%),
+        var(--bg);
+    color: var(--text);
+    font-family: "Segoe UI", Arial, sans-serif;
+    overflow-x: hidden;
+}
+
+/* ================= BACKGROUND STARS ================= */
+
+.stars,
+.stars::before,
+.stars::after {
+    position: fixed;
+    inset: 0;
+    content: "";
+    pointer-events: none;
+}
+
+.stars {
+    background-image:
+        radial-gradient(circle, rgba(255,255,255,.75) 1px, transparent 1px),
+        radial-gradient(circle, rgba(34,211,238,.55) 1px, transparent 1px);
+    background-size: 130px 130px, 190px 190px;
+    background-position: 20px 40px, 80px 100px;
+    opacity: .25;
+    z-index: 0;
+}
+
+.stars::before {
+    background:
+        radial-gradient(circle at 20% 30%, rgba(34,211,238,.12), transparent 20%),
+        radial-gradient(circle at 80% 20%, rgba(246,196,83,.08), transparent 18%);
+}
+
+/* ================= HEADER ================= */
+
+.topbar {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 5%;
+    border-bottom: 1px solid rgba(34,211,238,.1);
+    background: rgba(3,7,15,.72);
+    backdrop-filter: blur(10px);
+}
+
+.brand {
+    color: var(--cyan);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+}
+
+.progress {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.progress strong {
+    color: var(--cyan);
+}
+
+/* ================= HERO ================= */
+
+.hero {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 55px 20px 25px;
+}
+
+.eyebrow {
+    color: var(--cyan);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-size: clamp(38px, 8vw, 76px);
+    line-height: .95;
+    font-weight: 900;
+    letter-spacing: -.04em;
+    text-shadow: 0 0 35px rgba(34,211,238,.18);
+}
+
+.subtitle {
+    max-width: 650px;
+    margin: 18px auto 0;
+    color: var(--muted);
+    line-height: 1.7;
+    font-size: 15px;
+}
+
+/* ================= SUN ================= */
+
+.sun-area {
+    position: relative;
+    height: 330px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+.sun {
+    width: 125px;
+    height: 125px;
+    border-radius: 50%;
+
+    background:
+        radial-gradient(circle at 35% 30%,
+            #fff9d5 0%,
+            #ffe889 25%,
+            #ffc84d 52%,
+            #e79a20 75%,
+            #a96212 100%);
+
+    box-shadow:
+        0 0 25px #ffd76b,
+        0 0 65px rgba(255,194,67,.75),
+        0 0 130px rgba(255,164,35,.35);
+
+    animation: sunPulse 3s ease-in-out infinite;
+}
+
+.sun::before,
+.sun::after {
+    content: "";
+    position: absolute;
+    inset: -45px;
+    border: 2px solid rgba(246,196,83,.25);
+    border-radius: 50%;
+    animation: rotate 15s linear infinite;
+}
+
+.sun::after {
+    inset: -70px;
+    border-style: dashed;
+    border-color: rgba(246,196,83,.15);
+    animation-direction: reverse;
+    animation-duration: 22s;
+}
+
+@keyframes sunPulse {
+    0%,100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.07);
+    }
+}
+
+@keyframes rotate {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ================= TEMPLE SILHOUETTE ================= */
+
+.temple {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(650px, 85vw);
+    height: 120px;
+    opacity: .75;
+}
+
+.temple-base {
+    position: absolute;
+    bottom: 0;
+    left: 5%;
+    right: 5%;
+    height: 30px;
+    background: linear-gradient(#7395a0,#314f5d);
+    clip-path: polygon(3% 0,97% 0,100% 100%,0 100%);
+}
+
+.temple-body {
+    position: absolute;
+    bottom: 30px;
+    left: 24%;
+    width: 52%;
+    height: 58px;
+    background: linear-gradient(90deg,#385765,#9ab5b8,#385765);
+    clip-path: polygon(8% 0,92% 0,100% 100%,0 100%);
+}
+
+.temple-top {
+    position: absolute;
+    bottom: 88px;
+    left: 36%;
+    width: 28%;
+    height: 65px;
+    background: repeating-linear-gradient(
+        0deg,
+        #536f77 0px,
+        #536f77 8px,
+        #9bb2b2 9px,
+        #9bb2b2 12px
+    );
+    clip-path: polygon(50% 0,72% 22%,82% 35%,92% 55%,100% 100%,0 100%,8% 55%,18% 35%,28% 22%);
+}
+
+.temple-door {
+    position: absolute;
+    bottom: 30px;
+    left: 45%;
+    width: 10%;
+    height: 38px;
+    background: #07101a;
+    border-radius: 50% 50% 0 0;
+}
+
+/* ================= CONTENT ================= */
+
+.container {
+    position: relative;
+    z-index: 3;
+    width: min(1050px, 92%);
+    margin: auto;
+}
+
+.card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 30px;
+    margin: 22px 0;
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.25),
+        inset 0 1px rgba(255,255,255,.03);
+    backdrop-filter: blur(12px);
+}
+
+.card-label {
+    color: var(--cyan);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.card h2 {
+    font-size: clamp(23px,4vw,34px);
+    margin-bottom: 15px;
+}
+
+.card p {
+    color: #b9c5d8;
+    line-height: 1.8;
+    font-size: 15px;
+}
+
+.highlight {
+    color: var(--gold-bright);
+}
+
+/* ================= FACT GRID ================= */
+
+.fact-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 14px;
+    margin-top: 22px;
+}
+
+.fact {
+    padding: 20px;
+    border: 1px solid rgba(34,211,238,.15);
+    border-radius: 16px;
+    background: rgba(34,211,238,.035);
+    text-align: center;
+}
+
+.fact .icon {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.fact strong {
+    display: block;
+    color: var(--text);
+    margin-bottom: 6px;
+}
+
+.fact span {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* ================= UNLOCK SECTION ================= */
+
+.unlock {
+    text-align: center;
+}
+
+.lock-box {
+    width: 100%;
+    max-width: 600px;
+    margin: 25px auto 0;
+    padding: 28px;
+    border: 1px dashed rgba(34,211,238,.35);
+    border-radius: 18px;
+    background: rgba(0,0,0,.15);
+}
+
+.lock-icon {
+    font-size: 45px;
+    margin-bottom: 10px;
+}
+
+.clue {
+    display: none;
+    margin-top: 20px;
+    padding: 18px;
+    border-radius: 14px;
+    color: #d9fff0;
+    background: rgba(99,230,168,.08);
+    border: 1px solid rgba(99,230,168,.25);
+    line-height: 1.7;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+    font: inherit;
+}
+
+.primary-btn {
+    margin-top: 20px;
+    padding: 13px 24px;
+    border-radius: 999px;
+    color: #061017;
+    background: var(--cyan);
+    font-weight: 800;
+    box-shadow: 0 0 25px rgba(34,211,238,.25);
+    transition: .25s;
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 35px rgba(34,211,238,.5);
+}
+
+/* ================= QUIZ ================= */
+
+.quiz-question {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.answers {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.answer {
+    padding: 15px;
+    color: #d9e5f5;
+    background: rgba(255,255,255,.035);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 12px;
+    transition: .2s;
+}
+
+.answer:hover {
+    border-color: var(--cyan);
+    background: rgba(34,211,238,.08);
+}
+
+.answer.correct {
+    border-color: var(--green);
+    background: rgba(99,230,168,.12);
+}
+
+.answer.wrong {
+    border-color: var(--danger);
+    background: rgba(255,101,119,.1);
+}
+
+.result {
+    margin-top: 18px;
+    min-height: 25px;
+    color: var(--muted);
+}
+
+/* ================= BOTTOM NAV ================= */
+
+.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 35px 0 55px;
+}
+
+.nav-btn {
+    padding: 13px 20px;
+    border: 1px solid rgba(34,211,238,.25);
+    border-radius: 999px;
+    color: var(--text);
+    background: rgba(34,211,238,.05);
+    transition: .2s;
+}
+
+.nav-btn:hover {
+    background: rgba(34,211,238,.12);
+    border-color: var(--cyan);
+}
+
+.footer {
+    text-align: center;
+    color: #52627d;
+    font-size: 11px;
+    letter-spacing: .15em;
+    padding-bottom: 25px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:700px) {
+
+    .topbar {
+        padding: 16px;
+    }
+
+    .hero {
+        padding-top: 40px;
+    }
+
+    .sun-area {
+        height: 260px;
+    }
+
+    .sun {
+        width: 90px;
+        height: 90px;
+    }
+
+    .temple {
+        transform: translateX(-50%) scale(.85);
+        transform-origin: bottom center;
+    }
+
+    .card {
+        padding: 22px;
+    }
+
+    .fact-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .answers {
+        grid-template-columns: 1fr;
+    }
+
+    .bottom-nav {
+        flex-direction: column;
+    }
+}
+
+/* ================= FADE IN ================= */
+
+.fade {
+    opacity: 0;
+    transform: translateY(15px);
+    animation: fadeIn .8s ease forwards;
+}
+
+.delay1 { animation-delay: .15s; }
+.delay2 { animation-delay: .3s; }
+.delay3 { animation-delay: .45s; }
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="stars"></div>
+
+<!-- TOP BAR -->
+<header class="topbar">
+    <div class="brand">Bharat Quest</div>
+
+    <div class="progress">
+        KONARK QUEST • <strong>1 / 8</strong>
+    </div>
+</header>
+
+
+<!-- HERO -->
+<section class="hero fade">
+
+    <div class="eyebrow">
+        Konark • Odisha
+    </div>
+
+    <h1>The Sun</h1>
+
+    <p class="subtitle">
+        Before the stories begin, discover the force at the heart
+        of Konark — the Sun, the source of light, time and movement.
+    </p>
+
+</section>
+
+
+<!-- SUN VISUAL -->
+<section class="sun-area fade delay1">
+
+    <div class="sun"></div>
+
+    <div class="temple">
+
+        <div class="temple-top"></div>
+
+        <div class="temple-body"></div>
+
+        <div class="temple-door"></div>
+
+        <div class="temple-base"></div>
+
+    </div>
+
+</section>
+
+
+<main class="container">
+
+
+    <!-- STORY -->
+    <section class="card fade delay1">
+
+        <div class="card-label">
+            The Story
+        </div>
+
+        <h2>A temple built for the Sun</h2>
+
+        <p>
+            The <span class="highlight">Konark Sun Temple</span>
+            was conceived as a monumental representation of the
+            Sun God's chariot. Its architecture connects mythology,
+            astronomy, time and craftsmanship into one extraordinary
+            monument.
+        </p>
+
+        <br>
+
+        <p>
+            The temple was built in the 13th century during the reign
+            of King Narasimhadeva I of the Eastern Ganga dynasty.
+            The monument was designed as the celestial chariot of
+            Surya, the Sun God.
+        </p>
+
+    </section>
+
+
+    <!-- FACTS -->
+    <section class="card fade delay2">
+
+        <div class="card-label">
+            Discover
+        </div>
+
+        <h2>Three things to remember</h2>
+
+        <div class="fact-grid">
+
+            <div class="fact">
+                <div class="icon">☀️</div>
+                <strong>Surya</strong>
+                <span>
+                    The temple is dedicated to Surya,
+                    the Hindu Sun God.
+                </span>
+            </div>
+
+            <div class="fact">
+                <div class="icon">🛞</div>
+                <strong>Time</strong>
+                <span>
+                    The famous wheels of Konark
+                    are connected with the passage of time.
+                </span>
+            </div>
+
+            <div class="fact">
+                <div class="icon">🐎</div>
+                <strong>Chariot</strong>
+                <span>
+                    The monument was imagined as
+                    Surya's magnificent stone chariot.
+                </span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- INTERACTIVE CLUE -->
+    <section class="card unlock fade delay2">
+
+        <div class="card-label">
+            Quest Clue
+        </div>
+
+        <h2>Unlock the ancient clue</h2>
+
+        <p>
+            Something about Konark's Sun is waiting to be revealed.
+            Tap the glowing seal to discover it.
+        </p>
+
+        <div class="lock-box">
+
+            <div class="lock-icon" id="lockIcon">
+                🔒
+            </div>
+
+            <div>
+                An ancient inscription is sealed.
+            </div>
+
+            <button
+                class="primary-btn"
+                onclick="unlockClue()">
+                ✨ Reveal Clue
+            </button>
+
+            <div class="clue" id="clue">
+
+                <strong>CLUE UNLOCKED</strong>
+                <br><br>
+
+                Look closely at the wheels of the Sun Temple.
+                They are not merely decoration — they represent
+                the relationship between the monument,
+                the movement of the Sun and the measurement of time.
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- QUIZ -->
+    <section class="card fade delay3">
+
+        <div class="card-label">
+            Test Your Knowledge
+        </div>
+
+        <h2>Quick Quest</h2>
+
+        <div class="quiz-question">
+            What is the Konark Sun Temple traditionally described as?
+        </div>
+
+        <div class="answers">
+
+            <button
+                class="answer"
+                onclick="checkAnswer(this,false)">
+                A. A royal palace
+            </button>
+
+            <button
+                class="answer"
+                onclick="checkAnswer(this,true)">
+                B. The chariot of Surya
+            </button>
+
+            <button
+                class="answer"
+                onclick="checkAnswer(this,false)">
+                C. An ancient marketplace
+            </button>
+
+            <button
+                class="answer"
+                onclick="checkAnswer(this,false)">
+                D. A fort
+            </button>
+
+        </div>
+
+        <div class="result" id="quizResult"></div>
+
+    </section>
+
+
+    <!-- NAVIGATION -->
+    <div class="bottom-nav">
+
+        <button
+            class="nav-btn"
+            onclick="goBack()">
+            ← Back to Konark
+        </button>
+
+        <button
+            class="nav-btn"
+            onclick="nextStory()">
+            Next Story →
+        </button>
+
+    </div>
+
+    <div class="footer">
+        BHARAT QUEST • DISCOVER • PLAY • LEARN
+    </div>
+
+</main>
+
+
+<script>
+
+/* =========================================================
+   INTERACTIONS
+   ========================================================= */
+
+
+/* ---------- Reveal clue ---------- */
+
+function unlockClue() {
+
+    const clue = document.getElementById("clue");
+    const icon = document.getElementById("lockIcon");
+
+    clue.style.display = "block";
+
+    icon.textContent = "🔓";
+
+    const button = document.querySelector(".lock-box .primary-btn");
+
+    button.textContent = "✓ Clue Revealed";
+
+    button.disabled = true;
+
+    button.style.opacity = ".6";
+
+}
+
+
+/* ---------- Quiz ---------- */
+
+function checkAnswer(button, correct) {
+
+    const answers =
+        document.querySelectorAll(".answer");
+
+    answers.forEach(function(answer) {
+
+        answer.disabled = true;
+
+    });
+
+    const result =
+        document.getElementById("quizResult");
+
+    if (correct) {
+
+        button.classList.add("correct");
+
+        result.innerHTML =
+            "✨ Correct! The monument was conceived as the magnificent chariot of Surya.";
+
+        result.style.color = "#63e6a8";
+
+    } else {
+
+        button.classList.add("wrong");
+
+        result.innerHTML =
+            "Not quite. Think about the Sun God and his celestial chariot.";
+
+        result.style.color = "#ff9aa8";
+
+        answers.forEach(function(answer) {
+
+            if (
+                answer.textContent
+                    .trim()
+                    .startsWith("B.")
+            ) {
+                answer.classList.add("correct");
+            }
+
+        });
+
+    }
+
+}
+
+
+/* ---------- Back ---------- */
+
+function goBack() {
+
+    window.location.href = "konark.html";
+
+}
+
+
+/* ---------- Next story ---------- */
+
+function nextStory() {
+
+    /*
+       For now the next page is wheel.html.
+       We will create that page next.
+    */
+
+    window.location.href = "wheel.html";
+
+}
+
+</script>
+
+</body>
+</html>
