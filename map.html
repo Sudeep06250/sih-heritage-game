@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"
+  />
+  <meta name="theme-color" content="#05070f" />
+  <title>Bharat Quest — Select Your State</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --bg-0: #05070f;
+      --neon: #22d3ee;
+      --neon-soft: rgba(34, 211, 238, 0.55);
+      --text: #e8eefc;
+      --muted: #7c88a5;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0; padding: 0;
+      height: 100%; width: 100%;
+      background: var(--bg-0);
+      color: var(--text);
+      font-family: "Outfit", "Segoe UI", system-ui, sans-serif;
+      overflow: hidden;
+      overscroll-behavior: none;
+    }
+
+    /* ── Map ── */
+    #map {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 38%, #0d1a35 0%, var(--bg-0) 72%);
+      z-index: 1;
+    }
+    .leaflet-container { background: transparent !important; outline: none; }
+
+    /* ── HUD ── */
+    .hud {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      z-index: 500;
+      padding: 18px 20px 50px;
+      pointer-events: none;
+      background: linear-gradient(
+        180deg,
+        rgba(5,7,15,0.96) 0%,
+        rgba(5,7,15,0.65) 55%,
+        rgba(5,7,15,0) 100%
+      );
+    }
+    .hud .eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.36em;
+      text-transform: uppercase;
+      color: var(--neon);
+      margin: 0 0 5px;
+      font-weight: 700;
+    }
+    .hud h1 {
+      margin: 0;
+      font-size: clamp(18px, 4.5vw, 30px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      text-shadow: 0 0 22px rgba(34,211,238,0.25);
+    }
+    .hud p {
+      margin: 6px 0 0;
+      font-size: 12.5px;
+      line-height: 1.55;
+      color: var(--muted);
+      max-width: 36ch;
+    }
+
+    /* ── Bottom Prompt ── */
+    .prompt {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      z-index: 500;
+      padding: 42px 18px 22px;
+      text-align: center;
+      pointer-events: none;
+      background: linear-gradient(0deg, rgba(5,7,15,0.96) 0%, rgba(5,7,15,0) 100%);
+    }
+    .prompt .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 9px 20px;
+      border: 1px solid rgba(34,211,238,0.38);
+      border-radius: 999px;
+      background: rgba(34,211,238,0.07);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 600;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 24px rgba(34,211,238,0.14), inset 0 1px 0 rgba(255,255,255,0.05);
+      letter-spacing: 0.01em;
+    }
+    .prompt .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--neon);
+      box-shadow: 0 0 10px var(--neon), 0 0 20px rgba(34,211,238,0.4);
+      animation: dotpulse 1.6s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    @keyframes dotpulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.28; transform: scale(0.6); }
+    }
+
+    /* ── Loader ── */
+    .loader {
+      position: absolute; inset: 0;
+      z-index: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 16px;
+      background: var(--bg-0);
+      transition: opacity 0.6s ease;
+    }
+    .loader.hide { opacity: 0; pointer-events: none; }
+    .spinner {
+      width: 44px; height: 44px;
+      border: 3px solid rgba(34,211,238,0.14);
+      border-top-color: var(--neon);
+      border-radius: 50%;
+      animation: spin 0.85s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loader span {
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── State SVG paths ── */
+    @keyframes odishaPulse {
+      0%, 100% { filter: drop-shadow(0 0 4px #22d3ee) drop-shadow(0 0 10px rgba(34,211,238,0.45)); }
+      50%       { filter: drop-shadow(0 0 14px #22d3ee) drop-shadow(0 0 30px rgba(34,211,238,0.75)); }
+    }
+    .state-odisha {
+      animation: odishaPulse 1.8s ease-in-out infinite;
+      cursor: pointer;
+    }
+    .state-odisha:hover { stroke-width: 2.5 !important; }
+
+    /* ── DivIcon Label styles ──
+       Using divIcon (NOT leaflet tooltip) so no yellow/white box can appear */
+    .slabel-wrap {
+      /* Zero-size anchor point — content overflows visually but won't cause layout issues */
+      background: none !important;
+      border: none !important;
+      box-shadow: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      overflow: visible !important;
+    }
+    .slabel {
+      position: absolute;
+      top: 0; left: 0;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      white-space: normal;       /* Allow wrapping for long names */
+      word-break: keep-all;
+      hyphens: none;
+      pointer-events: none;
+      font-family: "Outfit", "Segoe UI", system-ui, sans-serif;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+    .slabel-locked {
+      color: #8b9ab8;
+      text-shadow:
+        0 1px 4px rgba(0,0,0,0.98),
+        0 0 2px rgba(0,0,0,0.7);
+      opacity: 0.78;
+    }
+    .slabel-odisha {
+      color: #eafcff;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      text-shadow:
+        0 0 8px #22d3ee,
+        0 0 20px rgba(34,211,238,0.55),
+        0 1px 5px rgba(0,0,0,0.98);
+    }
+
+    /* ── Lock Icon ── */
+    /* Wrapper: leaflet sets its top-left at latlng;
+       iconAnchor = half of iconSize so the circle is perfectly centred */
+    .lock-wrap {
+      background: none !important;
+      border: none !important;
+      box-shadow: none !important;
+      overflow: visible !important;
+      pointer-events: none !important;
+    }
+    .lock-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(8, 12, 26, 0.78);
+      border: 1px solid rgba(255,255,255,0.10);
+      backdrop-filter: blur(5px);
+      pointer-events: auto;
+      cursor: default;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.6);
+      transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1),
+                  box-shadow 0.25s ease,
+                  background  0.25s ease,
+                  z-index     0s;
+      position: relative;
+      z-index: 0;
+    }
+    .lock-icon:hover {
+      transform: scale(1.35);
+      background: rgba(14, 18, 35, 0.95);
+      box-shadow:
+        0 0 10px  rgba(180, 200, 255, 0.35),
+        0 0 26px  rgba(180, 200, 255, 0.18),
+        0 4px 20px rgba(0, 0, 0, 0.8);
+      z-index: 9999;
+    }
+    /* dim overlay — appears behind the hovered lock, over everything else */
+    #lock-dim {
+      position: absolute;
+      inset: 0;
+      z-index: 400;
+      background: rgba(5, 7, 15, 0.62);
+      backdrop-filter: blur(2px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    #lock-dim.active { opacity: 0; } /* disabled — per-state blur used instead */
+    .lock-icon svg {
+      fill: #5a6a8a;
+      opacity: 0.88;
+      transition: fill 0.25s ease, opacity 0.25s ease;
+    }
+    .lock-icon:hover svg {
+      fill: #c8d6f0;
+      opacity: 1;
+    }
+
+    /* ── Locked popup ── */
+    #locked-popup {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%) translateY(16px);
+      z-index: 600;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.32s ease, transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    #locked-popup.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .lp-inner {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 22px;
+      background: rgba(8, 10, 22, 0.92);
+      border: 1px solid rgba(255, 90, 90, 0.28);
+      border-radius: 18px;
+      backdrop-filter: blur(14px);
+      box-shadow:
+        0 0 18px rgba(255, 80, 80, 0.18),
+        0 6px 28px rgba(0, 0, 0, 0.55);
+      white-space: nowrap;
+    }
+    .lp-icon {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 80, 80, 0.12);
+      border: 1px solid rgba(255, 80, 80, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .lp-icon svg { width: 17px; height: 17px; fill: #f87171; }
+    .lp-text strong {
+      display: block;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      color: #f87171;
+      text-transform: uppercase;
+    }
+    .lp-text p {
+      margin: 3px 0 0;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.01em;
+    }
+
+    /* ── Flash ── */
+    .flash {
+      position: absolute; inset: 0;
+      z-index: 1000;
+      background: radial-gradient(circle at 50% 50%, rgba(34,211,238,0.38), rgba(5,7,15,0.97));
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.85s ease;
+    }
+    .flash.show { opacity: 1; }
+  </style>
+</head>
+<body>
+
+  <div id="map" role="application" aria-label="Interactive map of India"></div>
+  <div id="lock-dim" aria-hidden="true"></div>
+
+  <!-- Locked state popup -->
+  <div id="locked-popup" aria-live="polite">
+    <div class="lp-inner">
+      <div class="lp-icon">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17 11V7A5 5 0 0 0 7 7v4H5v10h14V11h-2zm-5 6a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm3-6H9V7a3 3 0 0 1 6 0v4z"/>
+        </svg>
+      </div>
+      <div class="lp-text">
+        <strong>Locked</strong>
+        <p>This state is locked. Try any glowing state.</p>
+      </div>
+    </div>
+  </div>
+
+  <header class="hud">
+    <p class="eyebrow">Bharat Quest</p>
+    <h1>Select Your State</h1>
+    <p>All regions are locked. Odisha is now live — tap the glowing state to enter.</p>
+  </header>
+
+
+
+  <div class="flash" id="flash" aria-hidden="true"></div>
+
+  <div class="loader" id="loader">
+    <div class="spinner"></div>
+    <span>Loading Map</span>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+
+  <script>
+  (function () {
+    "use strict";
+
+    var TARGET = ["odisha", "orissa"];
+    var isMobile = window.matchMedia("(max-width: 768px)").matches || "ontouchstart" in window;
+
+    // Stored after fitBounds — used to reset view when user presses Back
+    var initialBounds = null;
+    var fitPadding    = { paddingTopLeft: [5, 62], paddingBottomRight: [5, 48] };
+    var geoLayer      = null; // hoisted so resetToIndia can redraw polygons
+
+    /* ── Init map ── */
+    var map = L.map("map", {
+      zoomControl: false,
+      attributionControl: false,
+      scrollWheelZoom: true,
+      touchZoom: true,
+      doubleClickZoom: false,
+      boxZoom: false,
+      keyboard: false,
+      dragging: true,
+      tap: isMobile,
+      bounceAtZoomLimits: false,
+      zoomSnap: 0.5,
+      zoomDelta: 0.5,
+      minZoom: 2,
+      maxZoom: 12,
+    });
+
+    map.setView([22.5, 82.5], 4);
+
+    /* ── Helpers ── */
+    function stateName(props) {
+      if (!props) return "";
+      var keys = ["NAME_1","ST_NM","st_nm","name","State","STATE","state_name","NAME","st_name"];
+      for (var i = 0; i < keys.length; i++) {
+        if (props[keys[i]]) return String(props[keys[i]]);
+      }
+      return "";
+    }
+    function isTarget(n) {
+      return TARGET.indexOf((n || "").toLowerCase().trim()) !== -1;
+    }
+
+    /* ── Styles ── */
+    var lockedStyle = { color:"#3a4460", weight:0.7, opacity:0.75, fillColor:"#1b2235", fillOpacity:0.45 };
+    var odishaStyle = { color:"#22d3ee", weight:2,   opacity:1,    fillColor:"#22d3ee", fillOpacity:0.5  };
+    function styleFn(f) { return isTarget(stateName(f.properties)) ? odishaStyle : lockedStyle; }
+
+    /* ── Fly into Odisha + Redirect ── */
+    function flyAndRedirect(layer) {
+      // 1. Smooth zoom into Odisha
+      map.flyToBounds(layer.getBounds(), {
+        padding: [60, 60],
+        duration: 0.9,
+        easeLinearity: 0.2,
+      });
+      // 2. Flash overlay starts mid-animation, redirect when done
+      var fl = document.getElementById("flash");
+      setTimeout(function () { fl.classList.add("show"); }, 550);
+      setTimeout(function () { window.location.href = "odisha_games.html"; }, 1050);
+    }
+
+    /* ── Reset to full-India view on Back navigation ── */
+    function resetToIndia() {
+      if (!initialBounds) return;
+
+      // 1. Remove lingering flash glow
+      document.getElementById("flash").classList.remove("show");
+
+      // 2. Force Leaflet to recalculate container — fixes layout after bfcache
+      map.invalidateSize({ animate: false });
+
+      // 3. Force-redraw ALL SVG polygon paths (they go blank after bfcache restore)
+      if (geoLayer) {
+        geoLayer.eachLayer(function (l) {
+          if (l.redraw) l.redraw();
+        });
+      }
+
+      // 4. Instantly reset to full India view (no animation)
+      map.fitBounds(initialBounds, Object.assign({}, fitPadding, { animate: false }));
+    }
+
+    // pageshow fires on initial load AND when restored from bfcache (Back button)
+    window.addEventListener("pageshow", function (e) {
+      if (e.persisted) resetToIndia();
+    });
+
+    /* ── Feature hooks (no labels here — labels added after fitBounds) ── */
+    function onEachFeature(feature, layer) {
+      var name = stateName(feature.properties);
+      if (isTarget(name)) {
+        layer.on("add", function () {
+          if (layer._path) {
+            layer._path.classList.add("state-odisha");
+            layer._path.setAttribute("tabindex", "0");
+            layer._path.setAttribute("role", "button");
+            layer._path.setAttribute("aria-label", "Enter Odisha games");
+          }
+        });
+        layer.on("click", function () { flyAndRedirect(layer); });
+        layer.on("keydown", function (e) {
+          var k = e.originalEvent && e.originalEvent.key;
+          if (k === "Enter" || k === " ") flyAndRedirect(layer);
+        });
+      } else {
+        layer.on("add", function () {
+          if (layer._path) {
+            layer._path.style.pointerEvents = "none";
+          }
+        });
+      }
+    }
+
+    /* ── Lock icon helpers ── */
+
+    var lockSVG = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">'
+      + '<path d="M17 11V7A5 5 0 0 0 7 7v4H5v10h14V11h-2zm-5 6a2 2 0 1 1'
+      + ' 0-4 2 2 0 0 1 0 4zm3-6H9V7a3 3 0 0 1 6 0v4z"/>'
+      + '</svg>';
+
+    // Registry: [{marker, layer}] — needed for zoom updates
+    var lockRegistry = [];
+
+    /* True geometric centroid of a polygon ring (shoelace formula).
+       Falls back to vertex average for degenerate cases. */
+    function ringCentroid(ring) {
+      var area = 0, cx = 0, cy = 0, n = ring.length;
+      for (var i = 0; i < n - 1; i++) {
+        var x0 = ring[i][0],   y0 = ring[i][1];
+        var x1 = ring[i+1][0], y1 = ring[i+1][1];
+        var cross = x0*y1 - x1*y0;
+        area += cross;
+        cx   += (x0 + x1) * cross;
+        cy   += (y0 + y1) * cross;
+      }
+      area /= 2;
+      if (Math.abs(area) < 1e-10) {
+        cx = 0; cy = 0;
+        for (var j = 0; j < n; j++) { cx += ring[j][0]; cy += ring[j][1]; }
+        return [cx / n, cy / n];
+      }
+      return [cx / (6*area), cy / (6*area)];
+    }
+
+    /* For MultiPolygon: use the largest outer ring's centroid */
+    function featureCentroid(feature) {
+      var geom = feature && feature.geometry;
+      if (!geom) return null;
+      var ring;
+      if (geom.type === 'Polygon') {
+        ring = geom.coordinates[0];
+      } else if (geom.type === 'MultiPolygon') {
+        ring = geom.coordinates.reduce(function(best, poly) {
+          return poly[0].length > best.length ? poly[0] : best;
+        }, []);
+      } else { return null; }
+      if (!ring || ring.length < 3) return null;
+      var c = ringCentroid(ring);
+      // GeoJSON coords are [lng, lat]
+      return L.latLng(c[1], c[0]);
+    }
+
+    /* ── Polygon ring area in sq-degrees (shoelace) ── */
+    function ringAreaDeg(ring) {
+      var a = 0, n = ring.length;
+      for (var i = 0; i < n - 1; i++)
+        a += ring[i][0] * ring[i+1][1] - ring[i+1][0] * ring[i][1];
+      return Math.abs(a / 2);
+    }
+
+    /* Screen-pixel bounding box of a SINGLE polygon ring at current zoom.
+       This ignores sea gaps between islands so Lakshadweep won't be oversized. */
+    function ringScreenSize(ring) {
+      var minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+      for (var i = 0; i < ring.length; i++) {
+        var pt = map.latLngToContainerPoint(L.latLng(ring[i][1], ring[i][0]));
+        if (pt.x < minX) minX = pt.x;
+        if (pt.x > maxX) maxX = pt.x;
+        if (pt.y < minY) minY = pt.y;
+        if (pt.y > maxY) maxY = pt.y;
+      }
+      var w = maxX - minX, h = maxY - minY;
+      return Math.sqrt(Math.max(0, w) * Math.max(0, h));
+    }
+
+    /* Visual screen area of the LARGEST polygon ring in the feature.
+       For MultiPolygon islands this picks only the biggest island, not the
+       bounding box of all islands spread across the ocean. */
+    function stateVisualScreenArea(layer) {
+      try {
+        var geom = layer.feature && layer.feature.geometry;
+        if (!geom) throw new Error();
+
+        var bestRing = null, bestArea = -1;
+
+        function checkRing(r) {
+          if (!r || r.length < 3) return;
+          var a = ringAreaDeg(r);
+          if (a > bestArea) { bestArea = a; bestRing = r; }
+        }
+
+        if (geom.type === 'Polygon') {
+          checkRing(geom.coordinates[0]);
+        } else if (geom.type === 'MultiPolygon') {
+          geom.coordinates.forEach(function(poly) { checkRing(poly[0]); });
+        }
+
+        if (bestRing) return ringScreenSize(bestRing);
+      } catch(e) {}
+
+      // Fallback: bounding box (less accurate but always works)
+      try {
+        var b  = layer.getBounds();
+        var sw = map.latLngToContainerPoint(b.getSouthWest());
+        var ne = map.latLngToContainerPoint(b.getNorthEast());
+        return Math.sqrt(Math.abs(ne.x - sw.x) * Math.abs(ne.y - sw.y));
+      } catch(e) { return 0; }
+    }
+
+    /* Map visual screen-area → lock circle diameter (px).
+       Also caps the lock so it never exceeds 55% of the state's visual size
+       — prevents the lock from eating a tiny island. */
+    function lockDiameter(screenArea) {
+      var minD = 13, maxD = 30;
+      // 30px → minD, 240px → maxD
+      var t = Math.max(0, Math.min(1, (screenArea - 30) / (240 - 30)));
+      var d = Math.round(minD + t * (maxD - minD));
+      // Cap: never wider than 55% of the state's visual dimension
+      var cap = Math.max(12, Math.round(screenArea * 0.55));
+      return Math.min(d, cap);
+    }
+
+    /* Build the icon for a given diameter */
+    function makeLockIcon(d) {
+      var svgSize = Math.round(d * 0.5);
+      var html = '<div class="lock-icon" style="width:' + d + 'px;height:' + d + 'px">'
+               + '<svg style="width:' + svgSize + 'px;height:' + svgSize + 'px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">'
+               + '<path fill="#5a6a8a" d="M17 11V7A5 5 0 0 0 7 7v4H5v10h14V11h-2zm-5 6a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm3-6H9V7a3 3 0 0 1 6 0v4z"/>'
+               + '</svg></div>';
+      var half = Math.round(d / 2);
+      return L.divIcon({
+        html: html,
+        className: 'lock-wrap',
+        iconSize:   [d, d],
+        iconAnchor: [half, half],
+      });
+    }
+
+    /* Update all lock sizes after a zoom change */
+    function refreshLockSizes() {
+      lockRegistry.forEach(function(item) {
+        var sa = stateVisualScreenArea(item.layer);
+        if (sa < 8) { item.marker.setOpacity(0); return; }
+        item.marker.setOpacity(1);
+        var d = lockDiameter(sa);
+        item.marker.setIcon(makeLockIcon(d));
+      });
+    }
+
+    /* ── Load GeoJSON ── */
+    var SOURCES = [
+      {
+        url: "https://cdn.jsdelivr.net/gh/Anujarya300/bubble_maps@master/data/geography-data/india.topo.json",
+        type: "topojson",
+        object: "india",
+      },
+      {
+        url: "https://cdn.jsdelivr.net/gh/udit-001/india-maps-data@main/geojson/india.geojson",
+        type: "geojson",
+      },
+    ];
+
+    function toFC(src, data) {
+      if (src.type === "topojson") {
+        if (typeof topojson === "undefined") throw new Error("topojson not loaded");
+        var obj = src.object;
+        if (!data.objects[obj]) obj = Object.keys(data.objects)[0];
+        return topojson.feature(data, data.objects[obj]);
+      }
+      return data;
+    }
+
+    /* ── Intro Animation: each state flies in from its own direction ──
+       States are pushed far off-screen in the direction they lie relative to
+       India's centre, then all fly in together and snap into place.          */
+    function playIntroAnimation(onComplete) {
+      var el   = map.getContainer();
+      var cx   = el.offsetWidth  / 2;
+      var cy   = el.offsetHeight / 2;
+      var dist = Math.max(el.offsetWidth, el.offsetHeight) * 1.8; // off-screen distance
+
+      // Disable interaction during animation
+      map.dragging.disable();
+      map.scrollWheelZoom.disable();
+      map.touchZoom.disable();
+
+      // Step A: position every path off-screen (no transition yet)
+      geoLayer.eachLayer(function (layer) {
+        if (!layer._path) return;
+        var center;
+        try { center = map.latLngToContainerPoint(layer.getBounds().getCenter()); }
+        catch (e) { return; }
+
+        var dx = center.x - cx;
+        var dy = center.y - cy;
+        var mag = Math.sqrt(dx * dx + dy * dy) || 1;
+        var ox  = Math.round((dx / mag) * dist);
+        var oy  = Math.round((dy / mag) * dist);
+
+        layer._path.style.transition = 'none';
+        layer._path.style.transform  = 'translate(' + ox + 'px,' + oy + 'px)';
+        layer._path.style.opacity    = '0';
+      });
+
+      // Step B: hide loader, then trigger animation on next two frames
+      //         (double rAF ensures the browser has painted the off-screen state)
+      document.getElementById('loader').classList.add('hide');
+
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          geoLayer.eachLayer(function (layer) {
+            if (!layer._path) return;
+            // Tiny random stagger (0–250 ms) so states don't all land at once
+            var stagger = (Math.random() * 0.5).toFixed(3);
+            layer._path.style.transition =
+              'transform 2.4s cubic-bezier(0.22, 1, 0.36, 1) ' + stagger + 's,' +
+              'opacity   0.9s ease '                             + stagger + 's';
+            layer._path.style.transform = 'translate(0px,0px)';
+            layer._path.style.opacity   = '1';
+          });
+
+          // After all states have landed, clean up and call onComplete
+          setTimeout(function () {
+            geoLayer.eachLayer(function (layer) {
+              if (!layer._path) return;
+              layer._path.style.transition = '';
+              layer._path.style.transform  = '';
+              layer._path.style.opacity    = '';
+            });
+            // Re-enable interaction
+            map.dragging.enable();
+            map.scrollWheelZoom.enable();
+            map.touchZoom.enable();
+            if (onComplete) onComplete();
+          }, 3100); // 2.4s anim + 0.5s max stagger + 200ms buffer
+        });
+      });
+    }
+
+    function tryLoad(idx) {
+      if (idx >= SOURCES.length) {
+        document.getElementById("loader").querySelector("span").textContent = "Map failed to load";
+        return;
+      }
+      var src = SOURCES[idx];
+      fetch(src.url)
+        .then(function(r){ if(!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+        .then(function(raw) {
+          var data = toFC(src, raw);
+
+          /* Step 1 – Draw polygons */
+          geoLayer = L.geoJSON(data, {
+            style: styleFn,
+            onEachFeature: onEachFeature,
+          }).addTo(map);
+
+          /* Step 2 – Fit India to fill the viewport */
+          var bounds = geoLayer.getBounds();
+          if (bounds.isValid()) {
+            map.fitBounds(bounds, {
+              paddingTopLeft:     [5, 62],
+              paddingBottomRight: [5, 48],
+              animate: false,
+            });
+            var fz = map.getZoom();
+            map.setMinZoom(fz);
+            map.setMaxZoom(fz + 5);
+            map.setMaxBounds(bounds.pad(0.25));
+            initialBounds = bounds;
+          }
+
+          /* Step 3 – Play intro: states fly in, locks + label appear after */
+          playIntroAnimation(function () {
+
+            var dim        = document.getElementById('lock-dim');
+            var popup      = document.getElementById('locked-popup');
+            var popupTimer = null;
+
+            /* Place lock icons */
+            geoLayer.eachLayer(function(layer) {
+              if (!layer.feature) return;
+              var name = stateName(layer.feature.properties);
+              if (isTarget(name)) return;
+
+              var latlng = null;
+              try { latlng = featureCentroid(layer.feature); } catch(e) {}
+              if (!latlng) {
+                try { latlng = layer.getBounds().getCenter(); } catch(e) { return; }
+              }
+              if (!latlng) return;
+
+              var sa = stateVisualScreenArea(layer);
+              if (sa < 8) return;
+
+              var d = lockDiameter(sa);
+              var marker = L.marker(latlng, {
+                icon: makeLockIcon(d),
+                interactive: false,
+                keyboard: false,
+              }).addTo(map);
+              lockRegistry.push({ marker: marker, layer: layer });
+
+              /* Attach events — blur only THIS state's path on hover */
+              var el = marker.getElement();
+              if (el) {
+                el.style.pointerEvents = 'none';
+                var iconEl = el.querySelector('.lock-icon');
+                var statePath = layer._path; // the specific state's SVG polygon
+                if (iconEl) {
+                  iconEl.addEventListener('mouseenter', function () {
+                    if (statePath) {
+                      statePath.style.transition  = 'fill-opacity 0.3s ease, stroke 0.3s ease, stroke-width 0.3s ease, filter 0.3s ease';
+                      statePath.style.fillOpacity = '0.15';
+                      statePath.style.stroke      = '#7dd3fc';
+                      statePath.style.strokeWidth = '2.5';
+                      statePath.style.filter      =
+                        'drop-shadow(0 0 4px rgba(125,211,252,0.85)) ' +
+                        'drop-shadow(0 0 10px rgba(125,211,252,0.45))';
+                    }
+                  });
+                  iconEl.addEventListener('mouseleave', function () {
+                    if (statePath) {
+                      statePath.style.fillOpacity = '';
+                      statePath.style.stroke      = '';
+                      statePath.style.strokeWidth = '';
+                      statePath.style.filter      = '';
+                    }
+                  });
+                  iconEl.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    popup.classList.add('show');
+                    clearTimeout(popupTimer);
+                    popupTimer = setTimeout(function () {
+                      popup.classList.remove('show');
+                    }, 3000);
+                  });
+                }
+              }
+            });
+
+            /* Place Odisha label */
+            geoLayer.eachLayer(function(layer) {
+              if (!layer.feature) return;
+              var name = stateName(layer.feature.properties);
+              if (!isTarget(name)) return;
+
+              var latlng = null;
+              try { latlng = featureCentroid(layer.feature); } catch(e) {}
+              if (!latlng) {
+                try { latlng = layer.getBounds().getCenter(); } catch(e) { return; }
+              }
+              if (!latlng) return;
+
+              var html = '<div class="slabel slabel-odisha" style="font-size:13px;letter-spacing:0.12em">ODISHA</div>';
+              L.marker(latlng, {
+                icon: L.divIcon({ html: html, className: 'slabel-wrap', iconSize: [0,0], iconAnchor: [0,0] }),
+                interactive: false,
+                keyboard: false,
+                zIndexOffset: 3000,
+              }).addTo(map);
+            });
+
+            map.on('zoomend', refreshLockSizes);
+          });
+
+        })
+        .catch(function(err) {
+          console.warn("[map] source failed:", src.url, err.message);
+          tryLoad(idx + 1);
+        });
+    }
+
+    tryLoad(0);
+  })();
+  </script>
+</body>
+</html>
