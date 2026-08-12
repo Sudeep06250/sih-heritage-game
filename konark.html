@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width,
+                   initial-scale=1.0,
+                   maximum-scale=1.0,
+                   user-scalable=no">
+
+    <title>Konark — Echoes of the Sun</title>
+
+    <link rel="stylesheet" href="konark.css">
+</head>
+
+<body>
+
+<div class="game">
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+
+        <div class="brand">
+            BHARAT QUEST
+        </div>
+
+        <div class="discoveries">
+            🔎 Discoveries:
+            <span id="clueCount">0</span>/8
+        </div>
+
+    </div>
+
+
+    <!-- TITLE -->
+    <div class="intro-title">
+
+        <h1>KONARK</h1>
+
+        <p>Echoes of the Sun</p>
+
+    </div>
+
+
+    <!-- ================= LEFT SIDE ================= -->
+
+    <!-- WHEEL -->
+    <button class="object wheel"
+            onclick="showInfo('wheel')">
+
+        <img src="konark-wheel.jpg"
+             alt="Konark wheel">
+
+        <span class="object-label">
+            WHEEL
+        </span>
+
+    </button>
+
+
+    <!-- FOOD -->
+    <button class="object food"
+            onclick="showInfo('food')">
+
+        <img src="konark-food.jpg"
+             alt="Odisha food">
+
+        <span class="object-label">
+            FOOD
+        </span>
+
+    </button>
+
+
+    <!-- ARCHITECTURE -->
+    <button class="object architecture"
+            onclick="showInfo('architecture')">
+
+        <img src="konark-architecture.jpg"
+             alt="Konark architecture">
+
+        <span class="object-label">
+            ARCHITECTURE
+        </span>
+
+    </button>
+
+
+    <!-- HISTORY -->
+    <button class="object history"
+            onclick="showInfo('history')">
+
+        <img src="konark-history.jpg"
+             alt="Konark history">
+
+        <span class="object-label">
+            HISTORY
+        </span>
+
+    </button>
+
+
+    <!-- ================= RIGHT SIDE ================= -->
+
+    <!-- HORSE -->
+    <button class="object horse"
+            onclick="showInfo('horse')">
+
+        <img src="konark-horse.jpg"
+             alt="Konark horse">
+
+        <span class="object-label">
+            HORSE
+        </span>
+
+    </button>
+
+
+    <!-- MUSIC -->
+    <button class="object music"
+            onclick="showInfo('music')">
+
+        <img src="konark-music.jpg"
+             alt="Odisha music">
+
+        <span class="object-label">
+            MUSIC
+        </span>
+
+    </button>
+
+
+    <!-- DANCER -->
+    <button class="object dancer"
+            onclick="showInfo('dancer')">
+
+        <img src="konark-dancer.jpg"
+             alt="Konark dancer">
+
+        <span class="object-label">
+            DANCER
+        </span>
+
+    </button>
+
+
+    <!-- SURYA -->
+    <button class="object surya"
+            onclick="showInfo('surya')">
+
+        <img src="konark-surya.jpg"
+             alt="Surya sculpture">
+
+        <span class="object-label">
+            SURYA
+        </span>
+
+    </button>
+
+
+    <!-- ================= GUIDE ================= -->
+
+    <div class="guide">
+
+        <div class="guide-circle">
+            👩
+        </div>
+
+    </div>
+
+
+    <!-- GUIDE DIALOGUE -->
+
+    <div class="dialogue" id="dialogue">
+
+        <div class="dialogue-name">
+            HERITAGE GUIDE
+        </div>
+
+        <div class="dialogue-text">
+
+            Welcome to Konark!
+
+            Explore the glowing discoveries around
+            the temple and uncover the stories behind
+            Odisha's heritage.
+
+        </div>
+
+        <button class="start-button"
+                onclick="startExploration()">
+
+            BEGIN EXPLORING →
+
+        </button>
+
+    </div>
+
+
+    <!-- ================= INFORMATION POPUP ================= -->
+
+    <div class="popup" id="popup">
+
+        <div class="popup-box">
+
+            <button class="close-x"
+                    onclick="closePopup()">
+
+                ×
+
+            </button>
+
+
+            <img id="popupImage"
+                 class="popup-image"
+                 src=""
+                 alt="Heritage element">
+
+
+            <div class="popup-category"
+                 id="popupCategory">
+
+                HERITAGE DISCOVERY
+
+            </div>
+
+
+            <h2 id="popupTitle">
+                Konark
+            </h2>
+
+
+            <p id="popupText">
+                Information
+            </p>
+
+
+            <!-- ================= MUSIC PLAYER ================= -->
+
+            <div class="music-player"
+                 id="musicPlayer">
+
+                <button class="play-music-button"
+                        id="playMusicButton"
+                        onclick="toggleMusic()">
+
+                    ▶ PLAY ODISHA MUSIC
+
+                </button>
+
+                <div class="music-status"
+                     id="musicStatus">
+
+                    Listen to a traditional
+                    Odisha-inspired melody.
+
+                </div>
+
+            </div>
+
+
+            <!-- COLLECT -->
+
+            <button class="collect-button"
+                    id="collectButton"
+                    onclick="collectClue()">
+
+                COLLECT DISCOVERY ✓
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= AUDIO ================= -->
+
+    <audio id="odishaMusic"
+           src="odisha-music.mp3"
+           preload="auto">
+
+    </audio>
+
+
+    <!-- ================= KEY SCREEN ================= -->
+
+    <div class="key-message"
+         id="keyMessage">
+
+        <div class="key-box">
+
+            <div class="key-icon">
+                🔑
+            </div>
+
+            <div class="complete-label">
+                8 / 8 DISCOVERIES COMPLETE
+            </div>
+
+            <h2>
+                THE KEY HAS BEEN FOUND!
+            </h2>
+
+            <p>
+                You uncovered the stories hidden
+                around Konark.
+            </p>
+
+            <button onclick="continueJourney()">
+
+                CONTINUE THE JOURNEY →
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="konark.js"></script>
+
+</body>
+</html>
