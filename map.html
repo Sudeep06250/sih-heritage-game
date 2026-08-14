@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"
-  />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
   <meta name="theme-color" content="#05070f" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <title>Bharat Quest — Select Your State</title>
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -33,7 +33,7 @@
     html, body {
       margin: 0; padding: 0;
       height: 100%; width: 100%;
-      background: var(--bg-0);
+      background: url('heritage-bg.jpg') 68% 48% / cover no-repeat fixed;
       color: var(--text);
       font-family: "Outfit", "Segoe UI", system-ui, sans-serif;
       overflow: hidden;
@@ -44,7 +44,13 @@
     #map {
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at 50% 38%, #0d1a35 0%, var(--bg-0) 72%);
+      /* Vignette: dark navy center for crisp map contrast, fading to subtle image border */
+      background: radial-gradient(
+        circle at 50% 50%,
+        rgba(5, 7, 18, 0.90) 0%,
+        rgba(5, 7, 18, 0.78) 60%,
+        rgba(5, 7, 18, 0.45) 100%
+      );
       z-index: 1;
     }
     .leaflet-container { background: transparent !important; outline: none; }
@@ -134,10 +140,16 @@
       justify-content: center;
       flex-direction: column;
       gap: 16px;
-      background: var(--bg-0);
+      /* Match body bg so loader blends seamlessly */
+      background: rgba(4, 6, 16, 0.92);
+      backdrop-filter: blur(6px);
       transition: opacity 0.6s ease;
     }
-    .loader.hide { opacity: 0; pointer-events: none; }
+    .loader.hide {
+      opacity: 0;
+      pointer-events: none;
+      backdrop-filter: none; /* Must clear — otherwise blur persists on background */
+    }
     .spinner {
       width: 44px; height: 44px;
       border: 3px solid rgba(34,211,238,0.14);
@@ -151,6 +163,50 @@
       letter-spacing: 0.3em;
       text-transform: uppercase;
       color: var(--muted);
+    }
+
+    /* ── Play Button ── */
+    .play-btn-wrap {
+      background: none !important;
+      border: none !important;
+      box-shadow: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      overflow: visible !important;
+    }
+    .play-btn {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 2px solid rgba(255, 255, 255, 0.40);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      pointer-events: auto;
+      animation: playPulse 2.4s ease-in-out infinite;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .play-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+    .play-btn::before {
+      content: '';
+      width: 0;
+      height: 0;
+      border-top: 11px solid transparent;
+      border-bottom: 11px solid transparent;
+      border-left: 18px solid rgba(255, 255, 255, 0.90);
+      margin-left: 5px;
+    }
+    @keyframes playPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.25), 0 0 16px rgba(255,255,255,0.08); }
+      50%       { box-shadow: 0 0 0 14px rgba(255,255,255,0), 0 0 28px rgba(255,255,255,0.18); }
     }
 
     /* ── State SVG paths ── */
@@ -355,7 +411,7 @@
   <header class="hud">
     <p class="eyebrow">Bharat Quest</p>
     <h1>Select Your State</h1>
-    <p>All regions are locked. Odisha is now live — tap the glowing state to enter.</p>
+    <p>All regions, one India. Click on a state to begin the<br><span style="color:var(--neon)">journey.</span> Glories to be endless.</p>
   </header>
 
 
@@ -379,7 +435,7 @@
 
     // Stored after fitBounds — used to reset view when user presses Back
     var initialBounds = null;
-    var fitPadding    = { paddingTopLeft: [5, 62], paddingBottomRight: [5, 48] };
+    var fitPadding = { paddingTopLeft: [2, 58], paddingBottomRight: [2, 35] };
     var geoLayer      = null; // hoisted so resetToIndia can redraw polygons
 
     /* ── Init map ── */
@@ -416,8 +472,8 @@
     }
 
     /* ── Styles ── */
-    var lockedStyle = { color:"#3a4460", weight:0.7, opacity:0.75, fillColor:"#1b2235", fillOpacity:0.45 };
-    var odishaStyle = { color:"#22d3ee", weight:2,   opacity:1,    fillColor:"#22d3ee", fillOpacity:0.5  };
+    var lockedStyle = { color:"rgba(100, 145, 215, 0.38)", weight:0.85, opacity:1, fillColor:"#080c1a", fillOpacity:0.85 };
+    var odishaStyle = { color:"#22d3ee", weight:2.4, opacity:1,   fillColor:"#00b4d8", fillOpacity:0.85 };
     function styleFn(f) { return isTarget(stateName(f.properties)) ? odishaStyle : lockedStyle; }
 
     /* ── Fly into Odisha + Redirect ── */
@@ -460,9 +516,12 @@
       if (e.persisted) resetToIndia();
     });
 
-    /* ── Feature hooks (no labels here — labels added after fitBounds) ── */
+    /* ── Feature hooks: direct polygon click & hover handlers ── */
     function onEachFeature(feature, layer) {
       var name = stateName(feature.properties);
+      var popup = document.getElementById('locked-popup');
+      var popupTimer = null;
+
       if (isTarget(name)) {
         layer.on("add", function () {
           if (layer._path) {
@@ -480,8 +539,29 @@
       } else {
         layer.on("add", function () {
           if (layer._path) {
-            layer._path.style.pointerEvents = "none";
+            layer._path.style.cursor = "pointer";
+            layer._path.addEventListener("mouseenter", function () {
+              layer._path.style.transition = "fill-opacity 0.25s ease, stroke 0.25s ease, stroke-width 0.25s ease, filter 0.25s ease";
+              layer._path.style.fillOpacity = "0.60";
+              layer._path.style.stroke = "#7dd3fc";
+              layer._path.style.strokeWidth = "2";
+              layer._path.style.filter = "drop-shadow(0 0 6px rgba(125,211,252,0.6))";
+            });
+            layer._path.addEventListener("mouseleave", function () {
+              layer._path.style.fillOpacity = "";
+              layer._path.style.stroke = "";
+              layer._path.style.strokeWidth = "";
+              layer._path.style.filter = "";
+            });
           }
+        });
+        layer.on("click", function (e) {
+          if (e.originalEvent) e.originalEvent.stopPropagation();
+          popup.classList.add("show");
+          clearTimeout(popupTimer);
+          popupTimer = setTimeout(function () {
+            popup.classList.remove("show");
+          }, 3000);
         });
       }
     }
@@ -743,8 +823,8 @@
           var bounds = geoLayer.getBounds();
           if (bounds.isValid()) {
             map.fitBounds(bounds, {
-              paddingTopLeft:     [5, 62],
-              paddingBottomRight: [5, 48],
+              paddingTopLeft:     [2, 58],
+              paddingBottomRight: [2, 35],
               animate: false,
             });
             var fz = map.getZoom();
@@ -754,9 +834,8 @@
             initialBounds = bounds;
           }
 
-          /* Step 3 – Play intro: states fly in, locks + label appear after */
+          /* Step 3 – Play intro: states fly in from outside and merge into India */
           playIntroAnimation(function () {
-
             var dim        = document.getElementById('lock-dim');
             var popup      = document.getElementById('locked-popup');
             var popupTimer = null;
@@ -785,12 +864,12 @@
               }).addTo(map);
               lockRegistry.push({ marker: marker, layer: layer });
 
-              /* Attach events — blur only THIS state's path on hover */
+              /* Attach events — blur/dim only THIS state's path on hover & show popup on click */
               var el = marker.getElement();
               if (el) {
                 el.style.pointerEvents = 'none';
                 var iconEl = el.querySelector('.lock-icon');
-                var statePath = layer._path; // the specific state's SVG polygon
+                var statePath = layer._path;
                 if (iconEl) {
                   iconEl.addEventListener('mouseenter', function () {
                     if (statePath) {
