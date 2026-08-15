@@ -830,16 +830,15 @@
             onEachFeature: onEachFeature,
           }).addTo(map);
 
-          /* Step 2 – Fit India as a centered map, then shift right */
+          /* Step 2 – Fit India, then explicitly shift right by 180px */
           var bounds = geoLayer.getBounds();
           if (bounds.isValid()) {
             map.fitBounds(bounds, { paddingTopLeft: [10, 45], paddingBottomRight: [10, 10], animate: false });
-            map.panBy([-180, 0], { animate: false }); // Explicitly shift camera left -> map moves RIGHT
             var fz = map.getZoom();
             map.setMinZoom(fz);
             map.setMaxZoom(fz + 5);
-            map.setMaxBounds(bounds.pad(0.35));
             initialBounds = bounds;
+            map.panBy([-180, 0], { animate: false }); // last step — no setMaxBounds to undo it
           }
 
           window.addEventListener("resize", function () {
