@@ -438,15 +438,18 @@
     var initialBounds = null;
     var geoLayer      = null; // hoisted so resetToIndia can redraw polygons
 
-    /* Shift India map right with custom padding */
+    /* Responsive map fit and pan helpers */
     function getFitPadding() {
+      var isSmall = window.innerWidth < 768;
       return {
-        paddingTopLeft: [303, 45],
-        paddingBottomRight: [0, 10],
+        paddingTopLeft:     isSmall ? [10, 75] : [10, 45],
+        paddingBottomRight: isSmall ? [10, 15] : [10, 10],
         animate: false,
       };
     }
-    var fitPadding = getFitPadding();
+    function getPanOffset() {
+      return window.innerWidth < 768 ? [0, 0] : [-125, 0];
+    }
 
     /* ── Init map ── */
     var map = L.map("map", {
@@ -518,8 +521,8 @@
       }
 
       // 4. Instantly reset to full India view (no animation)
-      map.fitBounds(initialBounds, { paddingTopLeft: [10, 45], paddingBottomRight: [10, 10], animate: false });
-      map.panBy([-125, 0], { animate: false });
+      map.fitBounds(initialBounds, getFitPadding());
+      map.panBy(getPanOffset(), { animate: false });
     }
 
     // pageshow fires on initial load AND when restored from bfcache (Back button)
@@ -830,22 +833,22 @@
             onEachFeature: onEachFeature,
           }).addTo(map);
 
-          /* Step 2 – Fit India, then explicitly shift right by 180px */
+          /* Step 2 – Fit India with responsive padding and offset */
           var bounds = geoLayer.getBounds();
           if (bounds.isValid()) {
-            map.fitBounds(bounds, { paddingTopLeft: [10, 45], paddingBottomRight: [10, 10], animate: false });
+            map.fitBounds(bounds, getFitPadding());
             var fz = map.getZoom();
             map.setMinZoom(fz);
             map.setMaxZoom(fz + 5);
             initialBounds = bounds;
-            map.panBy([-125, 0], { animate: false }); // last step — no setMaxBounds to undo it
+            map.panBy(getPanOffset(), { animate: false });
           }
 
           window.addEventListener("resize", function () {
             if (!initialBounds) return;
             map.invalidateSize({ animate: false });
-            map.fitBounds(initialBounds, { paddingTopLeft: [10, 45], paddingBottomRight: [10, 10], animate: false });
-            map.panBy([-125, 0], { animate: false });
+            map.fitBounds(initialBounds, getFitPadding());
+            map.panBy(getPanOffset(), { animate: false });
             refreshLockSizes();
           });
 

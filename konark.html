@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bharat Quest — Explore Konark</title>
+
+<style>
+:root{
+  --bg:#030811;
+  --panel:#071421;
+  --cyan:#22e6ff;
+  --cyan-soft:rgba(34,230,255,.35);
+  --white:#f4fbff;
+  --muted:#91a7b8;
+  --gold:#ffc857;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  font-family:"Segoe UI",Arial,sans-serif;
+  background:
+    radial-gradient(circle at 50% 45%,#0b3544 0%,#06131f 30%,#030811 72%);
+  color:white;
+}
+
+/* ================= BACKGROUND ================= */
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+
+  background-image:
+    radial-gradient(circle,rgba(255,255,255,.8) 1px,transparent 1px),
+    radial-gradient(circle,rgba(34,230,255,.4) 1px,transparent 1px);
+
+  background-size:120px 120px,190px 190px;
+  background-position:20px 30px,80px 90px;
+  opacity:.28;
+}
+
+/* ================= HEADER ================= */
+
+.header{
+  position:absolute;
+  left:42px;
+  top:30px;
+  z-index:20;
+}
+
+.eyebrow{
+  margin:0 0 7px;
+  color:var(--cyan);
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:4px;
+}
+
+.header h1{
+  margin:0;
+  font-size:clamp(34px,4vw,62px);
+  line-height:1;
+  font-weight:900;
+  letter-spacing:-2px;
+}
+
+.header h1 span{
+  color:var(--cyan);
+  text-shadow:0 0 25px rgba(34,230,255,.35);
+}
+
+.header p{
+  margin:12px 0 0;
+  color:#a7bac7;
+  font-size:15px;
+}
+
+/* ================= PROGRESS ================= */
+
+.progress{
+  position:absolute;
+  right:35px;
+  top:30px;
+  z-index:20;
+
+  width:180px;
+  padding:15px 20px;
+
+  border:1px solid rgba(34,230,255,.3);
+  border-radius:18px;
+
+  background:rgba(3,12,22,.7);
+  backdrop-filter:blur(12px);
+
+  text-align:center;
+}
+
+.progress small{
+  display:block;
+  color:#9aabb8;
+  letter-spacing:2px;
+  font-size:10px;
+}
+
+.progress strong{
+  display:block;
+  margin-top:4px;
+  font-size:28px;
+}
+
+.progress strong span{
+  color:var(--cyan);
+}
+
+/* ================= MAIN STAGE ================= */
+
+.stage{
+  position:absolute;
+  left:50%;
+  top:52%;
+  transform:translate(-50%,-50%);
+
+  width:min(1200px,94vw);
+  height:min(700px,74vh);
+
+  border:1px solid rgba(34,230,255,.18);
+  border-radius:28px;
+
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(22,117,137,.17),
+      rgba(3,10,18,.18) 55%,
+      rgba(3,8,14,.42)
+    );
+
+  box-shadow:
+    inset 0 0 80px rgba(34,230,255,.035),
+    0 0 40px rgba(0,0,0,.4);
+
+  overflow:hidden;
+}
+
+/* ================= CENTRAL TEMPLE AREA ================= */
+
+.temple-area{
+  position:absolute;
+
+  left:50%;
+  top:50%;
+
+  transform:translate(-50%,-50%);
+
+  width:430px;
+  height:500px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  z-index:5;
+}
+
+/* subtle glow behind temple */
+
+.temple-area::before{
+  content:"";
+  position:absolute;
+
+  width:360px;
+  height:360px;
+
+  border-radius:50%;
+
+  background:radial-gradient(
+    circle,
+    rgba(255,190,90,.20),
+    rgba(34,230,255,.08) 45%,
+    transparent 70%
+  );
+
+  filter:blur(12px);
+}
+
+/* ================= TEMPLE / CHARIOT SVG ================= */
+
+.temple{
+  position:relative;
+  width:390px;
+  height:480px;
+
+  z-index:2;
+
+  filter:
+    drop-shadow(0 0 12px rgba(255,190,100,.15))
+    drop-shadow(0 0 30px rgba(34,230,255,.08));
+}
+
+/* ================= STORY ITEMS ================= */
+
+.story{
+  position:absolute;
+
+  width:180px;
+  min-height:115px;
+
+  z-index:10;
+
+  cursor:pointer;
+
+  transition:
+    transform .25s ease,
+    filter .25s ease;
+}
+
+.story:hover{
+  transform:scale(1.06);
+  filter:brightness(1.2);
+}
+
+/* left side */
+
+.story.left{
+  left:35px;
+}
+
+/* right side */
+
+.story.right{
+  right:35px;
+}
+
+/* exact vertical alignment */
+
+.s1{ top:55px; }
+.s2{ top:55px; }
+
+.s3{ top:185px; }
+.s4{ top:185px; }
+
+.s5{ top:315px; }
+.s6{ top:315px; }
+
+.s7{ top:445px; }
+.s8{ top:445px; }
+
+/* ================= STORY BUTTON ================= */
+
+.story-button{
+  width:72px;
+  height:72px;
+
+  margin:auto;
+
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:30px;
+
+  background:
+    radial-gradient(
+      circle at 35% 30%,
+      rgba(255,255,255,.16),
+      rgba(4,17,27,.95)
+    );
+
+  border:2px solid var(--story-color);
+
+  box-shadow:
+    0 0 8px var(--story-color),
+    0 0 24px var(--story-glow);
+
+  animation:pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes pulse{
+  0%,100%{
+    box-shadow:
+      0 0 8px var(--story-color),
+      0 0 20px var(--story-glow);
+  }
+
+  50%{
+    box-shadow:
+      0 0 14px var(--story-color),
+      0 0 38px var(--story-glow);
+  }
+}
+
+.story-name{
+  margin-top:8px;
+
+  text-align:center;
+
+  font-size:12px;
+  font-weight:800;
+
+  letter-spacing:1.5px;
+
+  color:white;
+
+  text-shadow:0 2px 8px black;
+}
+
+/* ================= COLOURS ================= */
+
+.sun{
+  --story-color:#ffd34e;
+  --story-glow:rgba(255,211,78,.65);
+}
+
+.wheel{
+  --story-color:#22e6ff;
+  --story-glow:rgba(34,230,255,.65);
+}
+
+.architecture{
+  --story-color:#c889ff;
+  --story-glow:rgba(200,137,255,.65);
+}
+
+.chariot{
+  --story-color:#ff9d32;
+  --story-glow:rgba(255,157,50,.65);
+}
+
+.music{
+  --story-color:#ff4fa3;
+  --story-glow:rgba(255,79,163,.65);
+}
+
+.dance{
+  --story-color:#d47cff;
+  --story-glow:rgba(212,124,255,.65);
+}
+
+.sculptures{
+  --story-color:#83ff55;
+  --story-glow:rgba(131,255,85,.65);
+}
+
+.history{
+  --story-color:#20dce5;
+  --story-glow:rgba(32,220,229,.65);
+}
+
+/* ================= CONNECTING LINES ================= */
+
+.connector{
+  position:absolute;
+  height:2px;
+
+  z-index:3;
+
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(34,230,255,.45),
+    rgba(255,255,255,.55),
+    rgba(34,230,255,.2),
+    transparent
+  );
+
+  opacity:.55;
+
+  pointer-events:none;
+}
+
+/* left connectors */
+
+.c1{ left:205px; top:110px; width:145px; }
+.c3{ left:205px; top:240px; width:145px; }
+.c5{ left:205px; top:370px; width:145px; }
+.c7{ left:205px; top:500px; width:145px; }
+
+/* right connectors */
+
+.c2{ right:205px; top:110px; width:145px; }
+.c4{ right:205px; top:240px; width:145px; }
+.c6{ right:205px; top:370px; width:145px; }
+.c8{ right:205px; top:500px; width:145px; }
+
+/* ================= GUIDE ================= */
+
+.guide{
+  position:absolute;
+
+  bottom:20px;
+  left:50%;
+
+  transform:translateX(-50%);
+
+  z-index:15;
+
+  width:min(600px,80%);
+
+  padding:12px 20px;
+
+  text-align:center;
+
+  border:1px solid rgba(34,230,255,.3);
+  border-radius:20px;
+
+  background:rgba(3,13,22,.82);
+  backdrop-filter:blur(10px);
+
+  color:#d8e9ef;
+
+  font-size:13px;
+}
+
+.guide span{
+  color:var(--cyan);
+  font-weight:800;
+}
+
+/* ================= MODAL ================= */
+
+.modal{
+  position:fixed;
+  inset:0;
+
+  z-index:100;
+
+  display:none;
+
+  align-items:center;
+  justify-content:center;
+
+  background:rgba(0,0,0,.72);
+  backdrop-filter:blur(8px);
+}
+
+.modal.show{
+  display:flex;
+}
+
+.modal-box{
+  width:min(500px,90vw);
+
+  padding:30px;
+
+  border-radius:24px;
+
+  border:1px solid rgba(34,230,255,.4);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(8,27,40,.98),
+      rgba(3,11,20,.98)
+    );
+
+  box-shadow:
+    0 0 50px rgba(34,230,255,.15);
+
+  text-align:center;
+}
+
+.modal-icon{
+  font-size:50px;
+  margin-bottom:10px;
+}
+
+.modal-box h2{
+  margin:0;
+  font-size:28px;
+}
+
+.modal-box p{
+  color:#a9bdc9;
+  line-height:1.7;
+}
+
+.close{
+  margin-top:15px;
+
+  padding:10px 22px;
+
+  border:1px solid rgba(34,230,255,.5);
+  border-radius:999px;
+
+  background:rgba(34,230,255,.08);
+
+  color:white;
+
+  cursor:pointer;
+}
+
+/* ================= BOTTOM BRAND ================= */
+
+.footer{
+  position:absolute;
+
+  bottom:12px;
+  left:50%;
+
+  transform:translateX(-50%);
+
+  color:#627684;
+
+  font-size:10px;
+  letter-spacing:3px;
+
+  z-index:20;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:900px){
+
+  .header{
+    left:20px;
+    top:18px;
+  }
+
+  .header h1{
+    font-size:32px;
+  }
+
+  .header p{
+    font-size:12px;
+  }
+
+  .progress{
+    right:18px;
+    top:18px;
+    width:120px;
+  }
+
+  .progress strong{
+    font-size:20px;
+  }
+
+  .stage{
+    width:96vw;
+    height:72vh;
+  }
+
+  .temple-area{
+    width:300px;
+    height:420px;
+  }
+
+  .temple{
+    width:300px;
+    height:390px;
+  }
+
+  .story{
+    width:120px;
+  }
+
+  .story.left{
+    left:10px;
+  }
+
+  .story.right{
+    right:10px;
+  }
+
+  .story-button{
+    width:58px;
+    height:58px;
+    font-size:24px;
+  }
+
+  .story-name{
+    font-size:9px;
+  }
+
+  .c1,.c2,.c3,.c4,.c5,.c6,.c7,.c8{
+    display:none;
+  }
+
+  .s1,.s2{top:35px;}
+  .s3,.s4{top:150px;}
+  .s5,.s6{top:265px;}
+  .s7,.s8{top:380px;}
+
+  .guide{
+    bottom:10px;
+    font-size:10px;
+  }
+}
+
+@media(max-width:650px){
+
+  .progress{
+    display:none;
+  }
+
+  .header{
+    position:relative;
+    left:auto;
+    top:auto;
+    padding:18px;
+    text-align:center;
+  }
+
+  .header p{
+    display:none;
+  }
+
+  .stage{
+    top:56%;
+    height:70vh;
+  }
+
+  .temple-area{
+    width:230px;
+    height:340px;
+  }
+
+  .temple{
+    width:235px;
+    height:320px;
+  }
+
+  .story{
+    width:82px;
+  }
+
+  .story.left{
+    left:5px;
+  }
+
+  .story.right{
+    right:5px;
+  }
+
+  .story-button{
+    width:45px;
+    height:45px;
+    font-size:18px;
+  }
+
+  .story-name{
+    font-size:7px;
+    letter-spacing:.8px;
+  }
+
+  .s1,.s2{top:20px;}
+  .s3,.s4{top:115px;}
+  .s5,.s6{top:210px;}
+  .s7,.s8{top:305px;}
+
+  .guide{
+    width:90%;
+  }
+
+  .footer{
+    display:none;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<div class="header">
+  <div class="eyebrow">BHARAT QUEST • ODISHA</div>
+
+  <h1>
+    Explore <span>Konark</span>
+  </h1>
+
+  <p>
+    Discover the 8 legendary stories hidden within the Sun Temple.
+  </p>
+</div>
+
+<!-- ================= PROGRESS ================= -->
+
+<div class="progress">
+  <small>STORIES FOUND</small>
+  <strong><span id="found">0</span> / 8</strong>
+</div>
+
+<!-- ================= MAIN ================= -->
+
+<div class="stage">
+
+  <!-- CONNECTING LINES -->
+
+  <div class="connector c1"></div>
+  <div class="connector c2"></div>
+  <div class="connector c3"></div>
+  <div class="connector c4"></div>
+  <div class="connector c5"></div>
+  <div class="connector c6"></div>
+  <div class="connector c7"></div>
+  <div class="connector c8"></div>
+
+
+  <!-- ================= CENTRAL KONARK TEMPLE ================= -->
+
+  <div class="temple-area">
+
+    <svg class="temple"
+         viewBox="0 0 390 480"
+         xmlns="http://www.w3.org/2000/svg">
+
+      <!-- SUN -->
+
+      <circle cx="195" cy="48" r="30"
+              fill="#ffc857"
+              opacity=".18"/>
+
+      <circle cx="195" cy="48" r="20"
+              fill="#ffc857"
+              opacity=".9"/>
+
+      <!-- MAIN TEMPLE / CHARIOT -->
+
+      <!-- top finial -->
+
+      <rect x="190" y="68"
+            width="10"
+            height="18"
+            fill="#dca65d"/>
+
+      <circle cx="195" cy="66"
+              r="5"
+              fill="#ffd477"/>
+
+
+      <!-- temple tower -->
+
+      <path
+        d="
+        M115 235
+        L125 205
+        L137 205
+        L137 185
+        L149 185
+        L149 165
+        L161 165
+        L161 145
+        L173 145
+        L173 125
+        L195 92
+        L217 125
+        L217 145
+        L229 145
+        L229 165
+        L241 165
+        L241 185
+        L253 185
+        L253 205
+        L265 205
+        L275 235
+        Z"
+        fill="#dca65d"
+      />
+
+      <!-- layered temple roof -->
+
+      <path d="M120 215 H270 L258 198 H132 Z"
+            fill="#e7b56d"/>
+
+      <path d="M132 198 H258 L247 181 H143 Z"
+            fill="#dca65d"/>
+
+      <path d="M143 181 H247 L237 164 H153 Z"
+            fill="#e9b970"/>
+
+      <path d="M153 164 H237 L225 147 H165 Z"
+            fill="#dca65d"/>
+
+      <path d="M165 147 H225 L214 130 H176 Z"
+            fill="#e8b66c"/>
+
+      <!-- roof line details -->
+
+      <g stroke="#9c6c35"
+         stroke-width="2"
+         opacity=".7">
+
+        <line x1="130" y1="210" x2="260" y2="210"/>
+        <line x1="142" y1="193" x2="248" y2="193"/>
+        <line x1="153" y1="176" x2="237" y2="176"/>
+        <line x1="164" y1="159" x2="226" y2="159"/>
+        <line x1="176" y1="142" x2="214" y2="142"/>
+
+      </g>
+
+
+      <!-- main rectangular temple -->
+
+      <rect x="105"
+            y="230"
+            width="180"
+            height="125"
+            rx="3"
+            fill="#d9a25c"/>
+
+      <!-- temple vertical carvings -->
+
+      <g stroke="#99662f"
+         stroke-width="3"
+         opacity=".65">
+
+        <line x1="120" y1="238" x2="120" y2="345"/>
+        <line x1="135" y1="238" x2="135" y2="345"/>
+        <line x1="150" y1="238" x2="150" y2="345"/>
+
+        <line x1="240" y1="238" x2="240" y2="345"/>
+        <line x1="255" y1="238" x2="255" y2="345"/>
+        <line x1="270" y1="238" x2="270" y2="345"/>
+
+      </g>
+
+
+      <!-- central entrance -->
+
+      <path
+        d="
+        M160 355
+        V292
+        C160 258 230 258 230 292
+        V355
+        Z"
+        fill="#07111a"
+      />
+
+      <path
+        d="
+        M154 355
+        V291
+        C154 249 236 249 236 291
+        V355"
+        fill="none"
+        stroke="#f0bf77"
+        stroke-width="6"
+      />
+
+
+      <!-- temple base -->
+
+      <rect x="85"
+            y="350"
+            width="220"
+            height="20"
+            fill="#d7a15b"/>
+
+      <rect x="75"
+            y="370"
+            width="240"
+            height="17"
+            fill="#c58d4b"/>
+
+      <rect x="65"
+            y="387"
+            width="260"
+            height="15"
+            fill="#dca65d"/>
+
+
+      <!-- CHARIOT WHEELS -->
+
+      <g>
+
+        <!-- left wheel -->
+
+        <circle cx="73"
+                cy="360"
+                r="43"
+                fill="#a97437"
+                stroke="#f0c276"
+                stroke-width="5"/>
+
+        <circle cx="73"
+                cy="360"
+                r="10"
+                fill="#e9b56c"/>
+
+        <g stroke="#f0c276"
+           stroke-width="4">
+
+          <line x1="73" y1="317" x2="73" y2="403"/>
+          <line x1="30" y1="360" x2="116" y2="360"/>
+
+          <line x1="43" y1="330" x2="103" y2="390"/>
+          <line x1="103" y1="330" x2="43" y2="390"/>
+
+        </g>
+
+
+        <!-- right wheel -->
+
+        <circle cx="317"
+                cy="360"
+                r="43"
+                fill="#a97437"
+                stroke="#f0c276"
+                stroke-width="5"/>
+
+        <circle cx="317"
+                cy="360"
+                r="10"
+                fill="#e9b56c"/>
+
+        <g stroke="#f0c276"
+           stroke-width="4">
+
+          <line x1="317" y1="317" x2="317" y2="403"/>
+          <line x1="274" y1="360" x2="360" y2="360"/>
+
+          <line x1="287" y1="330" x2="347" y2="390"/>
+          <line x1="347" y1="330" x2="287" y2="390"/>
+
+        </g>
+
+      </g>
+
+
+      <!-- stairs -->
+
+      <g fill="#e2ad67">
+
+        <rect x="105" y="402" width="180" height="10"/>
+        <rect x="95" y="412" width="200" height="10"/>
+        <rect x="85" y="422" width="220" height="10"/>
+        <rect x="75" y="432" width="240" height="10"/>
+
+      </g>
+
+
+      <!-- small carvings -->
+
+      <g fill="#f1c17a"
+         opacity=".8">
+
+        <circle cx="125" cy="250" r="4"/>
+        <circle cx="145" cy="270" r="4"/>
+        <circle cx="245" cy="270" r="4"/>
+        <circle cx="265" cy="250" r="4"/>
+
+        <circle cx="125" cy="310" r="4"/>
+        <circle cx="265" cy="310" r="4"/>
+
+      </g>
+
+    </svg>
+
+  </div>
+
+
+  <!-- ================= STORY 1 ================= -->
+
+  <div class="story left sun s1"
+       onclick="openStory(0)">
+
+    <div class="story-button">☀</div>
+
+    <div class="story-name">
+      THE SUN
+    </div>
+
+  </div>
+
+
+  <!-- ================= STORY 2 ================= -->
+
+  <div class="story right wheel s2"
+       onclick="openStory(1)">
+
+    <div class="story-button">✺</div>
+
+    <div class="story-name">
+      THE WHEEL
+    </div>
+
+  </div>
+
+
+  <!-- ================= STORY 3 ================= -->
+
+  <div class="story left architecture s3"
+       onclick="openStory(2)">
+
+    <div class="story-button">⌂</div>
+
+    <div class="story-name">
+      ARCHITECTURE
+    </div>
+
+  </div>
+
+
+  <!-- ================= STORY 4 ================= -->
+
+  <div class="story right chariot s4"
+       onclick="openStory(3)">
+
+    <div class="story-button">♞</div>
+
+    <div class="story-name">
+      THE CHARIOT
+    </div>
+
+  </div>
+
+
+  <!-- ================= STORY 5 ================= -->
+
+  <div class="story left music s5"
+       onclick="openStory(4)">
+
+    <div class="story-button">♫</div>
+
+    <div class="story-name">
+      MUSIC
+    </div>
+
+  </div>
+
+
+  <!-- ================= STORY 6 ================= -->
+
+  <div class="story right dance s6"
+       onclick="openStory(5)">
+
+    <div class="story-button">♩</div>
+
+    <div class="story-name">
+      DANCE
+    </div>
+
+  </div>
+
+
+  <!-- ================= STORY 7 ================= -->
+
+  <div class="story left sculptures s7"
+       onclick="openStory(6)">
+
+    <div class="story-button">✦</div>
+
+    <div class="story-name">
+      SCULPTURES
+    </div>
+
+  </div>
+
+
+  <!-- ================= STORY 8 ================= -->
+
+  <div class="story right history s8"
+       onclick="openStory(7)">
+
+    <div class="story-button">◆</div>
+
+    <div class="story-name">
+      HISTORY
+    </div>
+
+  </div>
+
+
+  <!-- ================= GUIDE ================= -->
+
+  <div class="guide">
+    <span>✦ Guide:</span>
+    Eight stories are hidden around Konark.
+    Click the glowing symbols to discover them.
+  </div>
+
+</div>
+
+
+<div class="footer">
+  BHARAT QUEST • DISCOVER • PLAY • LEARN
+</div>
+
+
+<!-- ================= MODAL ================= -->
+
+<div class="modal" id="modal">
+
+  <div class="modal-box">
+
+    <div class="modal-icon" id="modalIcon">☀</div>
+
+    <h2 id="modalTitle">The Sun</h2>
+
+    <p id="modalText">
+      Discover the story of Konark.
+    </p>
+
+    <button class="close" onclick="closeStory()">
+      Continue Exploring
+    </button>
+
+  </div>
+
+</div>
+
+
+<script>
+
+const stories = [
+
+  {
+    icon:"☀",
+    title:"The Sun",
+    text:"Konark is dedicated to Surya, the Sun God. The temple was designed as a monumental representation of the Sun God's celestial journey."
+  },
+
+  {
+    icon:"✺",
+    title:"The Wheel",
+    text:"The famous wheels of the Konark Sun Temple represent the passage of time. Their detailed carvings make them one of the temple's most recognizable features."
+  },
+
+  {
+    icon:"⌂",
+    title:"Architecture",
+    text:"Konark is one of the finest achievements of Kalinga architecture, combining monumental stone construction with extraordinary decorative detail."
+  },
+
+  {
+    icon:"♞",
+    title:"The Chariot",
+    text:"The temple was conceived as Surya's magnificent stone chariot, symbolically carrying the Sun God across the heavens."
+  },
+
+  {
+    icon:"♫",
+    title:"Music",
+    text:"Musical instruments and performers appear throughout the temple's carvings, showing the important place of music in Odisha's cultural traditions."
+  },
+
+  {
+    icon:"♩",
+    title:"Dance",
+    text:"Dancers carved into the temple walls preserve a visual record of performance traditions and the rich artistic culture of medieval Odisha."
+  },
+
+  {
+    icon:"✦",
+    title:"Sculptures",
+    text:"Thousands of intricate carvings decorate the temple complex, depicting people, animals, musicians, dancers and scenes from everyday life."
+  },
+
+  {
+    icon:"◆",
+    title:"History",
+    text:"The Konark Sun Temple was built in the 13th century during the reign of King Narasimhadeva I and remains one of India's most celebrated monuments."
+  }
+
+];
+
+
+let found = new Set();
+
+
+function openStory(index){
+
+  const story = stories[index];
+
+  document.getElementById("modalIcon").textContent =
+    story.icon;
+
+  document.getElementById("modalTitle").textContent =
+    story.title;
+
+  document.getElementById("modalText").textContent =
+    story.text;
+
+  document.getElementById("modal").classList.add("show");
+
+  found.add(index);
+
+  document.getElementById("found").textContent =
+    found.size;
+}
+
+
+function closeStory(){
+
+  document.getElementById("modal")
+    .classList.remove("show");
+
+}
+
+
+/* close modal when clicking outside */
+
+document.getElementById("modal").addEventListener(
+  "click",
+  function(e){
+
+    if(e.target === this){
+      closeStory();
+    }
+
+  }
+);
+
+
+/* ESC key */
+
+document.addEventListener(
+  "keydown",
+  function(e){
+
+    if(e.key === "Escape"){
+      closeStory();
+    }
+
+  }
+);
+
+</script>
+
+</body>
+</html>
