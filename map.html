@@ -440,11 +440,11 @@
     var initialBounds = null;
     var geoLayer      = null; // hoisted so resetToIndia can redraw polygons
 
-    /* Keep India as a centered silhouette so the collage shows around it */
+    /* Minimal padding to maximize map size across screen */
     function getFitPadding() {
       return {
         paddingTopLeft: [5, 45],
-        paddingBottomRight: [5, 15],
+        paddingBottomRight: [5, 10],
         animate: false,
       };
     }
