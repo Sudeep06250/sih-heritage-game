@@ -438,11 +438,11 @@
     var initialBounds = null;
     var geoLayer      = null; // hoisted so resetToIndia can redraw polygons
 
-    /* Minimal padding to maximize map size across screen */
+    /* Shift India map ~2.5cm to the LEFT so Taj Mahal aligns behind MP/UP center */
     function getFitPadding() {
       return {
-        paddingTopLeft: [5, 45],
-        paddingBottomRight: [5, 10],
+        paddingTopLeft: [0, 45],
+        paddingBottomRight: [180, 10],
         animate: false,
       };
     }
