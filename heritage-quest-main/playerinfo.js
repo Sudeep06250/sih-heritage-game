@@ -69,18 +69,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const phone = document.getElementById('playerPhone').value.trim();
 
         if (name && email && age && phone) {
-            // Validate phone format
-            const phonePattern = /^\+91\d{10}$/;
-            if (!phonePattern.test(phone)) {
-                alert('Please enter a valid phone number in format: +91 followed by 10 digits');
+            // Clean phone string (remove spaces, dashes)
+            const cleanPhone = phone.replace(/[\s\-]/g, '');
+            const phonePattern = /^(\+91)?[6-9]\d{9}$/;
+            if (!phonePattern.test(cleanPhone)) {
+                alert('Please enter a valid Indian 10-digit mobile number (e.g., 9876543210 or +919876543210)');
                 return;
             }
+
+            const formattedPhone = cleanPhone.startsWith('+91') ? cleanPhone : `+91${cleanPhone}`;
 
             // Store player info in localStorage
             localStorage.setItem('playerName', name);
             localStorage.setItem('playerEmail', email);
             localStorage.setItem('playerAge', age);
-            localStorage.setItem('playerPhone', phone);
+            localStorage.setItem('playerPhone', formattedPhone);
 
             // Show success message
             alert(`Welcome, ${name}! Your profile has been saved.\nReady to explore the heritage quest!`);
