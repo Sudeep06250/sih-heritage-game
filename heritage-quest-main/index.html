@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heritage Quest - Explore, Discover, Preserve</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts for premium typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800;900&family=Montserrat:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Background Music (looped) -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="assets/odisha-music.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Background overlay matching the visual edges -->
+    <div class="ambient-glow" id="ambientGlow"></div>
+
+    <!-- Music Control Caption -->
+    <div class="music-caption">Double click to mute</div>
+
+    <!-- Main Container scaling responsively -->
+    <div class="heritage-container" id="heritageQuestApp">
+        <!-- Canvas for ambient spark/ember particles -->
+        <canvas class="particles-canvas" id="ambientCanvas"></canvas>
+
+
+
+        <!-- Central Interactive Frame overlaying the dark panel -->
+        <main class="central-frame" id="centralFrame">
+            <div class="frame-content">
+                <h2 class="welcome-text" id="welcomeText">Welcome! Traveller</h2>
+                
+                <p class="description-text" id="descriptionText">
+                    Begin your journey through India's rich culture and timeless heritage.
+                </p>
+
+                <div class="button-wrapper">
+                    <button class="btn-gold" id="startBtn">
+                        <span class="btn-shimmer"></span>
+                        <span class="btn-text">Ready to explore</span>
+                    </button>
+                </div>
+
+                <p class="frame-footer-text" id="frameFooterText">
+                    Your journey. Your story. Our heritage.
+                </p>
+            </div>
+        </main>
+
+
+    </div>
+
+    <!-- Story Adventure Overlay modal -->
+    <div class="story-overlay" id="storyModal">
+        <div class="modal-card">
+            <button class="close-btn" id="closeModalBtn">&times;</button>
+            <h2 class="modal-title">CHOOSE YOUR QUEST</h2>
+            <div class="quest-options">
+                <div class="quest-card" id="questTajMahal">
+                    <div class="quest-icon">🕌</div>
+                    <h3>Taj Mahal Chronicles</h3>
+                    <p>Uncover the architectural marvels and hidden history of the symbol of love.</p>
+                    <button class="quest-btn">Initialize Quest</button>
+                </div>
+                <div class="quest-card" id="questGanges">
+                    <div class="quest-icon">🌊</div>
+                    <h3>Ganges Sacred Journey</h3>
+                    <p>Discover the spiritual heart, timeless rituals, and folklore along the sacred river.</p>
+                    <button class="quest-btn">Initialize Quest</button>
+                </div>
+                <div class="quest-card" id="questDesertForts">
+                    <div class="quest-icon">🏰</div>
+                    <h3>Forts of Rajasthan</h3>
+                    <p>Walk through the golden sands and majestic fortresses of royal rulers.</p>
+                    <button class="quest-btn">Initialize Quest</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
