@@ -438,10 +438,10 @@
     var initialBounds = null;
     var geoLayer      = null; // hoisted so resetToIndia can redraw polygons
 
-    /* Shift India map 5cm to the RIGHT */
+    /* Shift India map right with custom padding */
     function getFitPadding() {
       return {
-        paddingTopLeft: [190, 45],
+        paddingTopLeft: [303, 45],
         paddingBottomRight: [0, 10],
         animate: false,
       };
