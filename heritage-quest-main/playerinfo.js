@@ -249,45 +249,122 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = 'index.html';
     });
 
-    // 5. Audio Control (Double-click background to mute/unmute)
-    let musicStarted = false;
-    bgMusic.volume = 0.35;
+    // 5. Audio Control via Dedicated Button
+    const musicToggleBtn = document.getElementById('musicToggleBtn');
+    const musicIcon = document.getElementById('musicIcon');
+    const musicLabel = document.getElementById('musicLabel');
 
-    function startMusic() {
-        if (musicStarted) return;
-        musicStarted = true;
-        bgMusic.play().catch(() => {
-            musicStarted = false;
-        });
+    bgMusic.volume = 0.4;
+    bgMusic.loop = true;
+
+    // Check user preference (Default is UNMUTED / ON)
+    let isExplicitlyMuted = localStorage.getItem('heritageMusicMuted') === 'true';
+    let isAudioPlaying = false;
+
+    function updateMusicUI(state) {
+        if (!musicToggleBtn) return;
+        if (state === 'playing') {
+            musicToggleBtn.classList.remove('is-muted');
+            musicToggleBtn.classList.remove('needs-gesture');
+            if (musicIcon) musicIcon.textContent = '🔊';
+            if (musicLabel) musicLabel.textContent = 'Music: ON';
+            musicToggleBtn.setAttribute('title', 'Music is playing. Click to turn OFF.');
+        } else if (state === 'waiting') {
+            musicToggleBtn.classList.remove('is-muted');
+            musicToggleBtn.classList.add('needs-gesture');
+            if (musicIcon) musicIcon.textContent = '🎵';
+            if (musicLabel) musicLabel.textContent = 'Click to Play';
+            musicToggleBtn.setAttribute('title', 'Browser blocked autoplay. Click anywhere or click here to start music!');
+        } else {
+            musicToggleBtn.classList.add('is-muted');
+            musicToggleBtn.classList.remove('needs-gesture');
+            if (musicIcon) musicIcon.textContent = '🔇';
+            if (musicLabel) musicLabel.textContent = 'Music: OFF';
+            musicToggleBtn.setAttribute('title', 'Music is OFF. Click to turn ON.');
+        }
     }
 
-    document.addEventListener('mousemove', startMusic, { once: true });
-    document.addEventListener('touchstart', startMusic, { once: true });
+    // Restore playback timestamp from previous page
+    function restorePlaybackPosition() {
+        const savedTime = sessionStorage.getItem('heritageMusicTime');
+        if (savedTime && !isNaN(parseFloat(savedTime))) {
+            try {
+                bgMusic.currentTime = parseFloat(savedTime);
+            } catch (e) {}
+        }
+    }
 
-    let clickCount = 0;
-    let clickTimer = null;
-
-    container.addEventListener('click', (e) => {
-        if (e.target === container || e.target === canvas) {
-            clickCount++;
-            if (clickCount === 1) {
-                clickTimer = setTimeout(() => {
-                    if (clickCount === 1 && bgMusic.paused) {
-                        bgMusic.play().catch(() => {});
-                    }
-                    clickCount = 0;
-                }, 300);
-            } else if (clickCount === 2) {
-                clearTimeout(clickTimer);
-                if (!bgMusic.paused) {
-                    bgMusic.pause();
-                } else {
-                    bgMusic.play().catch(() => {});
-                }
-                clickCount = 0;
-            }
+    // Track currentTime continuously and save before navigating
+    bgMusic.addEventListener('timeupdate', () => {
+        if (!bgMusic.paused && bgMusic.currentTime > 0) {
+            sessionStorage.setItem('heritageMusicTime', bgMusic.currentTime.toString());
         }
     });
+
+    window.addEventListener('beforeunload', () => {
+        if (bgMusic.currentTime > 0) {
+            sessionStorage.setItem('heritageMusicTime', bgMusic.currentTime.toString());
+        }
+    });
+
+    function playAudio() {
+        if (isExplicitlyMuted) return;
+        restorePlaybackPosition();
+        bgMusic.muted = false;
+        
+        const promise = bgMusic.play();
+        if (promise !== undefined) {
+            promise.then(() => {
+                isAudioPlaying = true;
+                updateMusicUI('playing');
+            }).catch(() => {
+                // Browser Autoplay Policy: Audio requires 1 click/touch anywhere on the page
+                isAudioPlaying = false;
+                updateMusicUI('waiting');
+            });
+        }
+    }
+
+    function pauseAudio() {
+        isExplicitlyMuted = true;
+        isAudioPlaying = false;
+        localStorage.setItem('heritageMusicMuted', 'true');
+        bgMusic.pause();
+        updateMusicUI('muted');
+    }
+
+    // 1. Initial State Setup
+    if (isExplicitlyMuted) {
+        updateMusicUI('muted');
+    } else {
+        updateMusicUI('waiting');
+        playAudio();
+    }
+
+    // 2. Global Unlocker: Starts audio instantly on user's first click or touch
+    function unlockAudioOnGesture() {
+        if (!isExplicitlyMuted && bgMusic.paused) {
+            playAudio();
+        }
+    }
+
+    ['click', 'pointerdown', 'mousedown', 'touchstart', 'keydown'].forEach(evt => {
+        window.addEventListener(evt, unlockAudioOnGesture, { capture: true, passive: true });
+    });
+
+    // 3. Direct Toggle Button Handler
+    if (musicToggleBtn) {
+        musicToggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (bgMusic.paused) {
+                isExplicitlyMuted = false;
+                localStorage.setItem('heritageMusicMuted', 'false');
+                playAudio();
+            } else {
+                pauseAudio();
+            }
+        });
+    }
 
     // 6. Particle Canvas System
     function resizeCanvas() {

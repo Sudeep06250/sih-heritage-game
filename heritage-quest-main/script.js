@@ -11,55 +11,122 @@ document.addEventListener('DOMContentLoaded', () => {
     const questBtns = document.querySelectorAll('.quest-btn');
     const bgMusic = document.getElementById('bgMusic');
 
-    // Auto-play music on first user interaction (browsers block autoplay without gesture)
-    let musicStarted = false;
-    bgMusic.volume = 0.4;
+    // Music Elements & Controls
+    const musicToggleBtn = document.getElementById('musicToggleBtn');
+    const musicIcon = document.getElementById('musicIcon');
+    const musicLabel = document.getElementById('musicLabel');
 
-    function startMusic() {
-        if (musicStarted) return;
-        musicStarted = true;
-        const playPromise = bgMusic.play();
-        if (playPromise !== undefined) {
-            playPromise.catch(function(error) {
-                console.log('Music play failed, will retry on next movement:', error);
-                musicStarted = false;
+    bgMusic.volume = 0.4;
+    bgMusic.loop = true;
+
+    // Check user preference (Default is UNMUTED / ON)
+    let isExplicitlyMuted = localStorage.getItem('heritageMusicMuted') === 'true';
+    let isAudioPlaying = false;
+
+    function updateMusicUI(state) {
+        if (!musicToggleBtn) return;
+        if (state === 'playing') {
+            musicToggleBtn.classList.remove('is-muted');
+            musicToggleBtn.classList.remove('needs-gesture');
+            if (musicIcon) musicIcon.textContent = '🔊';
+            if (musicLabel) musicLabel.textContent = 'Music: ON';
+            musicToggleBtn.setAttribute('title', 'Music is playing. Click to turn OFF.');
+        } else if (state === 'waiting') {
+            musicToggleBtn.classList.remove('is-muted');
+            musicToggleBtn.classList.add('needs-gesture');
+            if (musicIcon) musicIcon.textContent = '🎵';
+            if (musicLabel) musicLabel.textContent = 'Click to Play';
+            musicToggleBtn.setAttribute('title', 'Browser blocked autoplay. Click anywhere or click here to start music!');
+        } else {
+            musicToggleBtn.classList.add('is-muted');
+            musicToggleBtn.classList.remove('needs-gesture');
+            if (musicIcon) musicIcon.textContent = '🔇';
+            if (musicLabel) musicLabel.textContent = 'Music: OFF';
+            musicToggleBtn.setAttribute('title', 'Music is OFF. Click to turn ON.');
+        }
+    }
+
+    // Restore playback timestamp from previous page
+    function restorePlaybackPosition() {
+        const savedTime = sessionStorage.getItem('heritageMusicTime');
+        if (savedTime && !isNaN(parseFloat(savedTime))) {
+            try {
+                bgMusic.currentTime = parseFloat(savedTime);
+            } catch (e) {}
+        }
+    }
+
+    // Track currentTime continuously and save before navigating
+    bgMusic.addEventListener('timeupdate', () => {
+        if (!bgMusic.paused && bgMusic.currentTime > 0) {
+            sessionStorage.setItem('heritageMusicTime', bgMusic.currentTime.toString());
+        }
+    });
+
+    window.addEventListener('beforeunload', () => {
+        if (bgMusic.currentTime > 0) {
+            sessionStorage.setItem('heritageMusicTime', bgMusic.currentTime.toString());
+        }
+    });
+
+    function playAudio() {
+        if (isExplicitlyMuted) return;
+        restorePlaybackPosition();
+        bgMusic.muted = false;
+        
+        const promise = bgMusic.play();
+        if (promise !== undefined) {
+            promise.then(() => {
+                isAudioPlaying = true;
+                updateMusicUI('playing');
+            }).catch(() => {
+                // Browser Autoplay Policy: Audio requires 1 click/touch anywhere on the page
+                isAudioPlaying = false;
+                updateMusicUI('waiting');
             });
         }
     }
 
-    // Start music on cursor movement
-    document.addEventListener('mousemove', startMusic, true);
-    document.addEventListener('touchmove', startMusic, true);
+    function pauseAudio() {
+        isExplicitlyMuted = true;
+        isAudioPlaying = false;
+        localStorage.setItem('heritageMusicMuted', 'true');
+        bgMusic.pause();
+        updateMusicUI('muted');
+    }
 
-    // Background Click for Music Control (Single click = play, Double click = stop)
-    let clickCount = 0;
-    let clickTimer = null;
+    // 1. Initial State Setup
+    if (isExplicitlyMuted) {
+        updateMusicUI('muted');
+    } else {
+        updateMusicUI('waiting');
+        playAudio();
+    }
 
-    container.addEventListener('click', (e) => {
-        // Only toggle if click is on background (not on buttons or modals)
-        if (musicStarted && e.target === container) {
-            clickCount++;
-
-            if (clickCount === 1) {
-                // Single click - play music
-                clickTimer = setTimeout(() => {
-                    if (clickCount === 1 && bgMusic.paused) {
-                        bgMusic.play().catch(error => {
-                            console.log('Failed to play music:', error);
-                        });
-                    }
-                    clickCount = 0;
-                }, 300); // 300ms timeout to detect if it's a double click
-            } else if (clickCount === 2) {
-                // Double click - stop music
-                clearTimeout(clickTimer);
-                if (!bgMusic.paused) {
-                    bgMusic.pause();
-                }
-                clickCount = 0;
-            }
+    // 2. Global Unlocker: Starts audio instantly on user's first click or touch
+    function unlockAudioOnGesture() {
+        if (!isExplicitlyMuted && bgMusic.paused) {
+            playAudio();
         }
+    }
+
+    ['click', 'pointerdown', 'mousedown', 'touchstart', 'keydown'].forEach(evt => {
+        window.addEventListener(evt, unlockAudioOnGesture, { capture: true, passive: true });
     });
+
+    // 3. Direct Toggle Button Handler
+    if (musicToggleBtn) {
+        musicToggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (bgMusic.paused) {
+                isExplicitlyMuted = false;
+                localStorage.setItem('heritageMusicMuted', 'false');
+                playAudio();
+            } else {
+                pauseAudio();
+            }
+        });
+    }
 
     // Button Interaction - Navigate to player info page
     startBtn.addEventListener('click', () => {

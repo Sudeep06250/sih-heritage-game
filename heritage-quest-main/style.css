@@ -33,20 +33,80 @@ body {
     font-family: var(--font-sans);
 }
 
-/* Music Control Caption */
-.music-caption {
+/* Music Control Button */
+.music-toggle-btn {
     position: fixed;
-    top: clamp(12px, 2vh, 22px);
-    right: clamp(12px, 2vw, 22px);
-    z-index: 200;
+    top: clamp(14px, 2.5vh, 24px);
+    right: clamp(14px, 2.5vw, 26px);
+    z-index: 250;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(7, 6, 11, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1.5px solid var(--gold-mid);
+    border-radius: 30px;
+    padding: 8px 16px;
     color: var(--gold-bright);
-    font-size: clamp(12px, 1vw, 14px);
     font-family: var(--font-sans);
-    font-weight: 500;
+    font-size: clamp(0.8rem, 1vw, 0.9rem);
+    font-weight: 600;
     letter-spacing: 0.8px;
-    opacity: 0.85;
-    pointer-events: none;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+    cursor: pointer;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.7), inset 0 0 10px rgba(215, 151, 60, 0.15);
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    outline: none;
+    user-select: none;
+}
+
+.music-toggle-btn:hover {
+    transform: translateY(-2px) scale(1.03);
+    border-color: var(--gold-bright);
+    box-shadow: 0 6px 22px rgba(215, 151, 60, 0.45), inset 0 0 15px rgba(215, 151, 60, 0.25);
+}
+
+.music-toggle-btn:active {
+    transform: translateY(0) scale(0.97);
+}
+
+.music-toggle-btn.needs-gesture {
+    border-color: #ffd966;
+    animation: gesturePulse 1.5s infinite alternate;
+    box-shadow: 0 0 15px rgba(255, 217, 102, 0.4);
+}
+
+@keyframes gesturePulse {
+    0% { transform: scale(1); box-shadow: 0 0 10px rgba(215, 151, 60, 0.3); }
+    100% { transform: scale(1.05); box-shadow: 0 0 20px rgba(255, 217, 102, 0.7); }
+}
+
+.music-toggle-btn.is-muted {
+    border-color: rgba(215, 151, 60, 0.35);
+    color: #8e8899;
+    background: rgba(7, 6, 11, 0.75);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.music-toggle-btn .music-icon {
+    font-size: 1.1rem;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.music-toggle-btn:not(.is-muted) .music-icon {
+    animation: musicWave 1.8s ease-in-out infinite alternate;
+}
+
+@keyframes musicWave {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.18); filter: drop-shadow(0 0 4px var(--gold-bright)); }
+}
+
+.music-toggle-btn .music-label {
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
 }
 
 /* Ambient glowing background circles */
