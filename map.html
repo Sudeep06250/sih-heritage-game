@@ -432,6 +432,7 @@
     "use strict";
 
     var TARGET = ["odisha", "orissa"];
+    var ODISHA_REDIRECT_URL = "odisha_games.html"; // Yahan aap apna naya page link set kar sakte hain
     var isMobile = window.matchMedia("(max-width: 768px)").matches || "ontouchstart" in window;
 
     // Stored after fitBounds — used to reset view when user presses Back
@@ -500,7 +501,7 @@
       // 2. Flash overlay starts mid-animation, redirect when done
       var fl = document.getElementById("flash");
       setTimeout(function () { fl.classList.add("show"); }, 550);
-      setTimeout(function () { window.location.href = "konark.html"; }, 1050);
+      setTimeout(function () { window.location.href = ODISHA_REDIRECT_URL; }, 1050);
     }
 
     /* ── Reset to full-India view on Back navigation ── */
