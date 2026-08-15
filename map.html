@@ -519,7 +519,7 @@
 
       // 4. Instantly reset to full India view (no animation)
       map.fitBounds(initialBounds, { paddingTopLeft: [10, 45], paddingBottomRight: [10, 10], animate: false });
-      map.panBy([-140, 0], { animate: false });
+      map.panBy([-125, 0], { animate: false });
     }
 
     // pageshow fires on initial load AND when restored from bfcache (Back button)
@@ -838,14 +838,14 @@
             map.setMinZoom(fz);
             map.setMaxZoom(fz + 5);
             initialBounds = bounds;
-            map.panBy([-140, 0], { animate: false }); // last step — no setMaxBounds to undo it
+            map.panBy([-125, 0], { animate: false }); // last step — no setMaxBounds to undo it
           }
 
           window.addEventListener("resize", function () {
             if (!initialBounds) return;
             map.invalidateSize({ animate: false });
             map.fitBounds(initialBounds, { paddingTopLeft: [10, 45], paddingBottomRight: [10, 10], animate: false });
-            map.panBy([-140, 0], { animate: false });
+            map.panBy([-125, 0], { animate: false });
             refreshLockSizes();
           });
 
