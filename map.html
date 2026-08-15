@@ -518,7 +518,8 @@
       }
 
       // 4. Instantly reset to full India view (no animation)
-      map.fitBounds(initialBounds, Object.assign({}, fitPadding, { animate: false }));
+      map.fitBounds(initialBounds, { paddingTopLeft: [10, 45], paddingBottomRight: [10, 10], animate: false });
+      map.panBy([-180, 0], { animate: false });
     }
 
     // pageshow fires on initial load AND when restored from bfcache (Back button)
@@ -829,23 +830,23 @@
             onEachFeature: onEachFeature,
           }).addTo(map);
 
-          /* Step 2 – Fit India as a centered map with collage visible around it */
+          /* Step 2 – Fit India as a centered map, then shift right */
           var bounds = geoLayer.getBounds();
           if (bounds.isValid()) {
-            fitPadding = getFitPadding();
-            map.fitBounds(bounds, fitPadding);
+            map.fitBounds(bounds, { paddingTopLeft: [10, 45], paddingBottomRight: [10, 10], animate: false });
+            map.panBy([-180, 0], { animate: false }); // Explicitly shift camera left -> map moves RIGHT
             var fz = map.getZoom();
             map.setMinZoom(fz);
             map.setMaxZoom(fz + 5);
-            map.setMaxBounds(bounds.pad(0.25));
+            map.setMaxBounds(bounds.pad(0.35));
             initialBounds = bounds;
           }
 
           window.addEventListener("resize", function () {
             if (!initialBounds) return;
             map.invalidateSize({ animate: false });
-            fitPadding = getFitPadding();
-            map.fitBounds(initialBounds, fitPadding);
+            map.fitBounds(initialBounds, { paddingTopLeft: [10, 45], paddingBottomRight: [10, 10], animate: false });
+            map.panBy([-180, 0], { animate: false });
             refreshLockSizes();
           });
 
