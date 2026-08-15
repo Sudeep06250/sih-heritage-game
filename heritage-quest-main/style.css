@@ -23,10 +23,12 @@
 body {
     background-color: var(--bg-dark);
     min-height: 100vh;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     position: relative;
     font-family: var(--font-sans);
 }
@@ -34,22 +36,20 @@ body {
 /* Music Control Caption */
 .music-caption {
     position: fixed;
-    top: 20px;
-    right: 20px;
+    top: clamp(12px, 2vh, 22px);
+    right: clamp(12px, 2vw, 22px);
     z-index: 200;
     color: var(--gold-bright);
-    font-size: 15px;
+    font-size: clamp(12px, 1vw, 14px);
     font-family: var(--font-sans);
     font-weight: 500;
-    letter-spacing: 1px;
-    opacity: 0.8;
+    letter-spacing: 0.8px;
+    opacity: 0.85;
     pointer-events: none;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
 }
 
-
-
-/* Ambient glowing background circles to mimic the image's lighting */
+/* Ambient glowing background circles */
 .ambient-glow {
     position: absolute;
     top: 0;
@@ -66,8 +66,8 @@ body {
 }
 
 .heritage-container {
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    min-height: 100vh;
     background: url('assets/bg.jpg') no-repeat center center;
     background-size: cover;
     position: relative;
@@ -76,6 +76,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: clamp(16px, 3vh, 32px) clamp(16px, 3vw, 32px);
+    box-sizing: border-box;
 }
 
 /* Canvas for floating ember particles */
@@ -89,62 +91,27 @@ body {
     z-index: 3;
 }
 
-/* Ornate Gold Header Text overlays */
-.main-header {
-    position: absolute;
-    top: clamp(20px, 6vh, 60px);
-    left: 0;
-    width: 100%;
-    text-align: center;
-    z-index: 5;
-    pointer-events: none;
-    padding: 0 15px;
-}
-
-.serif-title {
-    font-family: var(--font-serif);
-    font-size: clamp(1.8rem, 4.5vw, 3.8rem);
-    font-weight: 900;
-    letter-spacing: 0.12em;
-    background: linear-gradient(to bottom, #ffffff 0%, var(--gold-bright) 25%, var(--gold-mid) 65%, var(--gold-dark) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    filter: drop-shadow(0px 3px 5px rgba(0, 0, 0, 0.95))
-            drop-shadow(0px 0px 15px rgba(215, 151, 60, 0.35));
-    animation: goldPulse 4s ease-in-out infinite alternate;
-}
-
-.sub-banner {
-    font-family: var(--font-sans);
-    font-size: clamp(0.75rem, 1.3vw, 1.15rem);
-    font-weight: 600;
-    color: var(--gold-mid);
-    letter-spacing: 0.35em;
-    margin-top: 6px;
-    text-transform: uppercase;
-    filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.9));
-}
-
-/* Central Canvas Backdrop */
+/* Central Interactive Canvas Backdrop */
 .central-frame {
     position: relative;
-    width: clamp(280px, 36.4vw, 540px);
-    height: clamp(260px, 52.3vh, 420px);
+    width: clamp(290px, 36vw, 520px);
+    min-height: clamp(260px, 48vh, 390px);
+    height: auto;
     background: var(--canvas-dark);
     z-index: 4;
-    border-radius: 14px;
-    border: 1px solid rgba(215, 151, 60, 0.25);
+    border-radius: 16px;
+    border: 1.5px solid rgba(215, 151, 60, 0.35);
     display: flex;
     align-items: center;
     justify-content: center;
+    margin: auto;
     /* Soft grid pattern overlaid on canvas */
     background-image: 
         radial-gradient(circle at 50% 50%, rgba(215, 151, 60, 0.04) 0%, transparent 70%),
         linear-gradient(rgba(255, 255, 255, 0.007) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255, 255, 255, 0.007) 1px, transparent 1px);
     background-size: 100% 100%, 20px 20px, 20px 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 0 25px rgba(0, 0, 0, 0.9);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.85), inset 0 0 25px rgba(0, 0, 0, 0.9);
 }
 
 .frame-content {
@@ -154,14 +121,15 @@ body {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    padding: clamp(16px, 4%, 28px) clamp(16px, 6%, 32px);
+    padding: clamp(20px, 3.5vh, 32px) clamp(18px, 3vw, 32px);
     text-align: center;
     box-sizing: border-box;
+    gap: clamp(10px, 1.8vh, 18px);
 }
 
 .welcome-text {
     font-family: var(--font-serif-sec);
-    font-size: clamp(1.2rem, 2vw, 1.8rem);
+    font-size: clamp(1.25rem, 1.8vw + 0.5rem, 1.85rem);
     font-weight: 700;
     color: var(--gold-bright);
     letter-spacing: 0.08em;
@@ -187,11 +155,11 @@ body {
 
 .description-text {
     font-family: var(--font-sans);
-    font-size: clamp(0.85rem, 1.2vw, 1.05rem);
+    font-size: clamp(0.85rem, 0.9vw + 0.3rem, 1.05rem);
     font-weight: 300;
-    line-height: 1.5;
+    line-height: 1.6;
     color: #b0a7bd;
-    margin: clamp(10px, 2vh, 18px) 0;
+    margin: 0;
     filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8));
 }
 
@@ -209,10 +177,10 @@ body {
     border-radius: 30px;
     color: #ffffff;
     font-family: var(--font-serif);
-    font-size: clamp(0.88rem, 1.3vw, 1.15rem);
+    font-size: clamp(0.88rem, 0.9vw + 0.4rem, 1.15rem);
     font-weight: 700;
     letter-spacing: 0.12em;
-    padding: clamp(10px, 1.5vh, 14px) clamp(20px, 3.5vw, 36px);
+    padding: clamp(10px, 1.4vh, 14px) clamp(22px, 3vw, 36px);
     cursor: pointer;
     position: relative;
     overflow: hidden;
@@ -266,72 +234,14 @@ body {
 .frame-footer-text {
     font-family: var(--font-serif-sec);
     font-style: italic;
-    font-size: clamp(0.75rem, 1vw, 0.95rem);
+    font-size: clamp(0.75rem, 0.7vw + 0.3rem, 0.95rem);
     color: #797185;
     letter-spacing: 0.05em;
     filter: drop-shadow(0 1px 1px rgba(0,0,0,0.8));
-    margin-top: 6px;
+    margin-top: 2px;
 }
 
-/* Bottom Footer overlays */
-.bottom-footer {
-    position: absolute;
-    bottom: 4.8%;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    z-index: 5;
-    pointer-events: none;
-}
-
-.secondary-title {
-    font-family: var(--font-serif);
-    font-size: clamp(0.9rem, 1.6vw, 1.4rem);
-    font-weight: 700;
-    color: #8c7f9c;
-    letter-spacing: 0.22em;
-    filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.95));
-}
-
-.india-title {
-    font-family: var(--font-serif);
-    font-size: clamp(2rem, 6vw, 5.5rem);
-    font-weight: 900;
-    letter-spacing: 0.1em;
-    margin-top: -4px;
-    background: linear-gradient(to bottom, #ffffff 0%, var(--pink-bright) 40%, var(--pink-dark) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.95))
-            drop-shadow(0px 0px 25px rgba(168, 28, 98, 0.45));
-    animation: pinkGlow 4s ease-in-out infinite alternate;
-}
-
-/* Keyframe Animations */
-@keyframes goldPulse {
-    0% {
-        filter: drop-shadow(0px 3px 5px rgba(0, 0, 0, 0.95))
-                drop-shadow(0px 0px 10px rgba(215, 151, 60, 0.3));
-    }
-    100% {
-        filter: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.95))
-                drop-shadow(0px 0px 22px rgba(215, 151, 60, 0.6));
-    }
-}
-
-@keyframes pinkGlow {
-    0% {
-        filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.95))
-                drop-shadow(0px 0px 15px rgba(168, 28, 98, 0.35));
-    }
-    100% {
-        filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.95))
-                drop-shadow(0px 0px 30px rgba(168, 28, 98, 0.75));
-    }
-}
-
-/* Interactive Story Modal */
+/* Story Adventure Overlay modal */
 .story-overlay {
     position: fixed;
     top: 0;
@@ -339,14 +249,17 @@ body {
     width: 100%;
     height: 100%;
     background: rgba(4, 3, 6, 0.93);
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
     z-index: 100;
     display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    transition: opacity 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+    padding: 16px;
+    box-sizing: border-box;
 }
 
 .story-overlay.active {
@@ -357,17 +270,19 @@ body {
 .modal-card {
     background: radial-gradient(circle, #0e0d16 0%, #06050a 100%);
     border: 2px solid var(--gold-mid);
-    border-radius: 16px;
-    padding: 40px;
-    max-width: 900px;
-    width: 90%;
+    border-radius: 18px;
+    padding: clamp(24px, 4vw, 40px);
+    max-width: min(920px, 94vw);
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
     text-align: center;
     position: relative;
     box-shadow: 
         0 15px 50px rgba(0, 0, 0, 0.9),
         0 0 30px rgba(215, 151, 60, 0.25);
-    transform: scale(0.9);
-    transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    transform: scale(0.92);
+    transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .story-overlay.active .modal-card {
@@ -376,12 +291,12 @@ body {
 
 .close-btn {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 16px;
+    right: 18px;
     background: transparent;
     border: none;
     color: var(--gold-bright);
-    font-size: 2rem;
+    font-size: 1.8rem;
     cursor: pointer;
     line-height: 1;
     transition: color 0.3s;
@@ -393,35 +308,24 @@ body {
 
 .modal-title {
     font-family: var(--font-serif);
-    font-size: 2.2rem;
+    font-size: clamp(1.4rem, 2.5vw, 2.2rem);
     color: var(--gold-bright);
     letter-spacing: 0.1em;
-    margin-bottom: 35px;
+    margin-bottom: clamp(20px, 3vh, 32px);
     text-shadow: 0 0 10px rgba(215, 151, 60, 0.4);
 }
 
 .quest-options {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 25px;
-}
-
-@media (max-width: 768px) {
-    .quest-options {
-        grid-template-columns: 1fr;
-    }
-    .modal-card {
-        padding: 25px;
-        max-height: 90vh;
-        overflow-y: auto;
-    }
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: clamp(16px, 2vw, 25px);
 }
 
 .quest-card {
     background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(215, 151, 60, 0.15);
-    border-radius: 8px;
-    padding: 25px 15px;
+    border: 1px solid rgba(215, 151, 60, 0.2);
+    border-radius: 10px;
+    padding: clamp(18px, 2.5vw, 25px) 16px;
     transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
@@ -429,30 +333,30 @@ body {
 }
 
 .quest-card:hover {
-    background: rgba(215, 151, 60, 0.05);
+    background: rgba(215, 151, 60, 0.06);
     border-color: var(--gold-mid);
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
 }
 
 .quest-icon {
-    font-size: 2.5rem;
-    margin-bottom: 15px;
+    font-size: clamp(2rem, 3vw, 2.5rem);
+    margin-bottom: 12px;
     filter: drop-shadow(0 0 5px rgba(215, 151, 60, 0.3));
 }
 
 .quest-card h3 {
     font-family: var(--font-serif);
-    font-size: 1.25rem;
+    font-size: clamp(1.1rem, 1.4vw, 1.25rem);
     color: #ffffff;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 .quest-card p {
-    font-size: 0.9rem;
+    font-size: clamp(0.82rem, 1vw, 0.9rem);
     color: #a29ba8;
     line-height: 1.5;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 
 .quest-btn {
@@ -461,12 +365,12 @@ body {
     color: var(--gold-bright);
     padding: 8px 18px;
     font-family: var(--font-sans);
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: 5px;
     transition: all 0.3s;
 }
 

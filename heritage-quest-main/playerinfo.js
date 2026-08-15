@@ -1,4 +1,4 @@
-// Player Info Page - Interaction & Ambient Sparks
+// Player Info Page - Professional Interaction & Ambient Sparks
 document.addEventListener('DOMContentLoaded', () => {
     // DOM Elements
     const container = document.getElementById('heritageQuestApp');
@@ -6,99 +6,290 @@ document.addEventListener('DOMContentLoaded', () => {
     const ctx = canvas.getContext('2d');
     const bgMusic = document.getElementById('bgMusic');
     const playerForm = document.getElementById('playerForm');
+    const submitBtn = document.getElementById('submitBtn');
 
-    // Auto-play music on first user interaction
+    // Input Elements
+    const nameInput = document.getElementById('playerName');
+    const emailInput = document.getElementById('playerEmail');
+    const ageInput = document.getElementById('playerAge');
+    const phoneInput = document.getElementById('playerPhone');
+    const phoneGroup = document.getElementById('phoneInputGroup');
+
+    // Error Elements
+    const nameError = document.getElementById('nameError');
+    const emailError = document.getElementById('emailError');
+    const ageError = document.getElementById('ageError');
+    const phoneError = document.getElementById('phoneError');
+
+    // Toast Modal Elements
+    const successToast = document.getElementById('successToast');
+    const toastTitle = document.getElementById('toastTitle');
+    const toastDesc = document.getElementById('toastDesc');
+    const toastOkBtn = document.getElementById('toastOkBtn');
+
+    // 1. Pre-fill Saved Data from localStorage if available
+    function loadSavedProfile() {
+        const savedName = localStorage.getItem('playerName');
+        const savedEmail = localStorage.getItem('playerEmail');
+        const savedAge = localStorage.getItem('playerAge');
+        const savedPhone = localStorage.getItem('playerPhone');
+
+        if (savedName) nameInput.value = savedName;
+        if (savedEmail) emailInput.value = savedEmail;
+        if (savedAge) ageInput.value = savedAge;
+        if (savedPhone) {
+            // Strip +91 for display in prefixed field
+            const clean = savedPhone.replace('+91', '').trim();
+            phoneInput.value = formatPhoneNumber(clean);
+        }
+    }
+    loadSavedProfile();
+
+    // 2. Validation Functions (Professional Standards)
+    function validateName(val) {
+        const trimmed = val.trim();
+        // Min 2 chars, letters, spaces, hyphens, apostrophes only (no random symbols/numbers)
+        const nameRegex = /^[A-Za-z\s'\.\-]{2,50}$/;
+        if (!trimmed) {
+            return { valid: false, msg: 'Full Name is required.' };
+        }
+        if (trimmed.length < 2) {
+            return { valid: false, msg: 'Name must be at least 2 characters.' };
+        }
+        if (!nameRegex.test(trimmed)) {
+            return { valid: false, msg: 'Name should only contain letters and spaces.' };
+        }
+        return { valid: true };
+    }
+
+    function validateEmail(val) {
+        const trimmed = val.trim();
+        // RFC-compliant practical email regex
+        const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+        if (!trimmed) {
+            return { valid: false, msg: 'Email address is required.' };
+        }
+        if (!emailRegex.test(trimmed)) {
+            return { valid: false, msg: 'Please enter a valid email address (e.g. name@domain.com).' };
+        }
+        return { valid: true };
+    }
+
+    function validateAge(val) {
+        const trimmed = String(val).trim();
+        if (!trimmed) {
+            return { valid: false, msg: 'Age is required.' };
+        }
+        const num = parseInt(trimmed, 10);
+        if (isNaN(num) || num < 5 || num > 110) {
+            return { valid: false, msg: 'Please enter a valid age between 5 and 110.' };
+        }
+        return { valid: true };
+    }
+
+    function formatPhoneNumber(value) {
+        // Keep only digits
+        const digits = value.replace(/\D/g, '').slice(0, 10);
+        if (digits.length > 5) {
+            return `${digits.slice(0, 5)} ${digits.slice(5)}`;
+        }
+        return digits;
+    }
+
+    function validatePhone(val) {
+        const digits = val.replace(/\D/g, '');
+        if (!digits) {
+            return { valid: false, msg: 'Mobile number is required.' };
+        }
+        if (digits.length !== 10) {
+            return { valid: false, msg: 'Mobile number must be exactly 10 digits.' };
+        }
+        // Valid Indian mobile numbers start with 6, 7, 8, or 9
+        if (!/^[6-9]/.test(digits)) {
+            return { valid: false, msg: 'Indian mobile numbers must start with 6, 7, 8, or 9.' };
+        }
+        return { valid: true };
+    }
+
+    // Helper UI State Handlers
+    function setFieldState(inputEl, errorEl, result, wrapperEl = null) {
+        const target = wrapperEl || inputEl;
+        if (result.valid) {
+            target.classList.remove('is-invalid');
+            target.classList.add('is-valid');
+            errorEl.classList.remove('active');
+            errorEl.textContent = '';
+        } else {
+            target.classList.remove('is-valid');
+            target.classList.add('is-invalid');
+            errorEl.textContent = result.msg;
+            errorEl.classList.add('active');
+        }
+        return result.valid;
+    }
+
+    // 3. Real-Time Event Listeners
+    // Name Input
+    nameInput.addEventListener('input', () => {
+        if (nameInput.value.length > 0) {
+            setFieldState(nameInput, nameError, validateName(nameInput.value));
+        } else {
+            nameInput.classList.remove('is-valid', 'is-invalid');
+            nameError.classList.remove('active');
+        }
+    });
+    nameInput.addEventListener('blur', () => {
+        if (nameInput.value.trim().length > 0) {
+            setFieldState(nameInput, nameError, validateName(nameInput.value));
+        }
+    });
+
+    // Email Input
+    emailInput.addEventListener('input', () => {
+        if (emailInput.value.length > 0) {
+            setFieldState(emailInput, emailError, validateEmail(emailInput.value));
+        } else {
+            emailInput.classList.remove('is-valid', 'is-invalid');
+            emailError.classList.remove('active');
+        }
+    });
+    emailInput.addEventListener('blur', () => {
+        if (emailInput.value.trim().length > 0) {
+            setFieldState(emailInput, emailError, validateEmail(emailInput.value));
+        }
+    });
+
+    // Age Input - Prevent non-numeric characters (e, +, -, .)
+    ageInput.addEventListener('keydown', (e) => {
+        if (['e', 'E', '+', '-', '.'].includes(e.key)) {
+            e.preventDefault();
+        }
+    });
+    ageInput.addEventListener('input', () => {
+        if (ageInput.value.length > 0) {
+            setFieldState(ageInput, ageError, validateAge(ageInput.value));
+        } else {
+            ageInput.classList.remove('is-valid', 'is-invalid');
+            ageError.classList.remove('active');
+        }
+    });
+    ageInput.addEventListener('blur', () => {
+        if (ageInput.value.trim().length > 0) {
+            setFieldState(ageInput, ageError, validateAge(ageInput.value));
+        }
+    });
+
+    // Phone Input - Auto Format & Digits only
+    phoneInput.addEventListener('input', (e) => {
+        const raw = e.target.value;
+        const formatted = formatPhoneNumber(raw);
+        e.target.value = formatted;
+
+        const digits = formatted.replace(/\D/g, '');
+        if (digits.length === 10) {
+            setFieldState(phoneInput, phoneError, validatePhone(digits), phoneGroup);
+        } else if (digits.length > 0) {
+            phoneGroup.classList.remove('is-valid');
+            phoneGroup.classList.remove('is-invalid');
+            phoneError.classList.remove('active');
+        }
+    });
+    phoneInput.addEventListener('blur', () => {
+        if (phoneInput.value.trim().length > 0) {
+            setFieldState(phoneInput, phoneError, validatePhone(phoneInput.value), phoneGroup);
+        }
+    });
+
+    // 4. Form Submission Handler
+    playerForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const nameVal = nameInput.value;
+        const emailVal = emailInput.value;
+        const ageVal = ageInput.value;
+        const phoneVal = phoneInput.value;
+
+        const isNameValid = setFieldState(nameInput, nameError, validateName(nameVal));
+        const isEmailValid = setFieldState(emailInput, emailError, validateEmail(emailVal));
+        const isAgeValid = setFieldState(ageInput, ageError, validateAge(ageVal));
+        const isPhoneValid = setFieldState(phoneInput, phoneError, validatePhone(phoneVal), phoneGroup);
+
+        if (isNameValid && isEmailValid && isAgeValid && isPhoneValid) {
+            const rawDigits = phoneVal.replace(/\D/g, '');
+            const fullPhone = `+91 ${rawDigits.slice(0, 5)} ${rawDigits.slice(5)}`;
+
+            // Save to localStorage
+            localStorage.setItem('playerName', nameVal.trim());
+            localStorage.setItem('playerEmail', emailVal.trim().toLowerCase());
+            localStorage.setItem('playerAge', ageVal.trim());
+            localStorage.setItem('playerPhone', fullPhone);
+
+            // Button feedback
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<span>Saving Profile...</span>`;
+
+            // Show Sleek Toast Modal
+            setTimeout(() => {
+                toastTitle.textContent = `Welcome, ${nameVal.trim()}!`;
+                toastDesc.innerHTML = `Your profile has been saved successfully.<br><strong>Email:</strong> ${emailVal.trim()}<br><strong>Phone:</strong> ${fullPhone}`;
+                successToast.classList.add('show');
+            }, 400);
+        } else {
+            // Shake first invalid field
+            const firstInvalid = document.querySelector('.is-invalid input') || document.querySelector('input.is-invalid');
+            if (firstInvalid) {
+                firstInvalid.focus();
+            }
+        }
+    });
+
+    // Toast button click -> Redirect to index.html
+    toastOkBtn.addEventListener('click', () => {
+        successToast.classList.remove('show');
+        window.location.href = 'index.html';
+    });
+
+    // 5. Audio Control (Double-click background to mute/unmute)
     let musicStarted = false;
-    bgMusic.volume = 0.4;
+    bgMusic.volume = 0.35;
 
     function startMusic() {
         if (musicStarted) return;
         musicStarted = true;
-        
-        // Play music
-        const playPromise = bgMusic.play();
-        if (playPromise !== undefined) {
-            playPromise.catch(function(error) {
-                console.log('Music play failed, will retry on next movement:', error);
-                musicStarted = false;
-            });
-        }
+        bgMusic.play().catch(() => {
+            musicStarted = false;
+        });
     }
 
-    // Start music on cursor movement
-    document.addEventListener('mousemove', startMusic, true);
-    document.addEventListener('touchmove', startMusic, true);
+    document.addEventListener('mousemove', startMusic, { once: true });
+    document.addEventListener('touchstart', startMusic, { once: true });
 
-    // Background Click for Music Control (Single click = play, Double click = stop)
     let clickCount = 0;
     let clickTimer = null;
 
     container.addEventListener('click', (e) => {
-        // Only toggle if click is on background (not on buttons or form)
-        if (musicStarted && e.target === container) {
+        if (e.target === container || e.target === canvas) {
             clickCount++;
-
             if (clickCount === 1) {
-                // Single click - play music
                 clickTimer = setTimeout(() => {
                     if (clickCount === 1 && bgMusic.paused) {
-                        bgMusic.play().catch(error => {
-                            console.log('Failed to play music:', error);
-                        });
+                        bgMusic.play().catch(() => {});
                     }
                     clickCount = 0;
-                }, 300); // 300ms timeout to detect if it's a double click
+                }, 300);
             } else if (clickCount === 2) {
-                // Double click - stop music
                 clearTimeout(clickTimer);
                 if (!bgMusic.paused) {
                     bgMusic.pause();
+                } else {
+                    bgMusic.play().catch(() => {});
                 }
                 clickCount = 0;
             }
         }
     });
 
-    // Form Submission Handler
-    playerForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        const name = document.getElementById('playerName').value.trim();
-        const email = document.getElementById('playerEmail').value.trim();
-        const age = document.getElementById('playerAge').value.trim();
-        const phone = document.getElementById('playerPhone').value.trim();
-
-        if (name && email && age && phone) {
-            // Clean phone string (remove spaces, dashes)
-            const cleanPhone = phone.replace(/[\s\-]/g, '');
-            const phonePattern = /^(\+91)?[6-9]\d{9}$/;
-            if (!phonePattern.test(cleanPhone)) {
-                alert('Please enter a valid Indian 10-digit mobile number (e.g., 9876543210 or +919876543210)');
-                return;
-            }
-
-            const formattedPhone = cleanPhone.startsWith('+91') ? cleanPhone : `+91${cleanPhone}`;
-
-            // Store player info in localStorage
-            localStorage.setItem('playerName', name);
-            localStorage.setItem('playerEmail', email);
-            localStorage.setItem('playerAge', age);
-            localStorage.setItem('playerPhone', formattedPhone);
-
-            // Show success message
-            alert(`Welcome, ${name}! Your profile has been saved.\nReady to explore the heritage quest!`);
-            
-            // Reset form
-            playerForm.reset();
-
-            // Redirect to main page or quest page
-            window.location.href = 'index.html';
-        } else {
-            alert('Please fill in all fields.');
-        }
-    });
-
-    // Resize canvas to match the container resolution
+    // 6. Particle Canvas System
     function resizeCanvas() {
         const rect = container.getBoundingClientRect();
         canvas.width = rect.width;
@@ -108,9 +299,8 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    // Particle System (Warm embers floating up)
     const particles = [];
-    const maxParticles = 40;
+    const maxParticles = 35;
 
     class Particle {
         constructor() {
@@ -120,10 +310,10 @@ document.addEventListener('DOMContentLoaded', () => {
         reset() {
             this.x = Math.random() * canvas.width;
             this.y = canvas.height + Math.random() * 20;
-            this.size = Math.random() * 2.5 + 0.5;
-            this.speedY = -(Math.random() * 0.8 + 0.3);
-            this.speedX = (Math.random() - 0.5) * 0.4;
-            this.opacity = Math.random() * 0.6 + 0.2;
+            this.size = Math.random() * 2.2 + 0.6;
+            this.speedY = -(Math.random() * 0.7 + 0.3);
+            this.speedX = (Math.random() - 0.5) * 0.35;
+            this.opacity = Math.random() * 0.55 + 0.2;
             this.fadeSpeed = Math.random() * 0.003 + 0.001;
             this.swayAngle = Math.random() * Math.PI * 2;
             this.swaySpeed = Math.random() * 0.02 + 0.01;
@@ -159,30 +349,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Initialize particles
     for (let i = 0; i < maxParticles; i++) {
         const p = new Particle();
         p.y = Math.random() * canvas.height;
         particles.push(p);
     }
 
-    // Animation Loop
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
         particles.forEach(p => {
             p.update();
             p.draw();
         });
-        
         requestAnimationFrame(animate);
     }
 
     animate();
-    setTimeout(resizeCanvas, 500);
+    setTimeout(resizeCanvas, 400);
 });
 
 // Global back button function
 function goBack() {
     window.location.href = 'index.html';
 }
+
