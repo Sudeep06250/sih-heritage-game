@@ -103,15 +103,17 @@ document.addEventListener('DOMContentLoaded', () => {
         playAudio();
     }
 
-    // 2. Global Unlocker: Starts audio instantly on user's first click or touch
+    // 2. Global Instant Unlocker: Starts audio on ANY cursor movement, hover, touch or click
     function unlockAudioOnGesture() {
         if (!isExplicitlyMuted && bgMusic.paused) {
             playAudio();
         }
     }
 
-    ['click', 'pointerdown', 'mousedown', 'touchstart', 'keydown'].forEach(evt => {
+    const allGestures = ['mousemove', 'pointermove', 'mouseenter', 'mouseover', 'wheel', 'click', 'pointerdown', 'mousedown', 'touchstart', 'keydown'];
+    allGestures.forEach(evt => {
         window.addEventListener(evt, unlockAudioOnGesture, { capture: true, passive: true });
+        document.addEventListener(evt, unlockAudioOnGesture, { capture: true, passive: true });
     });
 
     // 3. Direct Toggle Button Handler
