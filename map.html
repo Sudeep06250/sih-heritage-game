@@ -33,7 +33,9 @@
     html, body {
       margin: 0; padding: 0;
       height: 100%; width: 100%;
-      background: url('heritage-bg.jpg') 68% 48% / cover no-repeat fixed;
+      background:
+        linear-gradient(rgba(4, 8, 18, 0.42), rgba(4, 8, 18, 0.52)),
+        url('heritage-bg.jpg') center 32% / cover no-repeat fixed;
       color: var(--text);
       font-family: "Outfit", "Segoe UI", system-ui, sans-serif;
       overflow: hidden;
@@ -44,13 +46,7 @@
     #map {
       position: absolute;
       inset: 0;
-      /* Vignette: dark navy center for crisp map contrast, fading to subtle image border */
-      background: radial-gradient(
-        circle at 50% 50%,
-        rgba(5, 7, 18, 0.90) 0%,
-        rgba(5, 7, 18, 0.78) 60%,
-        rgba(5, 7, 18, 0.45) 100%
-      );
+      background: transparent;
       z-index: 1;
     }
     .leaflet-container { background: transparent !important; outline: none; }
@@ -60,37 +56,44 @@
       position: absolute;
       top: 0; left: 0; right: 0;
       z-index: 500;
-      padding: 18px 20px 50px;
+      padding: 40px 48px 24px;
       pointer-events: none;
       background: linear-gradient(
         180deg,
-        rgba(5,7,15,0.96) 0%,
-        rgba(5,7,15,0.65) 55%,
+        rgba(5,7,15,0.35) 0%,
+        rgba(5,7,15,0.12) 55%,
         rgba(5,7,15,0) 100%
       );
     }
     .hud .eyebrow {
-      font-size: 10px;
+      font-size: 11px;
       letter-spacing: 0.36em;
       text-transform: uppercase;
       color: var(--neon);
-      margin: 0 0 5px;
+      margin: 0 0 8px;
       font-weight: 700;
     }
     .hud h1 {
       margin: 0;
-      font-size: clamp(18px, 4.5vw, 30px);
+      font-size: clamp(26px, 3.6vw, 42px);
       font-weight: 800;
       letter-spacing: -0.02em;
       line-height: 1.15;
-      text-shadow: 0 0 22px rgba(34,211,238,0.25);
+      text-shadow: 0 2px 18px rgba(0,0,0,0.65), 0 0 22px rgba(34,211,238,0.18);
     }
     .hud p {
-      margin: 6px 0 0;
-      font-size: 12.5px;
+      margin: 10px 0 0;
+      font-size: 14px;
       line-height: 1.55;
-      color: var(--muted);
-      max-width: 36ch;
+      color: #d5dceb;
+      max-width: 38ch;
+      text-shadow: 0 1px 10px rgba(0,0,0,0.7);
+    }
+
+    @media (max-width: 768px) {
+      .hud { padding: 22px 18px 16px; }
+      .hud h1 { font-size: 24px; }
+      .hud p { font-size: 12.5px; }
     }
 
     /* ── Bottom Prompt ── */
@@ -312,12 +315,12 @@
     }
     #lock-dim.active { opacity: 0; } /* disabled — per-state blur used instead */
     .lock-icon svg {
-      fill: #5a6a8a;
-      opacity: 0.88;
+      fill: #e8eefc;
+      opacity: 0.92;
       transition: fill 0.25s ease, opacity 0.25s ease;
     }
     .lock-icon:hover svg {
-      fill: #c8d6f0;
+      fill: #ffffff;
       opacity: 1;
     }
 
@@ -435,8 +438,17 @@
 
     // Stored after fitBounds — used to reset view when user presses Back
     var initialBounds = null;
-    var fitPadding = { paddingTopLeft: [2, 58], paddingBottomRight: [2, 35] };
     var geoLayer      = null; // hoisted so resetToIndia can redraw polygons
+
+    /* Keep India as a centered silhouette so the collage shows around it */
+    function getFitPadding() {
+      return {
+        paddingTopLeft: [5, 45],
+        paddingBottomRight: [5, 15],
+        animate: false,
+      };
+    }
+    var fitPadding = getFitPadding();
 
     /* ── Init map ── */
     var map = L.map("map", {
@@ -487,7 +499,7 @@
       // 2. Flash overlay starts mid-animation, redirect when done
       var fl = document.getElementById("flash");
       setTimeout(function () { fl.classList.add("show"); }, 550);
-      setTimeout(function () { window.location.href = "odisha_games.html"; }, 1050);
+      setTimeout(function () { window.location.href = "konark.html"; }, 1050);
     }
 
     /* ── Reset to full-India view on Back navigation ── */
@@ -690,7 +702,7 @@
       var svgSize = Math.round(d * 0.5);
       var html = '<div class="lock-icon" style="width:' + d + 'px;height:' + d + 'px">'
                + '<svg style="width:' + svgSize + 'px;height:' + svgSize + 'px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">'
-               + '<path fill="#5a6a8a" d="M17 11V7A5 5 0 0 0 7 7v4H5v10h14V11h-2zm-5 6a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm3-6H9V7a3 3 0 0 1 6 0v4z"/>'
+               + '<path fill="#e8eefc" d="M17 11V7A5 5 0 0 0 7 7v4H5v10h14V11h-2zm-5 6a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm3-6H9V7a3 3 0 0 1 6 0v4z"/>'
                + '</svg></div>';
       var half = Math.round(d / 2);
       return L.divIcon({
@@ -819,20 +831,25 @@
             onEachFeature: onEachFeature,
           }).addTo(map);
 
-          /* Step 2 – Fit India to fill the viewport */
+          /* Step 2 – Fit India as a centered map with collage visible around it */
           var bounds = geoLayer.getBounds();
           if (bounds.isValid()) {
-            map.fitBounds(bounds, {
-              paddingTopLeft:     [2, 58],
-              paddingBottomRight: [2, 35],
-              animate: false,
-            });
+            fitPadding = getFitPadding();
+            map.fitBounds(bounds, fitPadding);
             var fz = map.getZoom();
             map.setMinZoom(fz);
             map.setMaxZoom(fz + 5);
             map.setMaxBounds(bounds.pad(0.25));
             initialBounds = bounds;
           }
+
+          window.addEventListener("resize", function () {
+            if (!initialBounds) return;
+            map.invalidateSize({ animate: false });
+            fitPadding = getFitPadding();
+            map.fitBounds(initialBounds, fitPadding);
+            refreshLockSizes();
+          });
 
           /* Step 3 – Play intro: states fly in from outside and merge into India */
           playIntroAnimation(function () {
