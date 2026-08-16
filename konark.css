@@ -45,7 +45,7 @@ body {
             rgba(2, 8, 18, 0.10),
             rgba(2, 8, 18, 0.16)
         ),
-        url("assets/konark-background.jpg");
+        url("assets/konark-background.png");
 
     background-size: cover;
     background-position: center center;
