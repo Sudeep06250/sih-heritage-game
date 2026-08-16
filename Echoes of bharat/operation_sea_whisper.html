@@ -1,0 +1,3498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operation Sea Whisper</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%}
+body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times New Roman",serif}
+
+.scene{
+    position:relative;
+    width:100vw;
+    height:100vh;
+    overflow:hidden;
+    background:#061018;
+}
+.scene-bg{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    z-index:0;
+}
+.scene-shade{
+    position:absolute;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+}
+#introScene .scene-shade{
+    background:
+      linear-gradient(90deg,rgba(0,4,10,.73) 0%,rgba(0,7,13,.45) 42%,rgba(0,7,13,.12) 100%),
+      linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.18));
+}
+#missionScene .scene-shade{
+    background:
+      linear-gradient(90deg,rgba(0,5,10,.83) 0%,rgba(0,7,12,.58) 38%,rgba(0,7,12,.20) 72%,rgba(0,5,10,.28) 100%),
+      linear-gradient(180deg,rgba(0,4,8,.12),rgba(0,4,8,.60));
+}
+
+.header{
+    position:absolute;z-index:20;top:0;left:0;right:0;height:62px;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 4.6vw;
+    border-bottom:1px solid rgba(225,235,230,.12);
+    background:linear-gradient(180deg,rgba(0,5,10,.66),transparent);
+}
+.brand{display:flex;align-items:center;gap:11px;color:#e6c36f;font-family:Arial,sans-serif;font-size:12px;font-weight:bold;letter-spacing:2.5px;text-transform:uppercase}
+.brand-mark{width:29px;height:29px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(230,195,111,.75);border-radius:50%;font-size:9px}
+.operation{color:rgba(220,231,226,.52);font-family:Arial,sans-serif;font-size:8px;letter-spacing:2px;text-transform:uppercase}
+
+.music-control{
+    position:fixed;z-index:200;right:4.6vw;top:78px;
+    display:flex;align-items:center;gap:8px;padding:8px 11px;
+    border:1px solid rgba(112,223,226,.36);
+    background:rgba(2,12,18,.68);color:#72dfe1;
+    font-family:Arial,sans-serif;font-size:8px;font-weight:bold;letter-spacing:1.4px;text-transform:uppercase;
+    cursor:pointer;backdrop-filter:blur(6px)
+}
+.music-control:hover{border-color:#72dfe1;background:rgba(15,53,60,.72)}
+.music-control.muted{color:rgba(225,230,226,.48);border-color:rgba(225,230,226,.20)}
+.music-control.intro-position{top:78px;right:4.6vw}
+.music-control.mission-position{top:72px;right:250px}
+
+.intro-content{
+    position:absolute;z-index:10;left:7.5vw;top:50%;transform:translateY(-50%);
+    width:min(620px,48vw)
+}
+.eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:14px;color:#69dce1;font-family:Arial,sans-serif;font-size:10px;font-weight:bold;letter-spacing:3px;text-transform:uppercase}
+.eyebrow::before{content:"";width:42px;height:2px;background:#69dce1;box-shadow:0 0 10px rgba(105,220,225,.55)}
+.intro-title{color:#faf2e4;font-size:clamp(54px,6.4vw,92px);line-height:.86;font-weight:500;letter-spacing:1px;text-transform:uppercase;text-shadow:0 5px 25px rgba(0,0,0,.85)}
+.intro-title span{display:block;margin-top:8px;color:#e6c475;font-size:.62em;letter-spacing:3px}
+.divider{width:120px;height:2px;margin:20px 0 18px;background:linear-gradient(90deg,#e2bb66,transparent)}
+.intro-story{max-width:610px;color:rgba(248,243,234,.94);font-size:17px;line-height:1.45;text-shadow:0 2px 12px rgba(0,0,0,.9)}
+.intro-story strong{color:#73dfe2}
+.mission-brief{margin-top:18px;padding:15px 17px;border-left:3px solid #70dfe2;background:rgba(2,13,19,.60);border-top:1px solid rgba(112,223,226,.14);border-bottom:1px solid rgba(112,223,226,.10)}
+.brief-label{margin-bottom:5px;color:#70dfe2;font-family:Arial,sans-serif;font-size:8px;font-weight:bold;letter-spacing:2px;text-transform:uppercase}
+.brief-text{color:rgba(235,239,233,.76);font-family:Arial,sans-serif;font-size:11px;line-height:1.45}
+
+.start-row{display:flex;align-items:center;gap:18px;margin-top:20px}
+.begin-button{padding:11px 24px;border:1px solid rgba(229,194,109,.72);background:rgba(3,13,19,.65);color:#e5c474;font-family:Arial,sans-serif;font-size:9px;font-weight:bold;letter-spacing:1.8px;text-transform:uppercase;cursor:pointer;transition:.22s}
+.begin-button:hover{border-color:#72dfe1;color:#72dfe1;background:rgba(15,53,60,.55)}
+.ambience-note{display:flex;align-items:center;gap:9px;color:rgba(226,238,234,.56);font-family:Arial,sans-serif;font-size:8px;letter-spacing:1.4px;text-transform:uppercase}
+.ambience-note{border:0;background:transparent;padding:0;cursor:pointer;text-align:left}.ambience-note:hover{color:#72dfe1}.ambience-note:focus-visible{outline:1px solid #72dfe1;outline-offset:4px}.ambience-note.muted{color:rgba(225,230,226,.48)}
+.ambience-dot{width:28px;height:28px;border:1px solid #72dfe1;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#72dfe1}
+
+.intro-footer{
+    position:absolute;z-index:10;left:4.6vw;right:4.6vw;bottom:15px;
+    display:flex;justify-content:space-between;align-items:center;padding-top:9px;
+    border-top:1px solid rgba(220,231,226,.14);
+    color:rgba(220,231,226,.42);font-family:Arial,sans-serif;font-size:7px;letter-spacing:1.5px;text-transform:uppercase
+}
+
+.mission-content{
+    position:absolute;z-index:10;left:3.8vw;top:11vh;width:760px
+}
+.mission-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:8px;color:#73dfe1;font-family:Arial,sans-serif;font-size:9px;font-weight:bold;letter-spacing:3px;text-transform:uppercase}
+.mission-eyebrow::before{content:"";width:38px;height:1px;background:#73dfe1}
+.mission-title{color:#fff8ea;font-size:clamp(52px,5vw,74px);line-height:.84;font-weight:500;letter-spacing:1px;text-transform:uppercase;text-shadow:0 4px 20px rgba(0,0,0,.8)}
+.mission-title span{display:block;margin-top:4px;color:#e5c36e;font-size:.62em;letter-spacing:2px}
+.mission-divider{width:95px;height:1px;margin:12px 0 10px;background:linear-gradient(90deg,#d9b55e,transparent)}
+.mission-story{width:700px;color:rgba(247,242,231,.92);font-size:15px;line-height:1.38;text-shadow:0 2px 10px rgba(0,0,0,.8)}
+.mission-story strong{color:#71dfe1}
+
+.objective{
+    width:760px;margin-top:13px;padding:13px 20px 12px;
+    border-left:4px solid #70dfe1;
+    border-top:1px solid rgba(113,223,225,.12);
+    border-bottom:1px solid rgba(113,223,225,.12);
+    background:rgba(1,12,18,.88);box-shadow:0 16px 35px rgba(0,0,0,.35);backdrop-filter:blur(7px)
+}
+.objective-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.objective-label{color:#71dfe1;font-family:Arial,sans-serif;font-size:8px;font-weight:bold;letter-spacing:2.4px;text-transform:uppercase}
+.objective-status{color:rgba(221,231,226,.50);font-family:Arial,sans-serif;font-size:8px;font-weight:bold;letter-spacing:1.4px;text-transform:uppercase}
+.field-log{margin-bottom:10px;color:rgba(245,240,229,.82);font-family:Arial,sans-serif;font-size:10px;line-height:1.42}
+.field-log strong{color:#e4bf67}
+.mission-task{color:#fff9ed;font-size:20px;line-height:1.18;font-weight:bold}
+.mission-task strong{color:#73e0e1}
+
+.clues{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-top:15px}
+.clue{position:relative;width:100%;height:130px;padding:0;overflow:hidden;border:2px solid rgba(229,194,109,.65);background:#07131b;cursor:pointer;appearance:none;transition:transform .25s,border-color .25s,box-shadow .25s}
+.clue img{width:100%;height:100%;display:block;object-fit:cover;opacity:.86;transition:transform .3s,opacity .3s}
+.clue::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 10%,rgba(0,0,0,.70) 100%)}
+.clue:hover{transform:translateY(-5px);border-color:#70dfe2;box-shadow:0 12px 30px rgba(65,202,213,.28)}
+.clue:hover img{opacity:1;transform:scale(1.08)}
+.clue-number{position:absolute;z-index:4;top:9px;left:9px;width:25px;height:25px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(229,194,109,.88);border-radius:50%;background:rgba(2,10,15,.80);color:#e6c475;font-family:Arial,sans-serif;font-size:9px;font-weight:bold}
+.clue.inspected{border-color:rgba(229,194,109,.95);box-shadow:0 0 18px rgba(229,194,109,.16)}
+.clue.correct{border:3px solid #70dfe2;box-shadow:0 0 28px rgba(112,223,226,.42);transform:translateY(-5px)}
+.clue.correct::after{background:linear-gradient(transparent 10%,rgba(0,65,68,.76) 100%)}
+.clue.wrong{border:3px solid #d8846d;animation:shake .25s ease}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.feedback{min-height:28px;margin-top:9px;color:rgba(247,242,232,.90);font-family:Arial,sans-serif;font-size:10px;line-height:1.4}
+.action-row{display:flex;align-items:center;margin-top:7px}
+.guide-button{padding:8px 12px;border:1px solid rgba(229,194,109,.55);background:rgba(3,13,19,.70);color:#e5c474;font-family:Arial,sans-serif;font-size:8px;font-weight:bold;letter-spacing:1.3px;text-transform:uppercase;cursor:pointer}
+.guide-button:hover{border-color:#70dfe2;color:#70dfe2}
+
+.heritage-note{position:absolute;z-index:10;right:4vw;bottom:10vh;width:230px;padding:13px 15px;border-left:2px solid rgba(229,194,109,.70);background:rgba(2,8,13,.70);backdrop-filter:blur(6px);color:rgba(231,236,231,.76);font-family:Arial,sans-serif;font-size:10px;line-height:1.48;box-shadow:0 10px 25px rgba(0,0,0,.28)}
+.heritage-title{margin-bottom:6px;color:#e3c06f;font-size:9px;font-weight:bold;letter-spacing:2px;text-transform:uppercase}
+.heritage-note strong{color:#70dfe2}
+
+.modal{position:fixed;z-index:100;inset:0;display:none;align-items:center;justify-content:center;padding:25px;background:rgba(0,5,9,.80);backdrop-filter:blur(8px)}
+.modal.show{display:flex}
+.modal-box{width:min(560px,90vw);max-height:82vh;overflow-y:auto;padding:28px 31px 25px;border-left:4px solid #70dfe2;border-top:1px solid rgba(112,223,226,.28);border-right:1px solid rgba(112,223,226,.16);border-bottom:1px solid rgba(112,223,226,.16);background:linear-gradient(145deg,rgba(4,22,29,.98),rgba(1,11,17,.98));box-shadow:0 30px 80px rgba(0,0,0,.72)}
+.modal-label{margin-bottom:10px;color:#70dfe2;font-family:Arial,sans-serif;font-size:9px;font-weight:bold;letter-spacing:2.7px;text-transform:uppercase}
+.modal-box h2{margin-bottom:13px;color:#e5c16c;font-size:29px;line-height:1;font-weight:500;text-transform:uppercase}
+.modal-divider{width:90px;height:1px;margin-bottom:17px;background:linear-gradient(90deg,#70dfe2,transparent)}
+.modal-box p{margin-bottom:13px;color:rgba(245,241,230,.91);font-size:14px;line-height:1.55}
+.modal-box strong{color:#70dfe2}
+.modal-close{padding:10px 18px;border:1px solid rgba(229,194,109,.65);background:rgba(3,13,19,.70);color:#e5c16c;font-family:Arial,sans-serif;font-size:8px;font-weight:bold;letter-spacing:1.8px;cursor:pointer;text-transform:uppercase}
+.modal-close:hover{border-color:#70dfe2;color:#70dfe2}
+.fact-list{display:grid;gap:9px;margin:17px 0 19px}
+.fact{padding:11px 13px;border-left:2px solid rgba(229,194,109,.65);background:rgba(255,255,255,.035);color:rgba(245,241,230,.88);font-family:Arial,sans-serif;font-size:10px;line-height:1.48}
+.fact-title{display:block;margin-bottom:4px;color:#e5c16c;font-size:8px;font-weight:bold;letter-spacing:1.6px;text-transform:uppercase}
+
+.footer{position:absolute;z-index:20;left:3.8vw;right:4vw;bottom:10px;height:29px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(220,231,226,.12)}
+.back{border:none;background:none;color:rgba(222,231,227,.45);font-family:Arial,sans-serif;font-size:8px;letter-spacing:1.5px;cursor:pointer;text-transform:uppercase}
+.back:hover{color:#73e0e1}
+.next{padding:8px 18px;border:1px solid rgba(225,194,109,.38);background:rgba(2,12,17,.65);color:rgba(225,194,109,.45);font-family:Arial,sans-serif;font-size:8px;letter-spacing:1.7px;cursor:pointer;text-transform:uppercase}
+.next.ready{color:#e5c16c;border-color:rgba(225,194,109,.75);cursor:pointer}
+.next.ready:hover{color:#73e0e1;border-color:#73e0e1}
+
+.hidden{display:none!important}
+
+@media(max-width:900px){
+  body{overflow:auto}
+  .scene{height:auto;min-height:100vh}
+  .intro-content,.mission-content{position:relative;top:auto;left:auto;transform:none;width:auto;margin:0 20px;padding-top:88px;padding-bottom:95px}
+  .mission-content{padding-bottom:110px}
+  .intro-story,.mission-story{width:auto}
+  .objective{width:100%}
+  .heritage-note{display:none}
+  .clues{grid-template-columns:repeat(2,1fr)}
+  .footer{left:20px;right:20px}
+}
+@media(max-width:560px){
+  .clues{grid-template-columns:1fr}
+  .clue{height:135px}
+}
+
+
+/* =========================================================
+   MISSION 02 CONNECTED / SCOPED STYLES
+========================================================= */
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* =========================================================
+   MAIN BACKGROUND
+========================================================= */
+
+.m2-mission {
+
+    position: relative;
+
+    width: 100vw;
+    height: 100vh;
+
+    overflow: hidden;
+
+    background-image:
+
+        linear-gradient(
+            90deg,
+            rgba(0, 5, 10, 0.87) 0%,
+            rgba(0, 7, 12, 0.70) 38%,
+            rgba(0, 7, 12, 0.28) 72%,
+            rgba(0, 5, 10, 0.40) 100%
+        ),
+
+        linear-gradient(
+            180deg,
+            rgba(0, 4, 8, 0.15) 0%,
+            rgba(0, 4, 8, 0.08) 45%,
+            rgba(0, 4, 8, 0.62) 100%
+        ),
+
+        url("assets/mode2.jpeg");
+
+    background-size: cover;
+
+    background-position: center;
+
+    background-repeat: no-repeat;
+}
+
+
+/* =========================================================
+   CINEMATIC VIGNETTE
+========================================================= */
+
+.m2-mission::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            transparent 34%,
+            rgba(0,0,0,0.38) 100%
+        );
+
+    z-index: 1;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.m2-header {
+
+    position: absolute;
+
+    z-index: 20;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 58px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 3.7vw;
+
+    border-bottom:
+        1px solid rgba(230,235,225,0.13);
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0,4,8,0.78),
+            rgba(0,4,8,0.10)
+        );
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.m2-brand {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    color: #e4bf67;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    letter-spacing: 2.6px;
+
+    text-transform: uppercase;
+}
+
+
+.m2-brand-symbol {
+
+    width: 29px;
+    height: 29px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border:
+        1px solid #dcb968;
+
+    border-radius: 50%;
+
+    font-size: 9px;
+}
+
+
+.m2-mission-id {
+
+    color:
+        rgba(235,240,236,0.48);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+   MOVED HIGHER
+========================================================= */
+
+.m2-content {
+
+    position: absolute;
+
+    z-index: 10;
+
+    left: 4vw;
+
+    /*
+       Previously around 16%.
+       Now moved higher.
+    */
+
+    top: 10.5%;
+
+    width: 650px;
+}
+
+
+/* =========================================================
+   EYEBROW
+========================================================= */
+
+.m2-eyebrow {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 10px;
+
+    color: #70dfe1;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 10px;
+
+    font-weight: bold;
+
+    letter-spacing: 3px;
+
+    text-transform: uppercase;
+}
+
+
+.m2-eyebrow::before {
+
+    content: "";
+
+    width: 36px;
+
+    height: 1px;
+
+    background: #70dfe1;
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.m2-title {
+
+    color: #fff8e8;
+
+    font-size:
+        clamp(45px, 4.5vw, 68px);
+
+    line-height: 0.86;
+
+    font-weight: 500;
+
+    text-transform: uppercase;
+
+    text-shadow:
+        0 5px 24px rgba(0,0,0,0.95);
+}
+
+
+.m2-title span {
+
+    display: block;
+
+    margin-top: 6px;
+
+    color: #e3bd66;
+
+    font-size: 0.62em;
+
+    letter-spacing: 2px;
+}
+
+
+/* =========================================================
+   DIVIDER
+========================================================= */
+
+.m2-divider {
+
+    width: 105px;
+
+    height: 1px;
+
+    margin: 13px 0 11px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #dfbc68,
+            transparent
+        );
+}
+
+
+/* =========================================================
+   STORY
+========================================================= */
+
+.m2-story {
+
+    width: 590px;
+
+    color:
+        rgba(249,245,235,0.90);
+
+    font-size: 15px;
+
+    line-height: 1.38;
+
+    text-shadow:
+        0 2px 9px rgba(0,0,0,0.95);
+}
+
+
+.m2-story strong {
+
+    color: #70dfe1;
+}
+
+
+/* =========================================================
+   QUIZ PANEL
+========================================================= */
+
+.m2-quiz-panel {
+
+    margin-top: 14px;
+
+    width: 650px;
+
+    padding:
+        17px 21px 15px;
+
+    border-left:
+        4px solid #70dfe1;
+
+    border-top:
+        1px solid rgba(110,220,225,0.18);
+
+    border-bottom:
+        1px solid rgba(110,220,225,0.14);
+
+    background:
+        rgba(1,10,16,0.88);
+
+    backdrop-filter: blur(8px);
+
+    box-shadow:
+        0 18px 40px rgba(0,0,0,0.45);
+}
+
+
+/* =========================================================
+   QUIZ HEADER
+========================================================= */
+
+.m2-quiz-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 10px;
+}
+
+
+.m2-quiz-label {
+
+    color: #70dfe1;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    letter-spacing: 2.4px;
+
+    text-transform: uppercase;
+}
+
+
+.m2-question-count {
+
+    color:
+        rgba(237,239,233,0.48);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    letter-spacing: 1.7px;
+}
+
+
+/* =========================================================
+   QUESTION
+========================================================= */
+
+.m2-question {
+
+    min-height: 52px;
+
+    color: #fff7e7;
+
+    font-size: 20px;
+
+    line-height: 1.24;
+
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   OPTIONS
+========================================================= */
+
+.m2-options {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 9px;
+
+    margin-top: 12px;
+}
+
+
+/* =========================================================
+   OPTION
+========================================================= */
+
+.option {
+
+    position: relative;
+
+    min-height: 62px;
+
+    padding:
+        10px 12px 10px 42px;
+
+    border:
+        1px solid rgba(218,191,111,0.35);
+
+    background:
+        rgba(8,20,27,0.82);
+
+    color:
+        rgba(247,242,231,0.86);
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 13px;
+
+    line-height: 1.28;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+
+/* =========================================================
+   OPTION LETTER
+========================================================= */
+
+.option-letter {
+
+    position: absolute;
+
+    left: 12px;
+
+    top: 50%;
+
+    transform:
+        translateY(-50%);
+
+    width: 21px;
+
+    height: 21px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border:
+        1px solid rgba(219,190,105,0.55);
+
+    border-radius: 50%;
+
+    color: #dfbd6b;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   HOVER
+========================================================= */
+
+.option:hover {
+
+    border-color:
+        rgba(112,224,226,0.75);
+
+    background:
+        rgba(18,42,49,0.88);
+
+    color: #ffffff;
+}
+
+
+.option:hover .option-letter {
+
+    border-color: #70dfe1;
+
+    color: #70dfe1;
+}
+
+
+/* =========================================================
+   CORRECT
+========================================================= */
+
+.option.correct {
+
+    border-color:
+        #6fe0e1;
+
+    background:
+        rgba(26,72,76,0.78);
+
+    color: #e9ffff;
+}
+
+
+/* =========================================================
+   WRONG
+========================================================= */
+
+.option.wrong {
+
+    border-color:
+        #b87867;
+
+    background:
+        rgba(82,39,32,0.55);
+
+    color:
+        rgba(255,225,215,0.8);
+}
+
+
+/* =========================================================
+   FEEDBACK
+========================================================= */
+
+.m2-feedback {
+
+    min-height: 30px;
+
+    margin-top: 8px;
+
+    padding-left: 2px;
+
+    color:
+        rgba(239,239,232,0.65);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 10px;
+
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.m2-progress-area {
+
+    margin-top: 7px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.m2-progress-text {
+
+    color:
+        rgba(236,239,234,0.45);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    letter-spacing: 1.5px;
+
+    white-space: nowrap;
+}
+
+
+.m2-progress-bar {
+
+    width: 160px;
+
+    height: 3px;
+
+    background:
+        rgba(255,255,255,0.12);
+
+    overflow: hidden;
+}
+
+
+.m2-progress-fill {
+
+    width: 25%;
+
+    height: 100%;
+
+    background: #70dfe1;
+
+    transition:
+        width 0.3s ease;
+}
+
+
+/* =========================================================
+   NO INDIVIDUAL TURTLE IMAGE
+========================================================= */
+
+/*
+   IMPORTANT:
+
+   The separate adult.jpeg turtle image has been removed.
+
+   The turtle already exists naturally inside mode2.jpeg.
+*/
+
+
+/* =========================================================
+   FIELD TIP
+========================================================= */
+
+.m2-tip {
+
+    position: absolute;
+
+    z-index: 15;
+
+    right: 4vw;
+
+    top: 12vh;
+
+    width: 155px;
+
+    padding: 15px;
+
+    transform: rotate(2deg);
+
+    background:
+        #d8c18c;
+
+    color:
+        #342c1d;
+
+    box-shadow:
+        0 14px 30px rgba(0,0,0,0.45);
+}
+
+
+.m2-tip::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: -7px;
+
+    left: 16px;
+
+    width: 33px;
+
+    height: 14px;
+
+    background:
+        rgba(205,181,127,0.65);
+}
+
+
+.m2-tip-title {
+
+    margin-bottom: 7px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+}
+
+
+.m2-tip-text {
+
+    font-size: 12px;
+
+    line-height: 1.42;
+}
+
+
+/* =========================================================
+   BOTTOM TOOLS
+========================================================= */
+
+.m2-bottom-tools {
+
+    position: absolute;
+
+    z-index: 20;
+
+    left: 4vw;
+
+    /*
+       Slightly lower, but above footer.
+    */
+
+    bottom: 6.5vh;
+
+    display: flex;
+
+    gap: 28px;
+}
+
+
+.m2-tool {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    border: none;
+
+    background: none;
+
+    color: #d9b968;
+
+    cursor: pointer;
+
+    font-family: Arial, sans-serif;
+}
+
+
+.m2-tool-icon {
+
+    width: 38px;
+
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border:
+        1px solid #d9b968;
+
+    border-radius: 50%;
+
+    font-size: 14px;
+}
+
+
+.m2-tool-label {
+
+    display: block;
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    letter-spacing: 1.6px;
+
+    text-transform: uppercase;
+}
+
+
+.m2-tool-small {
+
+    display: block;
+
+    margin-top: 4px;
+
+    color:
+        rgba(235,239,235,0.43);
+
+    font-size: 8px;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.m2-footer {
+
+    position: absolute;
+
+    z-index: 25;
+
+    left: 4vw;
+
+    right: 4vw;
+
+    bottom: 13px;
+
+    height: 34px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    border-top:
+        1px solid rgba(230,235,225,0.12);
+}
+
+
+.m2-back {
+
+    border: none;
+
+    background: none;
+
+    color:
+        rgba(230,235,230,0.45);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    letter-spacing: 1.7px;
+
+    text-transform: uppercase;
+
+    cursor: pointer;
+}
+
+
+.m2-back:hover {
+
+    color: #70dfe1;
+}
+
+
+.m2-next {
+
+    padding:
+        8px 20px;
+
+    border:
+        1px solid rgba(220,190,105,0.55);
+
+    background:
+        rgba(2,12,17,0.68);
+
+    color:
+        #e1bd67;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    cursor: pointer;
+
+    opacity: 0.35;
+
+    pointer-events: none;
+}
+
+
+.m2-next.ready {
+
+    opacity: 1;
+
+    pointer-events: auto;
+}
+
+
+.m2-next.ready:hover {
+
+    color: #70dfe1;
+
+    border-color: #70dfe1;
+}
+
+
+/* =========================================================
+   COMPLETION SCREEN
+========================================================= */
+
+.m2-complete {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 100;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background:
+        rgba(0,5,9,0.78);
+
+    backdrop-filter: blur(6px);
+
+    opacity: 0;
+
+    visibility: hidden;
+}
+
+
+.m2-complete.show {
+
+    opacity: 1;
+
+    visibility: visible;
+}
+
+
+.m2-complete-box {
+
+    width: 440px;
+
+    max-width: 88vw;
+
+    padding: 30px;
+
+    text-align: center;
+
+    border:
+        1px solid rgba(112,224,226,0.45);
+
+    background:
+        rgba(2,12,18,0.96);
+
+    box-shadow:
+        0 30px 70px rgba(0,0,0,0.75);
+}
+
+
+.m2-complete-label {
+
+    color: #70dfe1;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    letter-spacing: 2.5px;
+
+    margin-bottom: 12px;
+}
+
+
+.m2-complete h2 {
+
+    color: #e4c16d;
+
+    font-size: 29px;
+
+    margin-bottom: 12px;
+}
+
+
+.m2-complete p {
+
+    color:
+        rgba(240,240,233,0.76);
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    margin-bottom: 22px;
+}
+
+
+.m2-complete-button {
+
+    padding:
+        11px 23px;
+
+    border:
+        1px solid #d9b968;
+
+    background:
+        transparent;
+
+    color: #e4c16d;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    cursor: pointer;
+}
+
+
+
+/* =========================================================
+   INFORMATION MODAL
+========================================================= */
+
+.m2-info-modal {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 100;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 30px;
+
+    background:
+        rgba(0, 5, 9, 0.76);
+
+    backdrop-filter: blur(6px);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.2s ease;
+}
+
+.m2-info-modal.show {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+}
+
+
+.m2-info-box {
+
+    position: relative;
+
+    width: 560px;
+
+    max-width: 90vw;
+
+    max-height: 76vh;
+
+    overflow-y: auto;
+
+    padding: 28px 31px 25px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(4, 19, 27, 0.98),
+            rgba(1, 10, 16, 0.98)
+        );
+
+    border:
+        1px solid rgba(112, 224, 226, 0.34);
+
+    border-left:
+        4px solid #70dfe1;
+
+    box-shadow:
+        0 28px 70px rgba(0, 0, 0, 0.78);
+}
+
+
+/* thin gold accent */
+
+.m2-info-box::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+
+    left: 27px;
+
+    width: 82px;
+
+    height: 2px;
+
+    background: #d9b968;
+}
+
+
+.m2-info-label {
+
+    margin-bottom: 8px;
+
+    color: #70dfe1;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    letter-spacing: 2.5px;
+
+    text-transform: uppercase;
+}
+
+
+.m2-info-title {
+
+    margin-bottom: 16px;
+
+    color: #e4bf67;
+
+    font-size: 29px;
+
+    font-weight: normal;
+
+    line-height: 1.1;
+}
+
+
+.m2-info-list {
+
+    margin: 0;
+
+    padding-left: 21px;
+
+    color:
+        rgba(244, 241, 232, 0.86);
+
+    font-size: 14px;
+
+    line-height: 1.52;
+}
+
+
+.m2-info-list li {
+
+    margin-bottom: 11px;
+
+    padding-left: 4px;
+}
+
+
+.m2-info-list li::marker {
+
+    color: #70dfe1;
+}
+
+
+.m2-info-source {
+
+    margin-top: 16px;
+
+    padding-top: 12px;
+
+    border-top:
+        1px solid rgba(230,235,225,0.12);
+
+    color:
+        rgba(235,239,235,0.48);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+
+    line-height: 1.45;
+}
+
+
+.m2-info-source strong {
+
+    color: #d9b968;
+
+    font-weight: normal;
+}
+
+
+.m2-info-close {
+
+    margin-top: 18px;
+
+    padding: 9px 20px;
+
+    border:
+        1px solid rgba(217,185,104,0.55);
+
+    background:
+        rgba(8,24,30,0.78);
+
+    color: #dfbd68;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+
+    cursor: pointer;
+}
+
+
+.m2-info-close:hover {
+
+    color: #70dfe1;
+
+    border-color: #70dfe1;
+}
+
+
+.m2-info-box::-webkit-scrollbar {
+
+    width: 6px;
+}
+
+
+.m2-info-box::-webkit-scrollbar-track {
+
+    background:
+        rgba(255,255,255,0.05);
+}
+
+
+.m2-info-box::-webkit-scrollbar-thumb {
+
+    background:
+        rgba(112,224,226,0.38);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .m2-content {
+
+        width: 600px;
+    }
+
+    .m2-quiz-panel {
+
+        width: 600px;
+    }
+
+    .m2-tip {
+
+        right: 2vw;
+    }
+
+}
+
+
+@media (max-width: 800px) {
+
+    .m2-mission {
+
+        min-height: 900px;
+
+        height: auto;
+    }
+
+    .m2-content {
+
+        position: relative;
+
+        top: auto;
+
+        left: auto;
+
+        width: auto;
+
+        margin: 0 22px;
+
+        padding-top: 80px;
+
+        padding-bottom: 150px;
+    }
+
+    .m2-story {
+
+        width: auto;
+    }
+
+    .m2-quiz-panel {
+
+        width: auto;
+    }
+
+    .m2-tip {
+
+        display: none;
+    }
+
+    .m2-bottom-tools {
+
+        left: 22px;
+
+        bottom: 55px;
+    }
+
+}
+
+
+@media (max-width: 550px) {
+
+    .m2-options {
+
+        grid-template-columns: 1fr;
+    }
+
+    .m2-question {
+
+        font-size: 18px;
+    }
+
+    .m2-title {
+
+        font-size: 43px;
+    }
+
+}
+
+
+</style>
+</head>
+
+<body>
+
+<!-- ========================= AUDIO ========================= -->
+<audio id="oceanAudio" preload="auto" loop playsinline></audio>
+
+<!-- =========================================================
+     SHARED OCEAN MUSIC CONTROL
+     This is ONE button for both the intro and Mission 01.
+========================================================= -->
+<button id="musicControl" class="music-control intro-position" type="button">
+    <span id="musicIcon">♪</span>
+    <span id="musicText">OCEAN MUSIC · ON</span>
+</button>
+
+<!-- =========================================================
+     INTRO / BRIEFING PAGE
+========================================================= -->
+<section id="introScene" class="scene">
+
+    <img
+        id="introBg"
+        class="scene-bg"
+        alt=""
+    >
+
+    <div class="scene-shade"></div>
+
+    <header class="header intro-header">
+        <div class="operation">
+            COASTAL SYSTEM ONLINE
+        </div>
+    </header>
+
+    <section class="intro-content">
+
+        <div class="eyebrow">
+            COASTAL HERITAGE MISSION
+        </div>
+
+        <h1 class="intro-title">
+            OPERATION
+            <span>SEA WHISPER</span>
+        </h1>
+
+        <div class="divider"></div>
+
+        <p class="intro-story">
+            Along Odisha's coast, an extraordinary journey begins.
+            <strong>Listen. Observe. Protect.</strong>
+            Your mission is to understand the fragile journey of the
+            Olive Ridley turtle — from the open ocean to the nesting shore.
+        </p>
+
+        <div class="mission-brief">
+            <div class="brief-label">MISSION BRIEF</div>
+            <div class="brief-text">
+                Enter the coastal zone and uncover the story of one of
+                Odisha's most remarkable marine visitors. Every decision matters.
+            </div>
+        </div>
+
+        <div class="start-row">
+            <button id="beginButton" class="begin-button" type="button">
+                BEGIN OPERATION
+            </button>
+
+            <button id="ambienceButton" class="ambience-note" type="button">
+                <div class="ambience-dot">♪</div>
+                <span id="ambienceText">OCEAN AMBIENCE</span>
+            </button>
+        </div>
+
+    </section>
+
+    <footer class="intro-footer">
+        <div>ODISHA COAST</div>
+        <div>OLIVE RIDLEY</div>
+        <div>CONSERVATION</div>
+        <div>MISSION 01 · COASTAL ZONE</div>
+    </footer>
+
+</section>
+
+
+<!-- =========================================================
+     MISSION 01
+========================================================= -->
+<section id="missionScene" class="scene hidden">
+
+    <img
+        id="missionBg"
+        class="scene-bg"
+        alt=""
+    >
+
+    <div class="scene-shade"></div>
+
+    <header class="header">
+        <div></div>
+
+        <div class="operation">
+            FIELD OPERATION · 01 / 06
+        </div>
+    </header>
+
+    <section class="mission-content">
+
+        <div class="mission-eyebrow">
+            NIGHT PATROL · ODISHA COAST
+        </div>
+
+        <h1 class="mission-title">
+            THE SHORE
+            <span>IS SPEAKING</span>
+        </h1>
+
+        <div class="mission-divider"></div>
+
+        <p class="mission-story">
+            The moon is high. The tide has fallen quiet.
+            Somewhere along this beach, an <strong>Olive Ridley</strong>
+            has begun preparing for one of the most important journeys of its life.
+            <br><br>
+            Tonight, you are not here to interfere.
+            <strong>You are here to read the beach.</strong>
+        </p>
+
+        <div class="objective">
+
+            <div class="objective-top">
+                <div class="objective-label">
+                    FIELD INVESTIGATION · 01
+                </div>
+
+                <div id="investigationStatus" class="objective-status">
+                    EVIDENCE · 0 / 3 INSPECTED
+                </div>
+            </div>
+
+            <div class="field-log">
+                <strong>PATROL LOG · 03:17 AM</strong><br>
+                Three unusual signs have been recorded along the nesting beach.
+                <strong>Inspect all three.</strong>
+                Then decide which evidence should be recorded as
+                <strong>ACTIVE NESTING</strong>.
+            </div>
+
+            <div class="mission-task">
+                Don't guess from the label.<br>
+                <strong>Study the evidence.</strong>
+            </div>
+
+            <div id="clues" class="clues"></div>
+
+            <div id="feedback" class="feedback">
+                Begin your field inspection.
+            </div>
+
+            <div class="action-row">
+                <button id="guideButton" class="guide-button" type="button">
+                    🐢 TURTLE FIELD GUIDE
+                </button>
+            </div>
+
+        </div>
+
+    </section>
+
+    <aside class="heritage-note">
+        <div class="heritage-title">COASTAL HERITAGE</div>
+        Odisha's coast is home to some of the world's most important
+        Olive Ridley nesting beaches.
+        <br><br>
+        <strong>
+            Gahirmatha is recognised as one of the world's most important
+            Olive Ridley breeding grounds.
+        </strong>
+    </aside>
+
+    <!-- FIELD EVIDENCE MODAL -->
+    <div id="investigationModal" class="modal">
+        <div class="modal-box">
+
+            <div id="investigationModalLabel" class="modal-label">
+                FIELD EVIDENCE
+            </div>
+
+            <h2 id="investigationModalTitle">Evidence</h2>
+
+            <div class="modal-divider"></div>
+
+            <p id="investigationModalText"></p>
+
+            <button id="investigationModalClose" class="modal-close" type="button">
+                RETURN TO INVESTIGATION
+            </button>
+
+        </div>
+    </div>
+
+    <!-- TURTLE GUIDE -->
+    <div id="guideModal" class="modal">
+        <div class="modal-box">
+
+            <div class="modal-label">
+                FIELD GUIDE · OLIVE RIDLEY
+            </div>
+
+            <h2>KNOW YOUR SUBJECT</h2>
+
+            <div class="modal-divider"></div>
+
+            <p>
+                A good field observer knows what to look for before making a report.
+            </p>
+
+            <div class="fact-list">
+
+                <div class="fact">
+                    <span class="fact-title">01 · NESTING</span>
+                    Female Olive Ridley turtles come ashore to dig nests in
+                    sandy beaches and lay their eggs.
+                </div>
+
+                <div class="fact">
+                    <span class="fact-title">02 · NEST CHAMBER</span>
+                    The female uses her hind flippers to create a chamber
+                    in the sand where the eggs are deposited.
+                </div>
+
+                <div class="fact">
+                    <span class="fact-title">03 · ODISHA</span>
+                    Odisha's coast contains some of the world's most important
+                    Olive Ridley nesting beaches.
+                </div>
+
+                <div class="fact">
+                    <span class="fact-title">04 · ARRIBADA</span>
+                    Large numbers of Olive Ridleys can gather to nest during
+                    spectacular mass-nesting events called arribadas.
+                </div>
+
+                <div class="fact">
+                    <span class="fact-title">05 · FIELD RULE</span>
+                    Observe first. Avoid touching, moving or unnecessarily
+                    disturbing a nesting turtle or its nest.
+                </div>
+
+            </div>
+
+            <button id="guideClose" class="modal-close" type="button">
+                RETURN TO MISSION
+            </button>
+
+        </div>
+    </div>
+
+    <!-- SUCCESS MODAL -->
+    <div id="successModal" class="modal">
+        <div class="modal-box">
+
+            <div class="modal-label">
+                FIELD REPORT · VERIFIED
+            </div>
+
+            <h2>ACTIVE NESTING</h2>
+
+            <div class="modal-divider"></div>
+
+            <p>
+                You identified the
+                <strong>circular nest chamber</strong>
+                as the strongest evidence of active nesting.
+            </p>
+
+            <p>
+                The disturbed depression in the sand is consistent with a
+                turtle excavating a chamber for its eggs.
+            </p>
+
+            <p>
+                Most importantly, you reached the correct conclusion without
+                needing to touch the turtle or disturb the nest.
+            </p>
+
+            <p>
+                <strong>
+                    Observation complete. The beach remains undisturbed.
+                </strong>
+            </p>
+
+            <button id="successClose" class="modal-close" type="button">
+                COMPLETE FIELD REPORT
+            </button>
+
+        </div>
+    </div>
+
+    <footer class="footer">
+        <button id="backButton" class="back" type="button">
+            ← RETURN TO BRIEFING
+        </button>
+
+        <button id="nextButton" class="next" type="button">
+            CONTINUE →
+        </button>
+    </footer>
+
+</section>
+
+
+
+
+
+<section id="mission2Scene" class="m2-mission hidden">
+
+
+<!-- =======================================================
+     HEADER
+======================================================= -->
+
+<header class="m2-header">
+
+        <div></div>
+
+        <div class="m2-mission-id">
+
+        FIELD OPERATION · 02 / 06
+
+    </div>
+
+</header>
+
+
+
+<!-- =======================================================
+     MAIN CONTENT
+======================================================= -->
+
+<section class="m2-content">
+
+
+    <div class="m2-eyebrow">
+
+        NIGHT PATROL · ODISHA COAST
+
+    </div>
+
+
+    <h1 class="m2-title">
+
+        KEEP THE
+
+        <span>
+            NIGHT QUIET
+        </span>
+
+    </h1>
+
+
+    <div class="m2-divider"></div>
+
+
+    <p class="m2-story">
+
+        The nest has been found.
+
+        <strong>
+            Now it must be protected.
+        </strong>
+
+        Your observations have revealed several
+        possible disturbances.
+
+        Before intervening, determine what
+        actually threatens the nesting turtle.
+
+    </p>
+
+
+
+    <!-- =================================================
+         QUIZ
+    ================================================== -->
+
+    <div class="m2-quiz-panel">
+
+
+        <div class="m2-quiz-header">
+
+            <div class="m2-quiz-label">
+
+                FIELD INVESTIGATION · 02
+
+            </div>
+
+
+            <div
+                class="m2-question-count"
+                id="m2-questionCount"
+            >
+
+                QUESTION 1 / 4
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="m2-question"
+            id="m2-question"
+        ></div>
+
+
+        <div
+            class="m2-options"
+            id="m2-options"
+        ></div>
+
+
+        <div
+            class="m2-feedback"
+            id="m2-feedback"
+        ></div>
+
+
+        <div class="m2-progress-area">
+
+            <div
+                class="m2-progress-text"
+                id="m2-progressText"
+            >
+
+                INVESTIGATION · 1 / 4
+
+            </div>
+
+
+            <div class="m2-progress-bar">
+
+                <div
+                    class="m2-progress-fill"
+                    id="m2-progressFill"
+                ></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =======================================================
+     FIELD TIP
+======================================================= -->
+
+<div class="m2-tip">
+
+    <div class="m2-tip-title">
+
+        FIELD TIP
+
+    </div>
+
+
+    <div class="m2-tip-text">
+
+        Not every disturbance
+        is equally dangerous.
+
+        <br><br>
+
+        Think about what
+        affects the turtle's
+        natural behaviour.
+
+    </div>
+
+</div>
+
+
+
+<!-- =======================================================
+     BOTTOM TOOLS
+======================================================= -->
+
+<div class="m2-bottom-tools">
+
+
+    <button
+        class="m2-tool"
+        id="m2-fieldNotes"
+    >
+
+        <span class="m2-tool-icon">
+            ◉
+        </span>
+
+        <span>
+
+            <span class="m2-tool-label">
+                Field Notes
+            </span>
+
+            <span class="m2-tool-small">
+                Click to read
+            </span>
+
+        </span>
+
+    </button>
+
+
+
+    <button
+        class="m2-tool"
+        id="m2-turtleFact"
+    >
+
+        <span class="m2-tool-icon">
+            ♢
+        </span>
+
+        <span>
+
+            <span class="m2-tool-label">
+                Turtle Fact
+            </span>
+
+            <span class="m2-tool-small">
+                Learn a fact
+            </span>
+
+        </span>
+
+    </button>
+
+
+</div>
+
+
+
+<!-- =======================================================
+     COMPLETION SCREEN
+======================================================= -->
+
+<div
+    class="m2-complete"
+    id="m2-complete"
+>
+
+    <div class="m2-complete-box">
+
+        <div class="m2-complete-label">
+
+            FIELD OPERATION · 02
+
+        </div>
+
+
+        <h2>
+
+            INVESTIGATION COMPLETE
+
+        </h2>
+
+
+        <p>
+
+            You correctly analysed the nesting
+            beach and identified the major risks
+            without disturbing the turtle.
+
+            <br><br>
+
+            Proceed to the next operation.
+
+        </p>
+
+
+        <button
+            class="m2-complete-button"
+            id="m2-completeButton"
+        >
+
+            CONTINUE TO MISSION 03 →
+
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<!-- =======================================================
+     FOOTER
+======================================================= -->
+
+
+<!-- =======================================================
+     FIELD NOTES / TURTLE FACT MODAL
+======================================================= -->
+
+<div
+    class="m2-info-modal"
+    id="m2-infoModal"
+>
+
+    <div class="m2-info-box">
+
+        <div
+            class="m2-info-label"
+            id="m2-infoLabel"
+        >
+            FIELD NOTES
+        </div>
+
+
+        <div
+            class="m2-info-title"
+            id="m2-infoTitle"
+        >
+            Keep Your Distance
+        </div>
+
+
+        <ul
+            class="m2-info-list"
+            id="m2-infoList"
+        ></ul>
+
+
+        <div
+            class="m2-info-source"
+            id="m2-infoSource"
+        ></div>
+
+
+        <button
+            class="m2-info-close"
+            id="m2-infoClose"
+            type="button"
+        >
+            CLOSE
+        </button>
+
+    </div>
+
+</div>
+
+
+<footer class="m2-footer">
+
+
+    <button
+        class="m2-back"
+        id="m2-backButton"
+    >
+
+        ← MISSION 01
+
+    </button>
+
+
+    <button
+        class="m2-next"
+        id="m2-nextButton"
+    >
+
+        NEXT →
+
+    </button>
+
+</footer>
+
+
+
+
+
+<script>/* =========================================================
+   BACKGROUND DEBUG / FALLBACK
+   The code checks the exact new filenames first, then older
+   names so the page still works if the files were renamed.
+========================================================= */
+
+const imageCandidates = {
+    introBg: [
+        "assets/sea-whisper-bg(2).jpeg",
+        "assets/sea-whisper-bg(1).jpeg",
+        "assets/sea-whisper-bg.jpeg",
+        "sea-whisper-bg(2).jpeg",
+        "sea-whisper-bg(1).jpeg",
+        "sea-whisper-bg.jpeg",
+        "assets/mode2(2).jpeg",
+        "assets/mode2.jpeg"
+    ],
+    missionBg: [
+        "assets/mode2(2).jpeg",
+        "assets/mode2.jpeg",
+        "mode2(2).jpeg",
+        "mode2.jpeg"
+    ]
+};
+
+function loadFirstWorkingImage(imgElement, candidates) {
+    let index = 0;
+
+    function tryNext() {
+        if (index >= candidates.length) {
+            console.error("No background image could be loaded.", candidates);
+            return;
+        }
+
+        const test = new Image();
+
+        test.onload = function () {
+            imgElement.src = candidates[index];
+        };
+
+        test.onerror = function () {
+            index++;
+            tryNext();
+        };
+
+        test.src = candidates[index];
+    }
+
+    tryNext();
+}
+
+loadFirstWorkingImage(
+    document.getElementById("introBg"),
+    imageCandidates.introBg
+);
+
+loadFirstWorkingImage(
+    document.getElementById("missionBg"),
+    imageCandidates.missionBg
+);
+
+
+/* =========================================================
+   SINGLE SHARED OCEAN MUSIC SYSTEM
+   One audio element. One source. One state.
+========================================================= */
+
+const oceanAudio = document.getElementById("oceanAudio");
+const musicControl = document.getElementById("musicControl");
+const musicText = document.getElementById("musicText");
+const musicIcon = document.getElementById("musicIcon");
+const ambienceButton = document.getElementById("ambienceButton");
+const ambienceText = document.getElementById("ambienceText");
+
+let musicPlaying = false;
+let musicMutedByUser = false;
+
+/* The MP3 is beside this HTML file. */
+oceanAudio.src = "Ocean_sound.mp3";
+oceanAudio.preload = "auto";
+oceanAudio.loop = true;
+oceanAudio.playsInline = true;
+oceanAudio.volume = 0.32;
+
+function updateMusicUI(message = null) {
+    const label = message || (musicPlaying ? "OCEAN MUSIC · ON" : "MUSIC · OFF");
+    const icon = musicPlaying ? "♪" : "×";
+
+    if (musicText) musicText.textContent = label;
+    if (musicIcon) musicIcon.textContent = icon;
+    if (musicControl) musicControl.classList.toggle("muted", !musicPlaying);
+
+    if (ambienceText) ambienceText.textContent = musicPlaying ? "OCEAN AMBIENCE · ON" : "OCEAN AMBIENCE · OFF";
+    if (ambienceButton) ambienceButton.classList.toggle("muted", !musicPlaying);
+}
+
+async function startOceanMusic() {
+    musicMutedByUser = false;
+    updateMusicUI("OCEAN MUSIC · STARTING...");
+
+    try {
+        /* Reset only when not already playing; this preserves continuity. */
+        if (oceanAudio.paused) {
+            await oceanAudio.play();
+        }
+
+        musicPlaying = true;
+        updateMusicUI();
+        return true;
+    } catch (error) {
+        musicPlaying = false;
+        updateMusicUI("CLICK AGAIN TO PLAY MUSIC");
+        console.error("Ocean_sound.mp3 playback failed:", error);
+        return false;
+    }
+}
+
+function stopOceanMusic() {
+    oceanAudio.pause();
+    musicPlaying = false;
+    musicMutedByUser = true;
+    updateMusicUI();
+}
+
+async function toggleMusic(event) {
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    if (musicPlaying && !oceanAudio.paused) {
+        stopOceanMusic();
+    } else {
+        await startOceanMusic();
+    }
+}
+
+musicControl.addEventListener("click", toggleMusic);
+
+if (ambienceButton) {
+    ambienceButton.addEventListener("click", toggleMusic);
+}
+
+/* Explicit loop safety. */
+oceanAudio.addEventListener("ended", async function () {
+    if (!musicMutedByUser) {
+        oceanAudio.currentTime = 0;
+        try {
+            await oceanAudio.play();
+            musicPlaying = true;
+            updateMusicUI();
+        } catch (error) {
+            musicPlaying = false;
+            updateMusicUI("CLICK TO RESUME MUSIC");
+        }
+    }
+});
+
+oceanAudio.addEventListener("play", function () {
+    musicPlaying = true;
+    updateMusicUI();
+});
+
+oceanAudio.addEventListener("pause", function () {
+    if (!musicMutedByUser) {
+        musicPlaying = false;
+        updateMusicUI();
+    }
+});
+
+oceanAudio.addEventListener("error", function () {
+    musicPlaying = false;
+    updateMusicUI("AUDIO FILE NOT FOUND");
+    console.error("Cannot load Ocean_sound.mp3. It must be beside this HTML file.");
+});
+
+updateMusicUI();
+
+/* =========================================================
+   PAGE SWITCH
+========================================================= */
+
+const introScene =
+    document.getElementById("introScene");
+
+const missionScene =
+    document.getElementById("missionScene");
+
+const beginButton =
+    document.getElementById("beginButton");
+
+
+beginButton.addEventListener(
+    "click",
+    async function () {
+
+        /* BEGIN OPERATION is an explicit user gesture, so the
+           browser is allowed to start the audio here. */
+        if (!musicPlaying) {
+            await startOceanMusic();
+        }
+
+        introScene.classList.add("hidden");
+        missionScene.classList.remove("hidden");
+
+        /* Move the SAME button to the Mission 01 position.
+           The SAME audio element keeps playing; it is never recreated. */
+        musicControl.classList.remove("intro-position");
+        musicControl.classList.add("mission-position");
+
+    }
+);
+
+
+/* =========================================================
+   MISSION 01 DATA
+========================================================= */
+
+const evidenceData = [
+
+    {
+        image: "assets/sandheap.jpeg",
+        label: "DISTURBED SAND",
+        correct: false,
+        explanation:
+            "A loose mound of disturbed sand shows that the beach surface has been altered, but by itself it is not enough evidence to confidently record active nesting. Continue inspecting the other signs."
+    },
+
+    {
+        image: "assets/sandpit.jpeg",
+        label: "CIRCULAR DEPRESSION",
+        correct: true,
+        explanation:
+            "This is the strongest clue. The defined circular depression is consistent with a turtle excavating a nest chamber in the sand."
+    },
+
+    {
+        image: "assets/plasticbottle.jpeg",
+        label: "BEACH DEBRIS",
+        correct: false,
+        explanation:
+            "The plastic bottle is evidence of human activity and a potential conservation concern, but it tells you nothing about whether a turtle has begun excavating a nest."
+    }
+
+];
+
+
+function shuffle(array) {
+
+    const shuffled = [...array];
+
+    for (
+        let i = shuffled.length - 1;
+        i > 0;
+        i--
+    ) {
+
+        const j =
+            Math.floor(
+                Math.random() * (i + 1)
+            );
+
+        [
+            shuffled[i],
+            shuffled[j]
+        ] =
+        [
+            shuffled[j],
+            shuffled[i]
+        ];
+    }
+
+    return shuffled;
+}
+
+
+/* =========================================================
+   MISSION ELEMENTS
+========================================================= */
+
+const clues =
+    document.getElementById("clues");
+
+const feedback =
+    document.getElementById("feedback");
+
+const investigationStatus =
+    document.getElementById("investigationStatus");
+
+const nextButton =
+    document.getElementById("nextButton");
+
+const backButton =
+    document.getElementById("backButton");
+
+
+const investigationModal =
+    document.getElementById("investigationModal");
+
+const investigationModalLabel =
+    document.getElementById("investigationModalLabel");
+
+const investigationModalTitle =
+    document.getElementById("investigationModalTitle");
+
+const investigationModalText =
+    document.getElementById("investigationModalText");
+
+const investigationModalClose =
+    document.getElementById("investigationModalClose");
+
+
+const guideButton =
+    document.getElementById("guideButton");
+
+const guideModal =
+    document.getElementById("guideModal");
+
+const guideClose =
+    document.getElementById("guideClose");
+
+
+const successModal =
+    document.getElementById("successModal");
+
+const successClose =
+    document.getElementById("successClose");
+
+
+let inspectedCount = 0;
+let inspected = new Set();
+let solved = false;
+
+
+/* =========================================================
+   EVIDENCE MODAL
+========================================================= */
+
+function openInvestigationModal(
+    label,
+    title,
+    text
+) {
+
+    investigationModalLabel.textContent = label;
+    investigationModalTitle.textContent = title;
+    investigationModalText.innerHTML = text;
+
+    investigationModal.classList.add("show");
+}
+
+
+investigationModalClose.addEventListener(
+    "click",
+    function () {
+
+        investigationModal.classList.remove("show");
+
+    }
+);
+
+
+/* =========================================================
+   CREATE RANDOM CLUES
+========================================================= */
+
+shuffle(evidenceData).forEach(
+    function (item, index) {
+
+        const clue =
+            document.createElement("button");
+
+        clue.type = "button";
+        clue.className = "clue";
+
+        clue.innerHTML = `
+            <span class="clue-number">
+                ${String.fromCharCode(65 + index)}
+            </span>
+
+            <img
+                src="${item.image}"
+                alt="${item.label}"
+            >
+        `;
+
+
+        clue.addEventListener(
+            "click",
+            function () {
+
+                if (solved) return;
+
+
+                if (!inspected.has(index)) {
+
+                    inspected.add(index);
+
+                    inspectedCount++;
+
+                    clue.classList.add("inspected");
+
+                    investigationStatus.textContent =
+                        "EVIDENCE · " +
+                        inspectedCount +
+                        " / 3 INSPECTED";
+                }
+
+
+                if (item.correct) {
+
+                    clue.classList.add("correct");
+
+                    solved = true;
+
+                    investigationStatus.textContent =
+                        "FIELD REPORT · VERIFIED";
+
+                    feedback.innerHTML =
+                        "✓ Evidence verified. This is the strongest sign of active nesting.";
+
+                    feedback.style.color = "#70dfe2";
+
+                    nextButton.classList.add("ready");
+
+                    nextButton.textContent =
+                        "FIELD REPORT COMPLETE";
+
+                    successModal.classList.add("show");
+
+                } else {
+
+                    clue.classList.add("wrong");
+
+                    feedback.innerHTML =
+                        "Not enough evidence. Read the field explanation and continue your inspection.";
+
+                    feedback.style.color = "#d8846d";
+
+                    openInvestigationModal(
+                        "FIELD EVIDENCE",
+                        item.label,
+                        item.explanation
+                    );
+
+                    setTimeout(
+                        function () {
+                            clue.classList.remove("wrong");
+                        },
+                        500
+                    );
+                }
+
+            }
+        );
+
+        clues.appendChild(clue);
+    }
+);
+
+
+/* =========================================================
+   GUIDE
+========================================================= */
+
+guideButton.addEventListener(
+    "click",
+    function () {
+        guideModal.classList.add("show");
+    }
+);
+
+guideClose.addEventListener(
+    "click",
+    function () {
+        guideModal.classList.remove("show");
+    }
+);
+
+
+/* =========================================================
+   SUCCESS
+========================================================= */
+
+successClose.addEventListener(
+    "click",
+    function () {
+
+        successModal.classList.remove("show");
+
+    }
+);
+
+
+/* =========================================================
+   MODAL OUTSIDE CLICK
+========================================================= */
+
+[
+    investigationModal,
+    guideModal,
+    successModal
+].forEach(
+    function (modal) {
+
+        modal.addEventListener(
+            "click",
+            function (event) {
+
+                if (event.target === modal) {
+
+                    modal.classList.remove("show");
+
+                }
+            }
+        );
+
+    }
+);
+
+
+/* =========================================================
+   ESC KEY
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (event.key === "Escape") {
+
+            investigationModal.classList.remove("show");
+
+            guideModal.classList.remove("show");
+
+            successModal.classList.remove("show");
+
+        }
+    }
+);
+
+
+/* =========================================================
+   BACK TO START
+========================================================= */
+
+backButton.addEventListener(
+    "click",
+    function () {
+
+        missionScene.classList.add("hidden");
+        introScene.classList.remove("hidden");
+
+        musicControl.classList.remove("mission-position");
+        musicControl.classList.add("intro-position");
+
+    }
+);
+
+
+/* =========================================================
+   CONTINUE FROM MISSION 01 TO MISSION 02
+========================================================= */
+
+const mission2Scene =
+    document.getElementById("mission2Scene");
+
+nextButton.addEventListener(
+    "click",
+    function () {
+
+        if (!solved) {
+
+            feedback.innerHTML =
+                "Inspect the evidence and identify the strongest sign of active nesting.";
+
+            feedback.style.color =
+                "#e5c474";
+
+            return;
+        }
+
+        successModal.classList.remove("show");
+
+        missionScene.classList.add("hidden");
+        mission2Scene.classList.remove("hidden");
+
+        nextButton.textContent =
+            "CONTINUE →";
+
+        nextButton.classList.remove("ready");
+
+        if (typeof loadQuestion === "function") {
+            loadQuestion();
+        }
+
+    }
+);
+
+
+/* =========================================================
+   MISSION 02 CONNECTED SCRIPT
+========================================================= */
+
+
+
+/* =========================================================
+   QUESTIONS
+========================================================= */
+
+const questions = [
+
+    {
+
+        question:
+            "A nesting Olive Ridley is approaching the beach at night. Which observation would be the strongest reason to intervene immediately?",
+
+        options: [
+
+            "The turtle pauses several times before reaching the sand.",
+
+            "A person is using a bright white flashlight directly toward the turtle.",
+
+            "The turtle changes direction once before reaching the nesting area.",
+
+            "The beach is unusually quiet."
+
+        ],
+
+        correct: 1,
+
+        explanation:
+            "Correct. Direct artificial light can disorient a nesting turtle and interfere with its movement."
+
+    },
+
+
+    {
+
+        question:
+            "Why can artificial light be especially dangerous to sea turtles during the nesting and hatching cycle?",
+
+        options: [
+
+            "It increases the temperature of the entire beach immediately.",
+
+            "It makes the sand too soft for turtles to dig.",
+
+            "It can interfere with natural orientation cues used during movement between land and sea.",
+
+            "It causes adult turtles to stop producing eggs."
+
+        ],
+
+        correct: 2,
+
+        explanation:
+            "Correct. Artificial light can interfere with natural orientation cues, especially when hatchlings are trying to locate the sea."
+
+    },
+
+
+    {
+
+        question:
+            "You discover plastic waste several metres away from a nest. What is the BEST response during a nesting patrol?",
+
+        options: [
+
+            "Immediately pick it up while the turtle is nesting beside it.",
+
+            "Leave all waste permanently because removing it may disturb the beach.",
+
+            "Wait for a safe opportunity and remove the waste without approaching or disturbing the turtle.",
+
+            "Move the nest to a cleaner section of the beach."
+
+        ],
+
+        correct: 2,
+
+        explanation:
+            "Correct. Removing hazardous waste is useful, but an actively nesting turtle should not be disturbed. A nest should never simply be relocated because the surrounding beach is inconvenient."
+
+    },
+
+
+    {
+
+        question:
+            "A group wants to watch a nesting turtle. They suggest standing close to her, using phone flash occasionally, and speaking quietly. Which assessment is MOST scientifically appropriate?",
+
+        options: [
+
+            "It is safe because the group is not touching the turtle.",
+
+            "It is safe as long as nobody photographs the eggs.",
+
+            "It can still disturb the turtle because proximity, light and movement can affect nesting behaviour.",
+
+            "It is safe because Olive Ridleys are accustomed to humans."
+
+        ],
+
+        correct: 2,
+
+        explanation:
+            "Correct. Physical contact is not required for disturbance. Light, movement, noise and proximity can all alter the behaviour of a nesting turtle."
+
+    }
+
+];
+
+
+/* =========================================================
+   GAME STATE
+========================================================= */
+
+let currentQuestion = 0;
+
+let answeredCorrectly = false;
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const questionElement =
+    document.getElementById("m2-question");
+
+const optionsElement =
+    document.getElementById("m2-options");
+
+const feedbackElement =
+    document.getElementById("m2-feedback");
+
+const questionCountElement =
+    document.getElementById("m2-questionCount");
+
+const progressTextElement =
+    document.getElementById("m2-progressText");
+
+const progressFillElement =
+    document.getElementById("m2-progressFill");
+
+const m2NextButton =
+    document.getElementById("m2-nextButton");
+
+const m2BackButton =
+    document.getElementById("m2-backButton");
+
+const completeScreen =
+    document.getElementById("m2-complete");
+
+const completeButton =
+    document.getElementById("m2-completeButton");
+
+
+/* =========================================================
+   LOAD QUESTION
+========================================================= */
+
+function loadQuestion() {
+
+    const q =
+        questions[currentQuestion];
+
+
+    answeredCorrectly =
+        false;
+
+
+    questionElement.textContent =
+        q.question;
+
+
+    questionCountElement.textContent =
+        `QUESTION ${currentQuestion + 1} / ${questions.length}`;
+
+
+    progressTextElement.textContent =
+        `INVESTIGATION · ${currentQuestion + 1} / ${questions.length}`;
+
+
+    progressFillElement.style.width =
+        `${((currentQuestion + 1) / questions.length) * 100}%`;
+
+
+    feedbackElement.textContent =
+        "Choose the most scientifically appropriate answer.";
+
+
+    feedbackElement.style.color =
+        "rgba(239,239,232,0.65)";
+
+
+    m2NextButton.classList.remove(
+        "ready"
+    );
+
+
+    optionsElement.innerHTML =
+        "";
+
+
+    q.options.forEach(
+        function(optionText, index) {
+
+
+            const button =
+                document.createElement("button");
+
+
+            button.className =
+                "option";
+
+
+            button.type =
+                "button";
+
+
+            button.innerHTML =
+
+                `
+                <span class="option-letter">
+                    ${String.fromCharCode(65 + index)}
+                </span>
+
+                ${optionText}
+                `;
+
+
+            button.addEventListener(
+                "click",
+                function() {
+
+                    checkAnswer(
+                        index,
+                        button
+                    );
+
+                }
+            );
+
+
+            optionsElement.appendChild(
+                button
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   CHECK ANSWER
+========================================================= */
+
+function checkAnswer(
+    selectedIndex,
+    selectedButton
+) {
+
+    if (answeredCorrectly) {
+
+        return;
+
+    }
+
+
+    const q =
+        questions[currentQuestion];
+
+
+    if (
+        selectedIndex === q.correct
+    ) {
+
+        answeredCorrectly =
+            true;
+
+
+        selectedButton.classList.add(
+            "correct"
+        );
+
+
+        feedbackElement.textContent =
+            "✓ " + q.explanation;
+
+
+        feedbackElement.style.color =
+            "#73dfe1";
+
+
+        const allOptions =
+            document.querySelectorAll(
+                ".option"
+            );
+
+
+        allOptions.forEach(
+            function(option, index) {
+
+                option.disabled =
+                    true;
+
+                if (
+                    index === q.correct
+                ) {
+
+                    option.classList.add(
+                        "correct"
+                    );
+
+                }
+
+            }
+        );
+
+
+        m2NextButton.classList.add(
+            "ready"
+        );
+
+    }
+
+    else {
+
+        selectedButton.classList.add(
+            "wrong"
+        );
+
+
+        feedbackElement.textContent =
+            "✕ Not quite. Reconsider the difference between a harmless observation and an actual conservation risk.";
+
+
+        feedbackElement.style.color =
+            "#d69a86";
+
+
+        selectedButton.disabled =
+            true;
+
+    }
+
+}
+
+
+/* =========================================================
+   NEXT QUESTION
+========================================================= */
+
+m2NextButton.addEventListener(
+    "click",
+    function() {
+
+
+        if (!answeredCorrectly) {
+
+            return;
+
+        }
+
+
+        currentQuestion++;
+
+
+        if (
+            currentQuestion <
+            questions.length
+        ) {
+
+            loadQuestion();
+
+        }
+
+        else {
+
+            completeMission();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   COMPLETE
+========================================================= */
+
+function completeMission() {
+
+    completeScreen.classList.add(
+        "show"
+    );
+
+
+    m2NextButton.classList.remove(
+        "ready"
+    );
+
+}
+
+
+/* =========================================================
+   MISSION 03
+========================================================= */
+
+completeButton.addEventListener(
+    "click",
+    function() {
+
+        window.location.href =
+            "missions-3.html";
+
+    }
+);
+
+
+/* =========================================================
+   BACK
+========================================================= */
+
+m2BackButton.addEventListener(
+    "click",
+    function() {
+        mission2Scene.classList.add("hidden");
+        missionScene.classList.remove("hidden");
+    }
+);
+
+
+/* =========================================================
+   FIELD NOTES / TURTLE FACT MODAL
+========================================================= */
+
+const infoModal =
+    document.getElementById("m2-infoModal");
+
+const infoLabel =
+    document.getElementById("m2-infoLabel");
+
+const infoTitle =
+    document.getElementById("m2-infoTitle");
+
+const infoList =
+    document.getElementById("m2-infoList");
+
+const infoSource =
+    document.getElementById("m2-infoSource");
+
+const infoClose =
+    document.getElementById("m2-infoClose");
+
+
+function openInfo(
+    label,
+    title,
+    points,
+    source
+) {
+
+    infoLabel.textContent =
+        label;
+
+    infoTitle.textContent =
+        title;
+
+    infoList.innerHTML =
+        points
+            .map(function(point) {
+                return `<li>${point}</li>`;
+            })
+            .join("");
+
+    infoSource.innerHTML =
+        source;
+
+    infoModal.classList.add(
+        "show"
+    );
+}
+
+
+function closeInfo() {
+
+    infoModal.classList.remove(
+        "show"
+    );
+}
+
+
+infoClose.addEventListener(
+    "click",
+    closeInfo
+);
+
+
+/* =========================================================
+   FIELD NOTES
+========================================================= */
+
+document
+    .getElementById("m2-fieldNotes")
+    .addEventListener(
+        "click",
+        function() {
+
+            openInfo(
+
+                "FIELD NOTES",
+
+                "Protect the Nesting Beach",
+
+                [
+
+                    "Observe nesting turtles quietly and maintain a safe distance. Avoid surrounding, touching or blocking a turtle's path.",
+
+                    "Do not shine bright artificial light directly at a nesting turtle. Light can interfere with natural behaviour and orientation.",
+
+                    "Keep noise and unnecessary movement to a minimum. A nesting beach should remain as calm and dark as possible.",
+
+                    "Do not step around a nest or disturb the sand unnecessarily. The nest is hidden beneath the beach surface after the female covers it.",
+
+                    "If plastic, fishing gear or other dangerous waste is found, it should be removed only when doing so will not disturb an actively nesting turtle.",
+
+                    "Conservation in Odisha involves organised protection and monitoring. Odisha Tourism notes the participation of government teams and local village volunteers around the Rushikulya rookery.",
+
+                    "The goal of a patrol is not to get closer to the turtle. It is to protect the conditions the turtle needs while causing as little disturbance as possible."
+
+                ],
+
+                "<strong>Verified sources:</strong> Odisha Tourism · Forest, Environment & Climate Change Department, Government of Odisha"
+
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   TURTLE FACT
+========================================================= */
+
+document
+    .getElementById("m2-turtleFact")
+    .addEventListener(
+        "click",
+        function() {
+
+            openInfo(
+
+                "TURTLE FACT",
+
+                "The Olive Ridley & Odisha",
+
+                [
+
+                    "The Olive Ridley sea turtle (Lepidochelys olivacea) is known for arribada — a mass-nesting event in which very large numbers of females come ashore to lay eggs.",
+
+                    "Odisha is one of the world's most important Olive Ridley nesting regions. Major nesting areas include Gahirmatha, Rushikulya and the Devi river mouth.",
+
+                    "Gahirmatha is recognised as one of the world's major Olive Ridley nesting grounds, while Rushikulya is renowned for its spectacular mass-nesting events.",
+
+                    "During nesting, a female digs a chamber in the sand with her hind flippers, lays her eggs and then covers the nest with sand before returning to the sea.",
+
+                    "Olive Ridley nesting is an important part of Odisha's natural heritage. Odisha Tourism describes arribada as a unique natural phenomenon and highlights the role of local villagers and volunteers in protecting the turtles.",
+
+                    "The turtles therefore connect conservation with Odisha's coastal identity: protecting their nesting beaches also protects a remarkable natural phenomenon that is associated with the state's coastline.",
+
+                    "Government conservation programmes, protected areas, monitoring and local participation all contribute to safeguarding these nesting populations for future generations."
+
+                ],
+
+                "<strong>Verified sources:</strong> Odisha Tourism · Government of Odisha · Odisha Forest, Environment & Climate Change Department"
+
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   CLOSE MODAL
+========================================================= */
+
+infoModal.addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            event.target === infoModal
+        ) {
+
+            closeInfo();
+
+        }
+
+    }
+);
+
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            closeInfo();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   START
+========================================================= */
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>

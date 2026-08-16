@@ -1,0 +1,2320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Operation Sea Whisper — Mission 04</title>
+
+<style>
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    overflow: hidden;
+    background: #030a10;
+    color: #f4eee1;
+    font-family: Georgia, "Times New Roman", serif;
+}
+
+
+/* =========================================================
+   MAIN PAGE
+========================================================= */
+
+.mission {
+
+    position: relative;
+
+    width: 100vw;
+    height: 100vh;
+
+    overflow: hidden;
+
+    background-image:
+
+        linear-gradient(
+            90deg,
+            rgba(0, 5, 10, 0.84) 0%,
+            rgba(0, 7, 12, 0.60) 38%,
+            rgba(0, 7, 12, 0.22) 72%,
+            rgba(0, 5, 10, 0.30) 100%
+        ),
+
+        linear-gradient(
+            180deg,
+            rgba(0, 4, 8, 0.12) 0%,
+            rgba(0, 5, 10, 0.10) 45%,
+            rgba(0, 4, 8, 0.62) 100%
+        ),
+
+        url("assets/mode2.jpeg");
+
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header {
+
+    position: absolute;
+
+    z-index: 20;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 4vw;
+
+    border-bottom:
+        1px solid rgba(225, 235, 230, 0.10);
+}
+
+
+.brand {
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    color: #e6c36f;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    letter-spacing: 2.5px;
+
+    text-transform: uppercase;
+}
+
+
+.brand-circle {
+
+    width: 29px;
+    height: 29px;
+
+    border:
+        1px solid rgba(230, 195, 111, 0.75);
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 9px;
+}
+
+
+.operation {
+
+    color:
+        rgba(220, 231, 226, 0.52);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
+
+.content {
+
+    position: absolute;
+
+    z-index: 10;
+
+    top: 11vh;
+
+    left: 3.8vw;
+
+    width: 760px;
+}
+
+
+/* =========================================================
+   EYEBROW
+========================================================= */
+
+.eyebrow {
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 8px;
+
+    color: #73dfe1;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    letter-spacing: 3px;
+
+    text-transform: uppercase;
+}
+
+
+.eyebrow::before {
+
+    content: "";
+
+    width: 38px;
+    height: 1px;
+
+    background: #73dfe1;
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.title {
+
+    color: #fff8ea;
+
+    font-size:
+        clamp(52px, 5vw, 74px);
+
+    line-height: 0.84;
+
+    font-weight: 500;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+
+    text-shadow:
+        0 4px 20px rgba(0,0,0,0.8);
+}
+
+
+.title span {
+
+    display: block;
+
+    margin-top: 4px;
+
+    color: #e5c36e;
+
+    font-size: 0.62em;
+
+    letter-spacing: 2px;
+}
+
+
+/* =========================================================
+   DIVIDER
+========================================================= */
+
+.divider {
+
+    width: 95px;
+    height: 1px;
+
+    margin:
+        12px 0 10px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #d9b55e,
+            transparent
+        );
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.description {
+
+    width: 700px;
+
+    color:
+        rgba(247, 242, 231, 0.92);
+
+    font-size: 15px;
+
+    line-height: 1.38;
+
+    text-shadow:
+        0 2px 10px rgba(0,0,0,0.8);
+}
+
+
+.description strong {
+    color: #71dfe1;
+}
+
+
+/* =========================================================
+   INVESTIGATION BOX
+========================================================= */
+
+.investigation {
+
+    width: 760px;
+
+    margin-top: 13px;
+
+    padding:
+        13px 20px 12px;
+
+    border-left:
+        4px solid #70dfe1;
+
+    border-top:
+        1px solid rgba(113, 223, 225, 0.12);
+
+    border-bottom:
+        1px solid rgba(113, 223, 225, 0.12);
+
+    background:
+        rgba(1, 12, 18, 0.88);
+
+    box-shadow:
+        0 16px 35px rgba(0,0,0,0.35);
+
+    backdrop-filter:
+        blur(7px);
+}
+
+
+/* =========================================================
+   INVESTIGATION HEADER
+========================================================= */
+
+.investigation-top {
+
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 6px;
+}
+
+
+.investigation-label {
+
+    color: #71dfe1;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    font-weight: bold;
+
+    letter-spacing: 2.4px;
+
+    text-transform: uppercase;
+}
+
+
+.threat-counter {
+
+    color:
+        rgba(221, 231, 226, 0.50);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    font-weight: bold;
+
+    letter-spacing: 1.4px;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   QUESTION
+========================================================= */
+
+.question {
+
+    color: #fff8ea;
+
+    font-size: 20px;
+
+    line-height: 1.18;
+
+    font-weight: bold;
+
+    margin-bottom: 10px;
+}
+
+
+/* =========================================================
+   THREAT GRID
+========================================================= */
+
+.threat-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 8px;
+
+    width: 100%;
+}
+
+
+/* =========================================================
+   THREAT CARD
+========================================================= */
+
+.threat-card {
+
+    position: relative;
+
+    height: 112px;
+
+    padding: 0;
+
+    overflow: hidden;
+
+    border:
+        1px solid rgba(222, 188, 99, 0.50);
+
+    background: #07131a;
+
+    cursor: pointer;
+
+    text-align: left;
+
+    transition:
+        transform 0.22s ease,
+        border-color 0.22s ease,
+        box-shadow 0.22s ease;
+}
+
+
+.threat-card:hover {
+
+    transform: translateY(-3px);
+
+    border-color: #73dfe1;
+
+    box-shadow:
+        0 9px 20px rgba(80, 200, 210, 0.18);
+}
+
+
+.threat-card img {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+
+    opacity: 0.84;
+
+    transition:
+        transform 0.25s ease,
+        opacity 0.25s ease;
+}
+
+
+.threat-card:hover img {
+
+    opacity: 1;
+
+    transform: scale(1.06);
+}
+
+
+/* =========================================================
+   IMAGE OVERLAY
+========================================================= */
+
+.threat-card::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            transparent 30%,
+            rgba(0,0,0,0.90) 100%
+        );
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   NUMBER
+========================================================= */
+
+.threat-number {
+
+    position: absolute;
+
+    z-index: 4;
+
+    top: 7px;
+    left: 7px;
+
+    width: 21px;
+    height: 21px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border:
+        1px solid #d8b65e;
+
+    border-radius: 50%;
+
+    background:
+        rgba(2, 11, 16, 0.82);
+
+    color: #e5c16b;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   CARD TITLE
+========================================================= */
+
+.threat-title {
+
+    position: absolute;
+
+    z-index: 5;
+
+    left: 9px;
+    right: 7px;
+
+    bottom: 8px;
+
+    color: #f5f0e5;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    font-weight: bold;
+
+    letter-spacing: 1.15px;
+
+    text-transform: uppercase;
+
+    text-shadow:
+        0 2px 7px #000;
+}
+
+
+/* =========================================================
+   CORRECT
+========================================================= */
+
+.threat-card.correct {
+
+    border:
+        2px solid #71e0e1;
+
+    box-shadow:
+        0 0 20px rgba(113,224,225,0.25);
+}
+
+
+.threat-card.correct::after {
+
+    background:
+        linear-gradient(
+            transparent 20%,
+            rgba(0, 45, 48, 0.78) 100%
+        );
+}
+
+
+/* =========================================================
+   WRONG
+========================================================= */
+
+.threat-card.wrong {
+
+    border:
+        2px solid #c77d69;
+
+    animation:
+        shake 0.28s ease;
+}
+
+
+@keyframes shake {
+
+    20% {
+        transform: translateX(-4px);
+    }
+
+    40% {
+        transform: translateX(4px);
+    }
+
+    60% {
+        transform: translateX(-3px);
+    }
+
+    80% {
+        transform: translateX(3px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+
+/* =========================================================
+   BOTTOM INVESTIGATION INFO
+========================================================= */
+
+.investigation-bottom {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-top: 8px;
+
+    min-height: 14px;
+}
+
+
+.scan-text {
+
+    color:
+        rgba(223, 231, 226, 0.54);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 7px;
+
+    line-height: 1;
+
+    letter-spacing: 1.1px;
+
+    text-transform: uppercase;
+}
+
+
+.progress-area {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    width: 235px;
+}
+
+
+.progress-label {
+
+    color:
+        rgba(223, 231, 226, 0.45);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 7px;
+
+    letter-spacing: 1.1px;
+
+    white-space: nowrap;
+
+    text-transform: uppercase;
+}
+
+
+.progress-track {
+
+    flex: 1;
+
+    height: 3px;
+
+    background:
+        rgba(214, 228, 224, 0.14);
+
+    overflow: hidden;
+}
+
+
+.progress {
+
+    width: 0%;
+
+    height: 100%;
+
+    background: #71dfe1;
+
+    transition:
+        width 0.35s ease;
+}
+
+
+/* =========================================================
+   FIELD TIP
+========================================================= */
+
+.field-tip {
+
+    position: absolute;
+
+    z-index: 15;
+
+    top: 5vh;
+
+    right: 4vw;
+
+    width: 150px;
+
+    min-height: 160px;
+
+    padding:
+        17px 14px;
+
+    background:
+        #dfc681;
+
+    color:
+        #25302e;
+
+    transform:
+        rotate(1.8deg);
+
+    box-shadow:
+        0 10px 24px rgba(0,0,0,0.32);
+}
+
+
+.field-tip::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: -8px;
+
+    left: 25px;
+
+    width: 45px;
+    height: 15px;
+
+    background:
+        rgba(214,190,123,0.82);
+}
+
+
+.field-tip-title {
+
+    margin-bottom: 8px;
+
+    color: #273331;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+}
+
+
+.field-tip p {
+
+    margin-bottom: 9px;
+
+    font-size: 11px;
+
+    line-height: 1.45;
+}
+
+
+/* =========================================================
+   ANSWER POPUP
+========================================================= */
+
+.threat-popup {
+
+    position: fixed;
+
+    z-index: 100;
+
+    inset: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background:
+        rgba(0, 5, 9, 0.78);
+
+    backdrop-filter:
+        blur(8px);
+}
+
+
+.popup-box {
+
+    width:
+        min(520px, 88vw);
+
+    padding:
+        28px 30px;
+
+    border-left:
+        4px solid #73e0e1;
+
+    border-top:
+        1px solid rgba(113,224,225,0.20);
+
+    border-right:
+        1px solid rgba(113,224,225,0.20);
+
+    border-bottom:
+        1px solid rgba(113,224,225,0.20);
+
+    background:
+        rgba(3, 17, 23, 0.98);
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,0.65);
+}
+
+
+.popup-label {
+
+    margin-bottom: 8px;
+
+    color: #73e0e1;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    font-weight: bold;
+
+    letter-spacing: 2.5px;
+
+    text-transform: uppercase;
+}
+
+
+.popup-box h2 {
+
+    margin-bottom: 12px;
+
+    color: #e5c16c;
+
+    font-size: 25px;
+
+    line-height: 1.1;
+
+    text-transform: uppercase;
+}
+
+
+.popup-box p {
+
+    color:
+        rgba(244,239,227,0.91);
+
+    font-size: 14px;
+
+    line-height: 1.55;
+
+    margin-bottom: 18px;
+}
+
+
+.popup-box button {
+
+    padding:
+        9px 18px;
+
+    border:
+        1px solid rgba(225,194,109,0.60);
+
+    background:
+        rgba(3,13,19,0.70);
+
+    color: #e5c16c;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    cursor: pointer;
+
+    text-transform: uppercase;
+}
+
+
+.popup-box button:hover {
+
+    border-color: #73e0e1;
+
+    color: #73e0e1;
+}
+
+
+/* =========================================================
+   MISSION COMPLETE POPUP
+========================================================= */
+
+.completion-popup {
+
+    position: fixed;
+
+    z-index: 200;
+
+    inset: 0;
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background:
+        rgba(0, 4, 8, 0.78);
+
+    backdrop-filter:
+        blur(9px);
+}
+
+
+.completion-popup.show {
+
+    display: flex;
+
+    animation:
+        popupFadeIn 0.35s ease;
+}
+
+
+@keyframes popupFadeIn {
+
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+/* =========================================================
+   COMPLETION BOX
+========================================================= */
+
+.completion-box {
+
+    position: relative;
+
+    width:
+        min(620px, 86vw);
+
+    padding:
+        34px 38px 30px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(4, 22, 29, 0.98),
+            rgba(1, 11, 17, 0.98)
+        );
+
+    border-left:
+        4px solid #73e0e1;
+
+    border-top:
+        1px solid rgba(115, 224, 225, 0.35);
+
+    border-right:
+        1px solid rgba(115, 224, 225, 0.18);
+
+    border-bottom:
+        1px solid rgba(115, 224, 225, 0.18);
+
+    box-shadow:
+        0 30px 90px rgba(0,0,0,0.72),
+        0 0 45px rgba(71,203,211,0.10);
+
+    animation:
+        completionRise 0.45s ease;
+}
+
+
+@keyframes completionRise {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(20px)
+            scale(0.97);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+
+    }
+}
+
+
+/* =========================================================
+   COMPLETION TOP LABEL
+========================================================= */
+
+.completion-popup-label {
+
+    margin-bottom: 12px;
+
+    color: #73e0e1;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    letter-spacing: 3px;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   COMPLETION HEADING
+========================================================= */
+
+.completion-popup h2 {
+
+    margin-bottom: 18px;
+
+    color: #e5c16c;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        clamp(30px, 4vw, 43px);
+
+    line-height: 0.95;
+
+    font-weight: 500;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   COMPLETION DIVIDER
+========================================================= */
+
+.completion-popup-divider {
+
+    width: 110px;
+
+    height: 1px;
+
+    margin-bottom: 18px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #73e0e1,
+            transparent
+        );
+}
+
+
+/* =========================================================
+   COMPLETION MESSAGE
+========================================================= */
+
+.completion-popup p {
+
+    margin-bottom: 12px;
+
+    color:
+        rgba(245,241,230,0.90);
+
+    font-size: 15px;
+
+    line-height: 1.55;
+}
+
+
+.completion-popup strong {
+
+    color: #73e0e1;
+}
+
+
+/* =========================================================
+   COMPLETION FINAL LINE
+========================================================= */
+
+.completion-final-line {
+
+    margin-top: 20px;
+
+    padding-top: 14px;
+
+    border-top:
+        1px solid rgba(220,231,226,0.12);
+
+    color:
+        rgba(229,193,108,0.78);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   COMPLETION CONTINUE
+========================================================= */
+
+.completion-continue {
+
+    margin-top: 22px;
+
+    padding:
+        11px 21px;
+
+    border:
+        1px solid rgba(229,193,108,0.65);
+
+    background:
+        rgba(3,13,19,0.75);
+
+    color:
+        #e5c16c;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    cursor: pointer;
+
+    text-transform: uppercase;
+
+    transition: 0.25s ease;
+}
+
+
+.completion-continue:hover {
+
+    border-color: #73e0e1;
+
+    color: #73e0e1;
+
+    background:
+        rgba(20,62,68,0.55);
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer {
+
+    position: absolute;
+
+    z-index: 20;
+
+    left: 3.8vw;
+
+    right: 4vw;
+
+    bottom: 10px;
+
+    height: 29px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    border-top:
+        1px solid rgba(220,231,226,0.12);
+}
+
+
+.back {
+
+    border: none;
+
+    background: none;
+
+    color:
+        rgba(222,231,227,0.45);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    letter-spacing: 1.5px;
+
+    cursor: pointer;
+
+    text-transform: uppercase;
+}
+
+
+.back:hover {
+    color: #73e0e1;
+}
+
+
+.next {
+
+    padding:
+        8px 18px;
+
+    border:
+        1px solid rgba(225,194,109,0.38);
+
+    background:
+        rgba(2,12,17,0.65);
+
+    color:
+        rgba(225,194,109,0.45);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    letter-spacing: 1.7px;
+
+    cursor: default;
+
+    text-transform: uppercase;
+}
+
+
+.next.ready {
+
+    color: #e5c16c;
+
+    border-color:
+        rgba(225,194,109,0.75);
+
+    cursor: pointer;
+}
+
+
+.next.ready:hover {
+
+    color: #73e0e1;
+
+    border-color: #73e0e1;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    body {
+        overflow: auto;
+    }
+
+    .mission {
+
+        height: auto;
+
+        min-height: 100vh;
+
+        overflow: hidden;
+
+        padding-bottom: 75px;
+    }
+
+    .content {
+
+        position: relative;
+
+        top: auto;
+
+        left: auto;
+
+        width: auto;
+
+        margin: 0 20px;
+
+        padding-top: 85px;
+    }
+
+    .description {
+        width: auto;
+    }
+
+    .investigation {
+        width: 100%;
+    }
+
+    .threat-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .field-tip {
+        display: none;
+    }
+
+    .footer {
+        left: 20px;
+        right: 20px;
+    }
+
+}
+
+
+@media (max-width: 520px) {
+
+    .threat-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .threat-card {
+        height: 145px;
+    }
+
+    .title {
+        font-size: 46px;
+    }
+
+    .question {
+        font-size: 18px;
+    }
+
+    .completion-box {
+
+        padding:
+            27px 24px 25px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<main class="mission">
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="header">
+
+    <div class="brand">
+
+        <div class="brand-circle">
+            ◈
+        </div>
+
+        <span>
+            Operation Sea Whisper
+        </span>
+
+    </div>
+
+
+    <div class="operation">
+
+        FIELD OPERATION · 04 / 06
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<section class="content">
+
+
+    <div class="eyebrow">
+
+        NIGHT PATROL · ODISHA COAST
+
+    </div>
+
+
+    <h1 class="title">
+
+        LIGHTS
+
+        <span>
+            OUT
+        </span>
+
+    </h1>
+
+
+    <div class="divider"></div>
+
+
+    <p class="description">
+
+        The nesting beach is finally quiet.
+        Then your patrol scanner detects several disturbances.
+
+        <strong>
+            Four of them are human-made.
+        </strong>
+
+        Find them and secure the beach before the night's
+        nesting activity is disturbed.
+
+    </p>
+
+
+
+    <!-- =================================================
+         INVESTIGATION
+    ================================================== -->
+
+    <section class="investigation">
+
+
+        <div class="investigation-top">
+
+            <div class="investigation-label">
+
+                NIGHT PATROL · 04
+
+            </div>
+
+
+            <div
+                id="threatCounter"
+                class="threat-counter"
+            >
+
+                THREATS FOUND · 0 / 4
+
+            </div>
+
+        </div>
+
+
+
+        <div class="question">
+
+            Tap the things that
+            <span style="color:#73e0e1;">
+                should not be here.
+            </span>
+
+        </div>
+
+
+
+        <div
+            id="threatGrid"
+            class="threat-grid"
+        ></div>
+
+
+
+        <div
+            id="feedback"
+            class="feedback"
+        ></div>
+
+
+
+        <div class="investigation-bottom">
+
+
+            <div class="scan-text">
+
+                Scan the beach carefully.
+
+            </div>
+
+
+            <div class="progress-area">
+
+                <div class="progress-label">
+
+                    BEACH SECURED
+
+                </div>
+
+
+                <div class="progress-track">
+
+                    <div
+                        id="progress"
+                        class="progress"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     FIELD TIP
+===================================================== -->
+
+<aside class="field-tip">
+
+
+    <div class="field-tip-title">
+
+        FIELD TIP
+
+    </div>
+
+
+    <p>
+
+        Not every unusual
+        disturbance is equally
+        dangerous.
+
+    </p>
+
+
+    <p>
+
+        Look for disturbances
+        caused by people.
+
+    </p>
+
+
+    <p>
+
+        Protect the beach
+        without disturbing
+        the nest.
+
+    </p>
+
+
+</aside>
+
+
+
+<!-- =====================================================
+     CONGRATULATIONS BOX
+===================================================== -->
+
+<div
+    id="completionPopup"
+    class="completion-popup"
+>
+
+    <div class="completion-box">
+
+
+        <div class="completion-popup-label">
+
+            ✦ FIELD OPERATION COMPLETE ✦
+
+        </div>
+
+
+        <h2>
+
+            CONGRATULATIONS
+
+        </h2>
+
+
+        <div class="completion-popup-divider"></div>
+
+
+        <p>
+
+            <strong>
+                YOU HAVE PASSED MISSION 04
+            </strong>
+
+        </p>
+
+
+        <p>
+
+            You successfully identified all four
+            human-made threats on the nesting beach.
+
+        </p>
+
+
+        <p>
+
+            Your careful observations helped protect
+            the nesting turtle and kept the beach safer
+            during its journey.
+
+        </p>
+
+
+        <p>
+
+            You didn't just complete the mission —
+            <strong>
+                you helped protect a part of
+                Odisha's coastal heritage.
+            </strong>
+
+        </p>
+
+
+        <div class="completion-final-line">
+
+            ✦ THE TURTLE'S JOURNEY IS SAFER BECAUSE OF YOU ✦
+
+        </div>
+
+
+        <button
+            id="completionContinue"
+            class="completion-continue"
+            type="button"
+        >
+
+            CONTINUE →
+
+        </button>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+
+    <button
+        id="backButton"
+        class="back"
+        type="button"
+    >
+
+        ← MISSION 03
+
+    </button>
+
+
+    <button
+        id="nextButton"
+        class="next"
+        type="button"
+    >
+
+        NEXT →
+
+    </button>
+
+
+</footer>
+
+
+</main>
+
+
+
+<script>
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+let found = 0;
+
+let missionCompleted = false;
+
+
+/* =========================================================
+   SHUFFLE
+========================================================= */
+
+function shuffle(array) {
+
+    const shuffled = [...array];
+
+    for (
+        let i = shuffled.length - 1;
+        i > 0;
+        i--
+    ) {
+
+        const j =
+            Math.floor(
+                Math.random() * (i + 1)
+            );
+
+        [
+            shuffled[i],
+            shuffled[j]
+        ] =
+        [
+            shuffled[j],
+            shuffled[i]
+        ];
+
+    }
+
+    return shuffled;
+}
+
+
+/* =========================================================
+   OPTIONS
+========================================================= */
+
+const threatOptions = [
+
+    {
+        image: "assets/dogsniffing.jpeg",
+
+        title: "DOG NEAR NEST",
+
+        correct: true,
+
+        explanation:
+            "A dog near a nesting area can disturb a nesting turtle, interfere with natural nesting behaviour, and potentially damage nests or eggs."
+    },
+
+
+    {
+        image: "assets/lamp.jpeg",
+
+        title: "ARTIFICIAL LIGHT",
+
+        correct: true,
+
+        explanation:
+            "Artificial light can interfere with the natural behaviour of nesting turtles and can also affect hatchlings when they emerge and orient toward the sea."
+    },
+
+
+    {
+        image: "assets/plasticbottle.jpeg",
+
+        title: "PLASTIC WASTE",
+
+        correct: true,
+
+        explanation:
+            "Plastic waste is a human-made hazard. It can pollute the nesting beach and create risks for turtles and other coastal wildlife."
+    },
+
+
+    {
+        image: "assets/footprints.jpeg",
+
+        title: "HUMAN FOOTPRINTS",
+
+        correct: true,
+
+        explanation:
+            "Human activity on a nesting beach can disturb turtles and may damage or alter the surface around nests."
+    },
+
+
+    {
+        image: "assets/sandheap.jpeg",
+
+        title: "NATURAL SAND",
+
+        correct: false,
+
+        explanation:
+            "Natural sand is part of the turtle's nesting environment. The presence of sand itself is not a human-made disturbance."
+    },
+
+
+    {
+        image: "assets/adult.jpeg",
+
+        title: "NESTING TURTLE",
+
+        correct: false,
+
+        explanation:
+            "The nesting turtle belongs on the beach. It is part of the natural ecosystem and is not a human-made threat."
+    }
+
+];
+
+
+/* =========================================================
+   RANDOMIZE OPTIONS
+========================================================= */
+
+const shuffledThreats =
+    shuffle(threatOptions);
+
+
+/* =========================================================
+   GET GRID
+========================================================= */
+
+const threatGrid =
+    document.getElementById(
+        "threatGrid"
+    );
+
+
+/* =========================================================
+   CREATE CARDS
+========================================================= */
+
+shuffledThreats.forEach(
+    function(threat, index) {
+
+        const card =
+            document.createElement(
+                "button"
+            );
+
+        card.type =
+            "button";
+
+        card.className =
+            "threat-card";
+
+        card.innerHTML = `
+
+            <span class="threat-number">
+                ${index + 1}
+            </span>
+
+            <img
+                src="${threat.image}"
+                alt="${threat.title}"
+            >
+
+            <span class="threat-title">
+                ${threat.title}
+            </span>
+
+        `;
+
+
+        /* =================================================
+           CARD CLICK
+        ================================================= */
+
+        card.addEventListener(
+            "click",
+            function() {
+
+                if (
+                    card.classList.contains(
+                        "correct"
+                    )
+                ) {
+                    return;
+                }
+
+
+                /* =========================================
+                   CORRECT
+                ========================================= */
+
+                if (threat.correct) {
+
+                    card.classList.add(
+                        "correct"
+                    );
+
+                    found++;
+
+                    updateProgress();
+
+
+                    showThreatPopup(
+                        true,
+                        threat.title,
+                        threat.explanation
+                    );
+
+
+                    /* COMPLETE ONLY AFTER 4 CORRECT */
+
+                    if (
+                        found === 4 &&
+                        !missionCompleted
+                    ) {
+
+                        completeMission4();
+
+                    }
+
+                }
+
+
+                /* =========================================
+                   WRONG
+                ========================================= */
+
+                else {
+
+                    card.classList.add(
+                        "wrong"
+                    );
+
+
+                    showThreatPopup(
+                        false,
+                        threat.title,
+                        threat.explanation
+                    );
+
+
+                    setTimeout(
+                        function() {
+
+                            card.classList.remove(
+                                "wrong"
+                            );
+
+                        },
+                        450
+                    );
+
+                }
+
+            }
+        );
+
+
+        threatGrid.appendChild(
+            card
+        );
+
+    }
+);
+
+
+/* =========================================================
+   UPDATE PROGRESS
+========================================================= */
+
+function updateProgress() {
+
+    const counter =
+        document.getElementById(
+            "threatCounter"
+        );
+
+    const progress =
+        document.getElementById(
+            "progress"
+        );
+
+
+    counter.textContent =
+        "THREATS FOUND · " +
+        found +
+        " / 4";
+
+
+    progress.style.width =
+        ((found / 4) * 100) +
+        "%";
+
+}
+
+
+/* =========================================================
+   ANSWER POPUP
+========================================================= */
+
+function showThreatPopup(
+    correct,
+    title,
+    explanation
+) {
+
+    const oldPopup =
+        document.querySelector(
+            ".threat-popup"
+        );
+
+
+    if (oldPopup) {
+        oldPopup.remove();
+    }
+
+
+    const popup =
+        document.createElement(
+            "div"
+        );
+
+
+    popup.className =
+        "threat-popup";
+
+
+    popup.innerHTML = `
+
+        <div class="popup-box">
+
+            <div class="popup-label">
+
+                ${
+                    correct
+                    ? "THREAT CONFIRMED"
+                    : "NOT A HUMAN-MADE THREAT"
+                }
+
+            </div>
+
+
+            <h2>
+                ${title}
+            </h2>
+
+
+            <p>
+                ${explanation}
+            </p>
+
+
+            <button
+                type="button"
+                id="closeThreatPopup"
+            >
+
+                CLOSE
+
+            </button>
+
+        </div>
+
+    `;
+
+
+    document.body.appendChild(
+        popup
+    );
+
+
+    document
+        .getElementById(
+            "closeThreatPopup"
+        )
+        .addEventListener(
+            "click",
+            function() {
+
+                popup.remove();
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   MISSION 04 COMPLETE
+========================================================= */
+
+function completeMission4() {
+
+    /* Must be exactly 4 / 4 */
+
+    if (found !== 4) {
+        return;
+    }
+
+
+    if (missionCompleted) {
+        return;
+    }
+
+
+    missionCompleted = true;
+
+
+    /* =====================================================
+       COMPLETE PROGRESS BAR
+    ===================================================== */
+
+    const progress =
+        document.getElementById(
+            "progress"
+        );
+
+
+    if (progress) {
+
+        progress.style.width =
+            "100%";
+
+    }
+
+
+    /* =====================================================
+       ENABLE NEXT BUTTON
+    ===================================================== */
+
+    const nextButton =
+        document.getElementById(
+            "nextButton"
+        );
+
+
+    if (nextButton) {
+
+        nextButton.classList.add(
+            "ready"
+        );
+
+        nextButton.textContent =
+            "CONTINUE →";
+
+    }
+
+
+    /* =====================================================
+       OPEN CONGRATULATIONS BOX
+    ===================================================== */
+
+    const completionPopup =
+        document.getElementById(
+            "completionPopup"
+        );
+
+
+    if (completionPopup) {
+
+        completionPopup.classList.add(
+            "show"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   CLOSE CONGRATULATIONS BOX
+========================================================= */
+
+const completionContinue =
+    document.getElementById(
+        "completionContinue"
+    );
+
+
+if (completionContinue) {
+
+    completionContinue.addEventListener(
+        "click",
+        function() {
+
+            const completionPopup =
+                document.getElementById(
+                    "completionPopup"
+                );
+
+
+            if (completionPopup) {
+
+                completionPopup.classList.remove(
+                    "show"
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   NEXT BUTTON
+========================================================= */
+
+document
+    .getElementById(
+        "nextButton"
+    )
+    .addEventListener(
+        "click",
+        function() {
+
+            if (!missionCompleted) {
+                return;
+            }
+
+            /* Mission 05 can be connected here later. */
+
+        }
+    );
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+document
+    .getElementById(
+        "backButton"
+    )
+    .addEventListener(
+        "click",
+        function() {
+
+            window.location.href =
+                "missions-3.html";
+
+        }
+    );
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+updateProgress();
+
+</script>
+
+</body>
+
+</html>
