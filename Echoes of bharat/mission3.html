@@ -8,9 +8,31 @@
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#02080d;}
 #mission3Frame,#mission4Frame{position:fixed;inset:0;width:100%;height:100%;border:0;display:none;background:#02080d;}
 #mission3Frame{display:block;}
+
+#musicToggle{
+ position:fixed; z-index:9999; top:18px; right:22px;
+ min-width:132px; padding:9px 14px;
+ border:1px solid rgba(220,190,105,.65);
+ background:rgba(2,12,17,.82); color:#e4bf67;
+ font:700 9px Arial,sans-serif; letter-spacing:1.7px;
+ text-transform:uppercase; cursor:pointer;
+ backdrop-filter:blur(6px);
+ box-shadow:0 5px 18px rgba(0,0,0,.35);
+ transition:.2s ease;
+}
+#musicToggle:hover{border-color:#70dfe1;color:#70dfe1;}
+#musicToggle.off{color:rgba(235,239,235,.58); border-color:rgba(235,239,235,.28);}
 </style>
 </head>
 <body>
+<!-- One shared ocean ambience for Mission 03 + Mission 04.
+     It lives in the parent page so switching between the two
+     iframe missions never creates a second audio element. -->
+<audio id="seaWhisperOceanAudio" preload="auto" autoplay loop playsinline>
+    <source src="Ocean_sound.mp3" type="audio/mpeg">
+</audio>
+<button id="musicToggle" type="button" aria-pressed="true">♫ OCEAN SOUND: ON</button>
+
 <iframe id="mission3Frame" title="Operation Sea Whisper — Mission 03" srcdoc="&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;en&quot;&gt;
 
@@ -4841,16 +4863,113 @@ updateProgress();
 (function(){
   const m3 = document.getElementById('mission3Frame');
   const m4 = document.getElementById('mission4Frame');
+  const oceanAudio = document.getElementById('seaWhisperOceanAudio');
+
+  /* Keep the ocean ambience running for BOTH missions. */
+  oceanAudio.loop = true;
+  oceanAudio.playsInline = true;
+  oceanAudio.preload = 'auto';
+  oceanAudio.volume = 0.32;
+
+  function keepOceanLooping(){
+    if (oceanAudio.currentTime >= oceanAudio.duration - 0.15) {
+      oceanAudio.currentTime = 0;
+    }
+    oceanAudio.play().catch(function(){
+      /* Autoplay can be blocked by the browser. The first user
+         interaction will retry playback below. */
+    });
+  }
+
+  oceanAudio.addEventListener('ended', function(){
+    oceanAudio.currentTime = 0;
+    keepOceanLooping();
+  });
+
+  /* Retry after a user interaction if Chrome blocked autoplay. */
+  ['click','pointerdown','keydown','touchstart'].forEach(function(type){
+    window.addEventListener(type, function(){
+      if (oceanAudio.paused) keepOceanLooping();
+    }, {passive:true});
+  });
+
+  /* Start immediately when autoplay is permitted. */
+  keepOceanLooping();
+
   function show(target){
     m3.style.display = target === 'mission3' ? 'block' : 'none';
     m4.style.display = target === 'mission4' ? 'block' : 'none';
     window.scrollTo(0,0);
+    /* Never recreate/restart the audio when switching missions. */
+    if (oceanAudio.paused) keepOceanLooping();
   }
+
   window.addEventListener('message', function(event){
     if (!event.data || event.data.type !== 'SEA_WHISPER_NAV') return;
-    if (event.data.target === 'mission3' || event.data.target === 'mission4') show(event.data.target);
-    else if (event.data.target === 'mission2') window.location.href = 'operation_sea_whisper.html';
+    if (event.data.target === 'mission3' || event.data.target === 'mission4') {
+      show(event.data.target);
+    } else if (event.data.target === 'mission2') {
+      window.location.href = 'operation_sea_whisper.html';
+    }
   });
+})();
+</script>
+
+<script>
+(function(){
+  const audio=document.getElementById('seaWhisperOceanAudio');
+  const toggle=document.getElementById('musicToggle');
+  const saved=localStorage.getItem('seaWhisperOceanSound');
+  audio.loop=true;
+  audio.volume=0.32;
+
+  function updateButton(){
+    const on=!audio.muted && !audio.paused;
+    toggle.textContent=on ? '♫ OCEAN SOUND: ON' : '♫ OCEAN SOUND: OFF';
+    toggle.classList.toggle('off',!on);
+    toggle.setAttribute('aria-pressed',String(on));
+  }
+
+  function playOcean(){
+    audio.muted=false;
+    const attempt=audio.play();
+    if(attempt && attempt.catch) attempt.catch(()=>updateButton());
+    updateButton();
+  }
+
+  function stopOcean(){
+    audio.pause();
+    audio.muted=true;
+    updateButton();
+  }
+
+  if(saved==='off'){
+    audio.muted=true;
+    updateButton();
+  }else{
+    playOcean();
+  }
+
+  toggle.addEventListener('click',function(){
+    if(audio.paused || audio.muted){
+      localStorage.setItem('seaWhisperOceanSound','on');
+      playOcean();
+    }else{
+      localStorage.setItem('seaWhisperOceanSound','off');
+      stopOcean();
+    }
+  });
+
+  // Browsers may block autoplay until the user's first interaction.
+  document.addEventListener('pointerdown',function(){
+    if(localStorage.getItem('seaWhisperOceanSound')!=='off' && audio.paused) playOcean();
+  },{once:false});
+
+  audio.addEventListener('ended',function(){
+    if(localStorage.getItem('seaWhisperOceanSound')!=='off') playOcean();
+  });
+  audio.addEventListener('play',updateButton);
+  audio.addEventListener('pause',updateButton);
 })();
 </script>
 </body>
