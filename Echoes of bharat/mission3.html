@@ -3,189 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Operation Sea Whisper</title>
-
+<title>Operation Sea Whisper — Missions 03 & 04</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{width:100%;height:100%}
-body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times New Roman",serif}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#02080d;}
+#mission3Frame,#mission4Frame{position:fixed;inset:0;width:100%;height:100%;border:0;display:none;background:#02080d;}
+#mission3Frame{display:block;}
+</style>
+</head>
+<body>
+<iframe id="mission3Frame" title="Operation Sea Whisper — Mission 03" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
 
-.scene{
-    position:relative;
-    width:100vw;
-    height:100vh;
-    overflow:hidden;
-    background:#061018;
-}
-.scene-bg{
-    position:absolute;
-    inset:0;
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    z-index:0;
-}
-.scene-shade{
-    position:absolute;
-    inset:0;
-    z-index:1;
-    pointer-events:none;
-}
-#introScene .scene-shade{
-    background:
-      linear-gradient(90deg,rgba(0,4,10,.73) 0%,rgba(0,7,13,.45) 42%,rgba(0,7,13,.12) 100%),
-      linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.18));
-}
-#missionScene .scene-shade{
-    background:
-      linear-gradient(90deg,rgba(0,5,10,.83) 0%,rgba(0,7,12,.58) 38%,rgba(0,7,12,.20) 72%,rgba(0,5,10,.28) 100%),
-      linear-gradient(180deg,rgba(0,4,8,.12),rgba(0,4,8,.60));
-}
+&lt;head&gt;
+&lt;base href=&quot;./&quot;&gt;
 
-.header{
-    position:absolute;z-index:20;top:0;left:0;right:0;height:62px;
-    display:flex;align-items:center;justify-content:space-between;
-    padding:0 4.6vw;
-    border-bottom:1px solid rgba(225,235,230,.12);
-    background:linear-gradient(180deg,rgba(0,5,10,.66),transparent);
-}
-.brand{display:flex;align-items:center;gap:11px;color:#e6c36f;font-family:Arial,sans-serif;font-size:12px;font-weight:bold;letter-spacing:2.5px;text-transform:uppercase}
-.brand-mark{width:29px;height:29px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(230,195,111,.75);border-radius:50%;font-size:9px}
-.operation{color:rgba(220,231,226,.52);font-family:Arial,sans-serif;font-size:8px;letter-spacing:2px;text-transform:uppercase}
+&lt;meta charset=&quot;UTF-8&quot;&gt;
 
-.music-control{
-    position:fixed;z-index:200;right:4.6vw;top:78px;
-    display:flex;align-items:center;gap:8px;padding:8px 11px;
-    border:1px solid rgba(112,223,226,.36);
-    background:rgba(2,12,18,.68);color:#72dfe1;
-    font-family:Arial,sans-serif;font-size:8px;font-weight:bold;letter-spacing:1.4px;text-transform:uppercase;
-    cursor:pointer;backdrop-filter:blur(6px)
-}
-.music-control:hover{border-color:#72dfe1;background:rgba(15,53,60,.72)}
-.music-control.muted{color:rgba(225,230,226,.48);border-color:rgba(225,230,226,.20)}
-.music-control.intro-position{top:78px;right:4.6vw}
-.music-control.mission-position{top:72px;right:250px}
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
 
-.intro-content{
-    position:absolute;z-index:10;left:7.5vw;top:50%;transform:translateY(-50%);
-    width:min(620px,48vw)
-}
-.eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:14px;color:#69dce1;font-family:Arial,sans-serif;font-size:10px;font-weight:bold;letter-spacing:3px;text-transform:uppercase}
-.eyebrow::before{content:"";width:42px;height:2px;background:#69dce1;box-shadow:0 0 10px rgba(105,220,225,.55)}
-.intro-title{color:#faf2e4;font-size:clamp(54px,6.4vw,92px);line-height:.86;font-weight:500;letter-spacing:1px;text-transform:uppercase;text-shadow:0 5px 25px rgba(0,0,0,.85)}
-.intro-title span{display:block;margin-top:8px;color:#e6c475;font-size:.62em;letter-spacing:3px}
-.divider{width:120px;height:2px;margin:20px 0 18px;background:linear-gradient(90deg,#e2bb66,transparent)}
-.intro-story{max-width:610px;color:rgba(248,243,234,.94);font-size:17px;line-height:1.45;text-shadow:0 2px 12px rgba(0,0,0,.9)}
-.intro-story strong{color:#73dfe2}
-.mission-brief{margin-top:18px;padding:15px 17px;border-left:3px solid #70dfe2;background:rgba(2,13,19,.60);border-top:1px solid rgba(112,223,226,.14);border-bottom:1px solid rgba(112,223,226,.10)}
-.brief-label{margin-bottom:5px;color:#70dfe2;font-family:Arial,sans-serif;font-size:8px;font-weight:bold;letter-spacing:2px;text-transform:uppercase}
-.brief-text{color:rgba(235,239,233,.76);font-family:Arial,sans-serif;font-size:11px;line-height:1.45}
-
-.start-row{display:flex;align-items:center;gap:18px;margin-top:20px}
-.begin-button{padding:11px 24px;border:1px solid rgba(229,194,109,.72);background:rgba(3,13,19,.65);color:#e5c474;font-family:Arial,sans-serif;font-size:9px;font-weight:bold;letter-spacing:1.8px;text-transform:uppercase;cursor:pointer;transition:.22s}
-.begin-button:hover{border-color:#72dfe1;color:#72dfe1;background:rgba(15,53,60,.55)}
-.ambience-note{display:flex;align-items:center;gap:9px;color:rgba(226,238,234,.56);font-family:Arial,sans-serif;font-size:8px;letter-spacing:1.4px;text-transform:uppercase}
-.ambience-note{border:0;background:transparent;padding:0;cursor:pointer;text-align:left}.ambience-note:hover{color:#72dfe1}.ambience-note:focus-visible{outline:1px solid #72dfe1;outline-offset:4px}.ambience-note.muted{color:rgba(225,230,226,.48)}
-.ambience-dot{width:28px;height:28px;border:1px solid #72dfe1;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#72dfe1}
-
-.intro-footer{
-    position:absolute;z-index:10;left:4.6vw;right:4.6vw;bottom:15px;
-    display:flex;justify-content:space-between;align-items:center;padding-top:9px;
-    border-top:1px solid rgba(220,231,226,.14);
-    color:rgba(220,231,226,.42);font-family:Arial,sans-serif;font-size:7px;letter-spacing:1.5px;text-transform:uppercase
-}
-
-.mission-content{
-    position:absolute;z-index:10;left:3.8vw;top:11vh;width:760px
-}
-.mission-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:8px;color:#73dfe1;font-family:Arial,sans-serif;font-size:9px;font-weight:bold;letter-spacing:3px;text-transform:uppercase}
-.mission-eyebrow::before{content:"";width:38px;height:1px;background:#73dfe1}
-.mission-title{color:#fff8ea;font-size:clamp(52px,5vw,74px);line-height:.84;font-weight:500;letter-spacing:1px;text-transform:uppercase;text-shadow:0 4px 20px rgba(0,0,0,.8)}
-.mission-title span{display:block;margin-top:4px;color:#e5c36e;font-size:.62em;letter-spacing:2px}
-.mission-divider{width:95px;height:1px;margin:12px 0 10px;background:linear-gradient(90deg,#d9b55e,transparent)}
-.mission-story{width:700px;color:rgba(247,242,231,.92);font-size:15px;line-height:1.38;text-shadow:0 2px 10px rgba(0,0,0,.8)}
-.mission-story strong{color:#71dfe1}
-
-.objective{
-    width:760px;margin-top:13px;padding:13px 20px 12px;
-    border-left:4px solid #70dfe1;
-    border-top:1px solid rgba(113,223,225,.12);
-    border-bottom:1px solid rgba(113,223,225,.12);
-    background:rgba(1,12,18,.88);box-shadow:0 16px 35px rgba(0,0,0,.35);backdrop-filter:blur(7px)
-}
-.objective-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
-.objective-label{color:#71dfe1;font-family:Arial,sans-serif;font-size:8px;font-weight:bold;letter-spacing:2.4px;text-transform:uppercase}
-.objective-status{color:rgba(221,231,226,.50);font-family:Arial,sans-serif;font-size:8px;font-weight:bold;letter-spacing:1.4px;text-transform:uppercase}
-.field-log{margin-bottom:10px;color:rgba(245,240,229,.82);font-family:Arial,sans-serif;font-size:10px;line-height:1.42}
-.field-log strong{color:#e4bf67}
-.mission-task{color:#fff9ed;font-size:20px;line-height:1.18;font-weight:bold}
-.mission-task strong{color:#73e0e1}
-
-.clues{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-top:15px}
-.clue{position:relative;width:100%;height:130px;padding:0;overflow:hidden;border:2px solid rgba(229,194,109,.65);background:#07131b;cursor:pointer;appearance:none;transition:transform .25s,border-color .25s,box-shadow .25s}
-.clue img{width:100%;height:100%;display:block;object-fit:cover;opacity:.86;transition:transform .3s,opacity .3s}
-.clue::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 10%,rgba(0,0,0,.70) 100%)}
-.clue:hover{transform:translateY(-5px);border-color:#70dfe2;box-shadow:0 12px 30px rgba(65,202,213,.28)}
-.clue:hover img{opacity:1;transform:scale(1.08)}
-.clue-number{position:absolute;z-index:4;top:9px;left:9px;width:25px;height:25px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(229,194,109,.88);border-radius:50%;background:rgba(2,10,15,.80);color:#e6c475;font-family:Arial,sans-serif;font-size:9px;font-weight:bold}
-.clue.inspected{border-color:rgba(229,194,109,.95);box-shadow:0 0 18px rgba(229,194,109,.16)}
-.clue.correct{border:3px solid #70dfe2;box-shadow:0 0 28px rgba(112,223,226,.42);transform:translateY(-5px)}
-.clue.correct::after{background:linear-gradient(transparent 10%,rgba(0,65,68,.76) 100%)}
-.clue.wrong{border:3px solid #d8846d;animation:shake .25s ease}
-@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
-.feedback{min-height:28px;margin-top:9px;color:rgba(247,242,232,.90);font-family:Arial,sans-serif;font-size:10px;line-height:1.4}
-.action-row{display:flex;align-items:center;margin-top:7px}
-.guide-button{padding:8px 12px;border:1px solid rgba(229,194,109,.55);background:rgba(3,13,19,.70);color:#e5c474;font-family:Arial,sans-serif;font-size:8px;font-weight:bold;letter-spacing:1.3px;text-transform:uppercase;cursor:pointer}
-.guide-button:hover{border-color:#70dfe2;color:#70dfe2}
-
-.heritage-note{position:absolute;z-index:10;right:4vw;bottom:10vh;width:230px;padding:13px 15px;border-left:2px solid rgba(229,194,109,.70);background:rgba(2,8,13,.70);backdrop-filter:blur(6px);color:rgba(231,236,231,.76);font-family:Arial,sans-serif;font-size:10px;line-height:1.48;box-shadow:0 10px 25px rgba(0,0,0,.28)}
-.heritage-title{margin-bottom:6px;color:#e3c06f;font-size:9px;font-weight:bold;letter-spacing:2px;text-transform:uppercase}
-.heritage-note strong{color:#70dfe2}
-
-.modal{position:fixed;z-index:100;inset:0;display:none;align-items:center;justify-content:center;padding:25px;background:rgba(0,5,9,.80);backdrop-filter:blur(8px)}
-.modal.show{display:flex}
-.modal-box{width:min(560px,90vw);max-height:82vh;overflow-y:auto;padding:28px 31px 25px;border-left:4px solid #70dfe2;border-top:1px solid rgba(112,223,226,.28);border-right:1px solid rgba(112,223,226,.16);border-bottom:1px solid rgba(112,223,226,.16);background:linear-gradient(145deg,rgba(4,22,29,.98),rgba(1,11,17,.98));box-shadow:0 30px 80px rgba(0,0,0,.72)}
-.modal-label{margin-bottom:10px;color:#70dfe2;font-family:Arial,sans-serif;font-size:9px;font-weight:bold;letter-spacing:2.7px;text-transform:uppercase}
-.modal-box h2{margin-bottom:13px;color:#e5c16c;font-size:29px;line-height:1;font-weight:500;text-transform:uppercase}
-.modal-divider{width:90px;height:1px;margin-bottom:17px;background:linear-gradient(90deg,#70dfe2,transparent)}
-.modal-box p{margin-bottom:13px;color:rgba(245,241,230,.91);font-size:14px;line-height:1.55}
-.modal-box strong{color:#70dfe2}
-.modal-close{padding:10px 18px;border:1px solid rgba(229,194,109,.65);background:rgba(3,13,19,.70);color:#e5c16c;font-family:Arial,sans-serif;font-size:8px;font-weight:bold;letter-spacing:1.8px;cursor:pointer;text-transform:uppercase}
-.modal-close:hover{border-color:#70dfe2;color:#70dfe2}
-.fact-list{display:grid;gap:9px;margin:17px 0 19px}
-.fact{padding:11px 13px;border-left:2px solid rgba(229,194,109,.65);background:rgba(255,255,255,.035);color:rgba(245,241,230,.88);font-family:Arial,sans-serif;font-size:10px;line-height:1.48}
-.fact-title{display:block;margin-bottom:4px;color:#e5c16c;font-size:8px;font-weight:bold;letter-spacing:1.6px;text-transform:uppercase}
-
-.footer{position:absolute;z-index:20;left:3.8vw;right:4vw;bottom:10px;height:29px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(220,231,226,.12)}
-.back{border:none;background:none;color:rgba(222,231,227,.45);font-family:Arial,sans-serif;font-size:8px;letter-spacing:1.5px;cursor:pointer;text-transform:uppercase}
-.back:hover{color:#73e0e1}
-.next{padding:8px 18px;border:1px solid rgba(225,194,109,.38);background:rgba(2,12,17,.65);color:rgba(225,194,109,.45);font-family:Arial,sans-serif;font-size:8px;letter-spacing:1.7px;cursor:pointer;text-transform:uppercase}
-.next.ready{color:#e5c16c;border-color:rgba(225,194,109,.75);cursor:pointer}
-.next.ready:hover{color:#73e0e1;border-color:#73e0e1}
-
-.hidden{display:none!important}
-
-@media(max-width:900px){
-  body{overflow:auto}
-  .scene{height:auto;min-height:100vh}
-  .intro-content,.mission-content{position:relative;top:auto;left:auto;transform:none;width:auto;margin:0 20px;padding-top:88px;padding-bottom:95px}
-  .mission-content{padding-bottom:110px}
-  .intro-story,.mission-story{width:auto}
-  .objective{width:100%}
-  .heritage-note{display:none}
-  .clues{grid-template-columns:repeat(2,1fr)}
-  .footer{left:20px;right:20px}
-}
-@media(max-width:560px){
-  .clues{grid-template-columns:1fr}
-  .clue{height:135px}
-}
+&lt;title&gt;
+    Operation Sea Whisper — Mission 03
+&lt;/title&gt;
 
 
-/* =========================================================
-   MISSION 02 CONNECTED / SCOPED STYLES
-========================================================= */
-
+&lt;style&gt;
 
 /* =========================================================
    RESET
@@ -197,11 +38,32 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
     box-sizing: border-box;
 }
 
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+
+    overflow: hidden;
+
+    background: #02080d;
+
+    color: #f4eee2;
+
+    font-family:
+        Georgia,
+        &quot;Times New Roman&quot;,
+        serif;
+}
+
+
 /* =========================================================
    MAIN BACKGROUND
 ========================================================= */
 
-.m2-mission {
+.mission {
 
     position: relative;
 
@@ -214,20 +76,20 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 
         linear-gradient(
             90deg,
-            rgba(0, 5, 10, 0.87) 0%,
+            rgba(0, 5, 10, 0.88) 0%,
             rgba(0, 7, 12, 0.70) 38%,
-            rgba(0, 7, 12, 0.28) 72%,
-            rgba(0, 5, 10, 0.40) 100%
+            rgba(0, 7, 12, 0.25) 72%,
+            rgba(0, 5, 10, 0.42) 100%
         ),
 
         linear-gradient(
             180deg,
-            rgba(0, 4, 8, 0.15) 0%,
+            rgba(0, 4, 8, 0.16) 0%,
             rgba(0, 4, 8, 0.08) 45%,
             rgba(0, 4, 8, 0.62) 100%
         ),
 
-        url("assets/mode2.jpeg");
+        url(&quot;assets/mode2.jpeg&quot;);
 
     background-size: cover;
 
@@ -238,12 +100,12 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 
 
 /* =========================================================
-   CINEMATIC VIGNETTE
+   VIGNETTE
 ========================================================= */
 
-.m2-mission::after {
+.mission::after {
 
-    content: "";
+    content: &quot;&quot;;
 
     position: absolute;
 
@@ -266,7 +128,7 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
    HEADER
 ========================================================= */
 
-.m2-header {
+.header {
 
     position: absolute;
 
@@ -302,7 +164,7 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
    BRAND
 ========================================================= */
 
-.m2-brand {
+.brand {
 
     display: flex;
 
@@ -324,9 +186,10 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 }
 
 
-.m2-brand-symbol {
+.brand-symbol {
 
     width: 29px;
+
     height: 29px;
 
     display: flex;
@@ -344,7 +207,7 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 }
 
 
-.m2-mission-id {
+.mission-id {
 
     color:
         rgba(235,240,236,0.48);
@@ -360,11 +223,11 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 
 
 /* =========================================================
-   MAIN CONTENT
-   MOVED HIGHER
+   CONTENT
+   COMPACTED SO NOTHING TOUCHES THE BOTTOM
 ========================================================= */
 
-.m2-content {
+.content {
 
     position: absolute;
 
@@ -372,14 +235,9 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 
     left: 4vw;
 
-    /*
-       Previously around 16%.
-       Now moved higher.
-    */
+    top: 8.5%;
 
-    top: 10.5%;
-
-    width: 650px;
+    width: 680px;
 }
 
 
@@ -387,7 +245,7 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
    EYEBROW
 ========================================================= */
 
-.m2-eyebrow {
+.eyebrow {
 
     display: flex;
 
@@ -395,13 +253,13 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 
     gap: 10px;
 
-    margin-bottom: 10px;
+    margin-bottom: 7px;
 
     color: #70dfe1;
 
     font-family: Arial, sans-serif;
 
-    font-size: 10px;
+    font-size: 9px;
 
     font-weight: bold;
 
@@ -411,9 +269,9 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 }
 
 
-.m2-eyebrow::before {
+.eyebrow::before {
 
-    content: "";
+    content: &quot;&quot;;
 
     width: 36px;
 
@@ -427,14 +285,14 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
    TITLE
 ========================================================= */
 
-.m2-title {
+.title {
 
     color: #fff8e8;
 
     font-size:
-        clamp(45px, 4.5vw, 68px);
+        clamp(42px, 4.2vw, 63px);
 
-    line-height: 0.86;
+    line-height: 0.84;
 
     font-weight: 500;
 
@@ -445,15 +303,15 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 }
 
 
-.m2-title span {
+.title span {
 
     display: block;
 
-    margin-top: 6px;
+    margin-top: 5px;
 
     color: #e3bd66;
 
-    font-size: 0.62em;
+    font-size: 0.61em;
 
     letter-spacing: 2px;
 }
@@ -463,13 +321,13 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
    DIVIDER
 ========================================================= */
 
-.m2-divider {
+.divider {
 
     width: 105px;
 
     height: 1px;
 
-    margin: 13px 0 11px;
+    margin: 11px 0 9px;
 
     background:
         linear-gradient(
@@ -484,23 +342,23 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
    STORY
 ========================================================= */
 
-.m2-story {
+.story {
 
-    width: 590px;
+    width: 610px;
 
     color:
         rgba(249,245,235,0.90);
 
-    font-size: 15px;
+    font-size: 14px;
 
-    line-height: 1.38;
+    line-height: 1.32;
 
     text-shadow:
         0 2px 9px rgba(0,0,0,0.95);
 }
 
 
-.m2-story strong {
+.story strong {
 
     color: #70dfe1;
 }
@@ -510,14 +368,14 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
    QUIZ PANEL
 ========================================================= */
 
-.m2-quiz-panel {
+.quiz-panel {
 
-    margin-top: 14px;
+    margin-top: 11px;
 
-    width: 650px;
+    width: 680px;
 
     padding:
-        17px 21px 15px;
+        14px 20px 11px;
 
     border-left:
         4px solid #70dfe1;
@@ -529,7 +387,7 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
         1px solid rgba(110,220,225,0.14);
 
     background:
-        rgba(1,10,16,0.88);
+        rgba(1,10,16,0.89);
 
     backdrop-filter: blur(8px);
 
@@ -542,7 +400,7 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
    QUIZ HEADER
 ========================================================= */
 
-.m2-quiz-header {
+.quiz-header {
 
     display: flex;
 
@@ -550,17 +408,17 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 
     justify-content: space-between;
 
-    margin-bottom: 10px;
+    margin-bottom: 7px;
 }
 
 
-.m2-quiz-label {
+.quiz-label {
 
     color: #70dfe1;
 
     font-family: Arial, sans-serif;
 
-    font-size: 9px;
+    font-size: 8px;
 
     font-weight: bold;
 
@@ -570,7 +428,7 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 }
 
 
-.m2-question-count {
+.question-count {
 
     color:
         rgba(237,239,233,0.48);
@@ -587,15 +445,15 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
    QUESTION
 ========================================================= */
 
-.m2-question {
+.question {
 
-    min-height: 52px;
+    min-height: 45px;
 
     color: #fff7e7;
 
-    font-size: 20px;
+    font-size: 18px;
 
-    line-height: 1.24;
+    line-height: 1.20;
 
     font-weight: bold;
 }
@@ -605,31 +463,36 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
    OPTIONS
 ========================================================= */
 
-.m2-options {
+.options {
 
     display: grid;
 
     grid-template-columns:
         1fr 1fr;
 
-    gap: 9px;
+    gap: 8px;
 
-    margin-top: 12px;
+    margin-top: 9px;
 }
 
 
 /* =========================================================
-   OPTION
+   OPTION CARD
 ========================================================= */
 
 .option {
 
     position: relative;
 
-    min-height: 62px;
+    min-height: 78px;
 
-    padding:
-        10px 12px 10px 42px;
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 6px;
 
     border:
         1px solid rgba(218,191,111,0.35);
@@ -638,16 +501,16 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
         rgba(8,20,27,0.82);
 
     color:
-        rgba(247,242,231,0.86);
+        rgba(247,242,231,0.88);
 
     font-family:
         Georgia,
-        "Times New Roman",
+        &quot;Times New Roman&quot;,
         serif;
 
-    font-size: 13px;
+    font-size: 11.5px;
 
-    line-height: 1.28;
+    line-height: 1.25;
 
     text-align: left;
 
@@ -661,6 +524,50 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 
 
 /* =========================================================
+   OPTION IMAGE
+========================================================= */
+
+.option-image {
+
+    width: 67px;
+
+    height: 64px;
+
+    flex-shrink: 0;
+
+    object-fit: cover;
+
+    border:
+        1px solid rgba(230,220,190,0.18);
+
+    filter:
+        brightness(0.78);
+
+    transition:
+        filter 0.2s ease;
+}
+
+
+.option:hover {
+
+    border-color:
+        rgba(112,224,226,0.78);
+
+    background:
+        rgba(18,42,49,0.90);
+
+    color: white;
+}
+
+
+.option:hover .option-image {
+
+    filter:
+        brightness(1);
+}
+
+
+/* =========================================================
    OPTION LETTER
 ========================================================= */
 
@@ -668,16 +575,13 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 
     position: absolute;
 
-    left: 12px;
+    top: 5px;
 
-    top: 50%;
+    left: 5px;
 
-    transform:
-        translateY(-50%);
+    width: 19px;
 
-    width: 21px;
-
-    height: 21px;
+    height: 19px;
 
     display: flex;
 
@@ -686,41 +590,33 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
     justify-content: center;
 
     border:
-        1px solid rgba(219,190,105,0.55);
+        1px solid rgba(219,190,105,0.65);
 
     border-radius: 50%;
+
+    background:
+        rgba(2,10,15,0.85);
 
     color: #dfbd6b;
 
     font-family: Arial, sans-serif;
 
-    font-size: 9px;
+    font-size: 8px;
 
     font-weight: bold;
+
+    z-index: 3;
 }
 
 
 /* =========================================================
-   HOVER
+   OPTION TEXT
 ========================================================= */
 
-.option:hover {
+.option-text {
 
-    border-color:
-        rgba(112,224,226,0.75);
-
-    background:
-        rgba(18,42,49,0.88);
-
-    color: #ffffff;
-}
-
-
-.option:hover .option-letter {
-
-    border-color: #70dfe1;
-
-    color: #70dfe1;
+    padding:
+        4px 6px 4px 0;
 }
 
 
@@ -761,22 +657,20 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
    FEEDBACK
 ========================================================= */
 
-.m2-feedback {
+.feedback {
 
-    min-height: 30px;
+    min-height: 22px;
 
-    margin-top: 8px;
-
-    padding-left: 2px;
+    margin-top: 6px;
 
     color:
         rgba(239,239,232,0.65);
 
     font-family: Arial, sans-serif;
 
-    font-size: 10px;
+    font-size: 9px;
 
-    line-height: 1.4;
+    line-height: 1.3;
 }
 
 
@@ -784,9 +678,9 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
    PROGRESS
 ========================================================= */
 
-.m2-progress-area {
+.progress-area {
 
-    margin-top: 7px;
+    margin-top: 4px;
 
     display: flex;
 
@@ -796,14 +690,14 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 }
 
 
-.m2-progress-text {
+.progress-text {
 
     color:
         rgba(236,239,234,0.45);
 
     font-family: Arial, sans-serif;
 
-    font-size: 8px;
+    font-size: 7px;
 
     letter-spacing: 1.5px;
 
@@ -811,7 +705,7 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 }
 
 
-.m2-progress-bar {
+.progress-bar {
 
     width: 160px;
 
@@ -824,7 +718,7 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 }
 
 
-.m2-progress-fill {
+.progress-fill {
 
     width: 25%;
 
@@ -838,23 +732,10 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 
 
 /* =========================================================
-   NO INDIVIDUAL TURTLE IMAGE
-========================================================= */
-
-/*
-   IMPORTANT:
-
-   The separate adult.jpeg turtle image has been removed.
-
-   The turtle already exists naturally inside mode2.jpeg.
-*/
-
-
-/* =========================================================
    FIELD TIP
 ========================================================= */
 
-.m2-tip {
+.tip {
 
     position: absolute;
 
@@ -862,7 +743,7 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 
     right: 4vw;
 
-    top: 12vh;
+    top: 11vh;
 
     width: 155px;
 
@@ -881,9 +762,9 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 }
 
 
-.m2-tip::before {
+.tip::before {
 
-    content: "";
+    content: &quot;&quot;;
 
     position: absolute;
 
@@ -900,7 +781,7 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 }
 
 
-.m2-tip-title {
+.tip-title {
 
     margin-bottom: 7px;
 
@@ -916,7 +797,7 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 }
 
 
-.m2-tip-text {
+.tip-text {
 
     font-size: 12px;
 
@@ -926,9 +807,10 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 
 /* =========================================================
    BOTTOM TOOLS
+   MOVED DOWN AND KEPT CLEAR OF QUIZ
 ========================================================= */
 
-.m2-bottom-tools {
+.bottom-tools {
 
     position: absolute;
 
@@ -936,11 +818,7 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 
     left: 4vw;
 
-    /*
-       Slightly lower, but above footer.
-    */
-
-    bottom: 6.5vh;
+    bottom: 4.8vh;
 
     display: flex;
 
@@ -948,7 +826,7 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 }
 
 
-.m2-tool {
+.tool {
 
     display: flex;
 
@@ -968,7 +846,7 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 }
 
 
-.m2-tool-icon {
+.tool-icon {
 
     width: 38px;
 
@@ -989,7 +867,7 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 }
 
 
-.m2-tool-label {
+.tool-label {
 
     display: block;
 
@@ -1003,7 +881,7 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 }
 
 
-.m2-tool-small {
+.tool-small {
 
     display: block;
 
@@ -1020,7 +898,7 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
    FOOTER
 ========================================================= */
 
-.m2-footer {
+.footer {
 
     position: absolute;
 
@@ -1030,9 +908,9 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 
     right: 4vw;
 
-    bottom: 13px;
+    bottom: 10px;
 
-    height: 34px;
+    height: 30px;
 
     display: flex;
 
@@ -1045,7 +923,7 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 }
 
 
-.m2-back {
+.back {
 
     border: none;
 
@@ -1066,13 +944,13 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 }
 
 
-.m2-back:hover {
+.back:hover {
 
     color: #70dfe1;
 }
 
 
-.m2-next {
+.next {
 
     padding:
         8px 20px;
@@ -1102,7 +980,7 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 }
 
 
-.m2-next.ready {
+.next.ready {
 
     opacity: 1;
 
@@ -1110,7 +988,7 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 }
 
 
-.m2-next.ready:hover {
+.next.ready:hover {
 
     color: #70dfe1;
 
@@ -1119,10 +997,142 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 
 
 /* =========================================================
-   COMPLETION SCREEN
+   INFO MODAL
 ========================================================= */
 
-.m2-complete {
+.info-modal {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 100;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 30px;
+
+    background:
+        rgba(0,5,9,0.76);
+
+    backdrop-filter: blur(6px);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+}
+
+
+.info-modal.show {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+}
+
+
+.info-box {
+
+    width: 520px;
+
+    max-width: 90vw;
+
+    padding: 27px 30px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(4,19,27,0.98),
+            rgba(1,10,16,0.98)
+        );
+
+    border:
+        1px solid rgba(112,224,226,0.35);
+
+    border-left:
+        4px solid #70dfe1;
+
+    box-shadow:
+        0 28px 70px rgba(0,0,0,0.78);
+}
+
+
+.info-label {
+
+    margin-bottom: 8px;
+
+    color: #70dfe1;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    letter-spacing: 2.5px;
+}
+
+
+.info-title {
+
+    margin-bottom: 14px;
+
+    color: #e4bf67;
+
+    font-size: 27px;
+}
+
+
+.info-text {
+
+    color:
+        rgba(244,241,232,0.82);
+
+    font-size: 14px;
+
+    line-height: 1.55;
+}
+
+
+.info-close {
+
+    margin-top: 18px;
+
+    padding: 9px 20px;
+
+    border:
+        1px solid rgba(217,185,104,0.55);
+
+    background:
+        transparent;
+
+    color: #dfbd68;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   COMPLETION
+========================================================= */
+
+.complete {
 
     position: fixed;
 
@@ -1137,7 +1147,7 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
     justify-content: center;
 
     background:
-        rgba(0,5,9,0.78);
+        rgba(0,5,9,0.80);
 
     backdrop-filter: blur(6px);
 
@@ -1147,7 +1157,7 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 }
 
 
-.m2-complete.show {
+.complete.show {
 
     opacity: 1;
 
@@ -1155,7 +1165,7 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 }
 
 
-.m2-complete-box {
+.complete-box {
 
     width: 440px;
 
@@ -1176,7 +1186,7 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 }
 
 
-.m2-complete-label {
+.complete-label {
 
     color: #70dfe1;
 
@@ -1192,7 +1202,7 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 }
 
 
-.m2-complete h2 {
+.complete h2 {
 
     color: #e4c16d;
 
@@ -1202,7 +1212,7 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 }
 
 
-.m2-complete p {
+.complete p {
 
     color:
         rgba(240,240,233,0.76);
@@ -1215,7 +1225,7 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 }
 
 
-.m2-complete-button {
+.complete-button {
 
     padding:
         11px 23px;
@@ -1240,266 +1250,23 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 }
 
 
-
-/* =========================================================
-   INFORMATION MODAL
-========================================================= */
-
-.m2-info-modal {
-
-    position: fixed;
-
-    inset: 0;
-
-    z-index: 100;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    padding: 30px;
-
-    background:
-        rgba(0, 5, 9, 0.76);
-
-    backdrop-filter: blur(6px);
-
-    opacity: 0;
-
-    visibility: hidden;
-
-    pointer-events: none;
-
-    transition:
-        opacity 0.2s ease;
-}
-
-.m2-info-modal.show {
-
-    opacity: 1;
-
-    visibility: visible;
-
-    pointer-events: auto;
-}
-
-
-.m2-info-box {
-
-    position: relative;
-
-    width: 560px;
-
-    max-width: 90vw;
-
-    max-height: 76vh;
-
-    overflow-y: auto;
-
-    padding: 28px 31px 25px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(4, 19, 27, 0.98),
-            rgba(1, 10, 16, 0.98)
-        );
-
-    border:
-        1px solid rgba(112, 224, 226, 0.34);
-
-    border-left:
-        4px solid #70dfe1;
-
-    box-shadow:
-        0 28px 70px rgba(0, 0, 0, 0.78);
-}
-
-
-/* thin gold accent */
-
-.m2-info-box::before {
-
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-
-    left: 27px;
-
-    width: 82px;
-
-    height: 2px;
-
-    background: #d9b968;
-}
-
-
-.m2-info-label {
-
-    margin-bottom: 8px;
-
-    color: #70dfe1;
-
-    font-family: Arial, sans-serif;
-
-    font-size: 9px;
-
-    font-weight: bold;
-
-    letter-spacing: 2.5px;
-
-    text-transform: uppercase;
-}
-
-
-.m2-info-title {
-
-    margin-bottom: 16px;
-
-    color: #e4bf67;
-
-    font-size: 29px;
-
-    font-weight: normal;
-
-    line-height: 1.1;
-}
-
-
-.m2-info-list {
-
-    margin: 0;
-
-    padding-left: 21px;
-
-    color:
-        rgba(244, 241, 232, 0.86);
-
-    font-size: 14px;
-
-    line-height: 1.52;
-}
-
-
-.m2-info-list li {
-
-    margin-bottom: 11px;
-
-    padding-left: 4px;
-}
-
-
-.m2-info-list li::marker {
-
-    color: #70dfe1;
-}
-
-
-.m2-info-source {
-
-    margin-top: 16px;
-
-    padding-top: 12px;
-
-    border-top:
-        1px solid rgba(230,235,225,0.12);
-
-    color:
-        rgba(235,239,235,0.48);
-
-    font-family: Arial, sans-serif;
-
-    font-size: 9px;
-
-    line-height: 1.45;
-}
-
-
-.m2-info-source strong {
-
-    color: #d9b968;
-
-    font-weight: normal;
-}
-
-
-.m2-info-close {
-
-    margin-top: 18px;
-
-    padding: 9px 20px;
-
-    border:
-        1px solid rgba(217,185,104,0.55);
-
-    background:
-        rgba(8,24,30,0.78);
-
-    color: #dfbd68;
-
-    font-family: Arial, sans-serif;
-
-    font-size: 9px;
-
-    font-weight: bold;
-
-    letter-spacing: 2px;
-
-    text-transform: uppercase;
-
-    cursor: pointer;
-}
-
-
-.m2-info-close:hover {
-
-    color: #70dfe1;
-
-    border-color: #70dfe1;
-}
-
-
-.m2-info-box::-webkit-scrollbar {
-
-    width: 6px;
-}
-
-
-.m2-info-box::-webkit-scrollbar-track {
-
-    background:
-        rgba(255,255,255,0.05);
-}
-
-
-.m2-info-box::-webkit-scrollbar-thumb {
-
-    background:
-        rgba(112,224,226,0.38);
-}
-
-
 /* =========================================================
    RESPONSIVE
 ========================================================= */
 
 @media (max-width: 900px) {
 
-    .m2-content {
+    .content {
 
         width: 600px;
     }
 
-    .m2-quiz-panel {
+    .quiz-panel {
 
         width: 600px;
     }
 
-    .m2-tip {
+    .tip {
 
         right: 2vw;
     }
@@ -1509,14 +1276,19 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 
 @media (max-width: 800px) {
 
-    .m2-mission {
+    body {
+
+        overflow: auto;
+    }
+
+    .mission {
 
         min-height: 900px;
 
         height: auto;
     }
 
-    .m2-content {
+    .content {
 
         position: relative;
 
@@ -1533,22 +1305,22 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
         padding-bottom: 150px;
     }
 
-    .m2-story {
+    .story {
 
         width: auto;
     }
 
-    .m2-quiz-panel {
+    .quiz-panel {
 
         width: auto;
     }
 
-    .m2-tip {
+    .tip {
 
         display: none;
     }
 
-    .m2-bottom-tools {
+    .bottom-tools {
 
         left: 22px;
 
@@ -1560,2224 +1332,429 @@ body{overflow:hidden;background:#061018;color:#f7f0e4;font-family:Georgia,"Times
 
 @media (max-width: 550px) {
 
-    .m2-options {
+    .options {
 
         grid-template-columns: 1fr;
     }
 
-    .m2-question {
+    .question {
 
         font-size: 18px;
     }
 
-    .m2-title {
+    .title {
 
         font-size: 43px;
     }
 
-}
+    .option {
 
-
-</style>
-<style id="mission3-merged-style">
-
-/* =========================================================
-   PAGE
-========================================================= */
-
-.mission3{
-    position:relative;
-    width:100vw;
-    height:100vh;
-    overflow:hidden;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(0,5,10,.88) 0%,
-            rgba(0,7,12,.68) 38%,
-            rgba(0,7,12,.22) 72%,
-            rgba(0,5,10,.42) 100%
-        ),
-        linear-gradient(
-            180deg,
-            rgba(0,4,8,.12) 0%,
-            rgba(0,4,8,.08) 48%,
-            rgba(0,4,8,.62) 100%
-        ),
-        url("assets/mode2.jpeg");
-
-    background-size:cover;
-    background-position:center;
-    background-repeat:no-repeat;
-}
-
-/* =========================================================
-   HEADER
-========================================================= */
-
-.m3-header{
-    position:absolute;
-    z-index:30;
-    top:0;
-    left:0;
-    right:0;
-    height:58px;
-
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    padding:0 3.7vw;
-
-    border-bottom:1px solid rgba(230,235,225,.13);
-
-    background:
-        linear-gradient(
-            180deg,
-            rgba(0,4,8,.78),
-            rgba(0,4,8,.08)
-        );
-}
-
-.m3-brand{
-    display:flex;
-    align-items:center;
-    gap:11px;
-
-    color:#e4bf67;
-
-    font-family:Arial,sans-serif;
-    font-size:12px;
-    font-weight:bold;
-    letter-spacing:2.6px;
-    text-transform:uppercase;
-}
-
-.m3-brand-symbol{
-    width:29px;
-    height:29px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    border:1px solid #dcb968;
-    border-radius:50%;
-
-    font-size:9px;
-}
-
-.m3-mission-id{
-    color:rgba(235,240,236,.48);
-    font-family:Arial,sans-serif;
-    font-size:8px;
-    letter-spacing:2px;
-    text-transform:uppercase;
-}
-
-/* =========================================================
-   MUSIC
-========================================================= */
-
-.music-control{
-    position:absolute;
-    z-index:40;
-
-    top:72px;
-    right:245px;
-
-    padding:8px 11px;
-
-    border:1px solid rgba(112,223,226,.36);
-
-    background:rgba(2,12,18,.72);
-
-    color:#72dfe1;
-
-    font-family:Arial,sans-serif;
-    font-size:8px;
-    font-weight:bold;
-    letter-spacing:1.4px;
-    text-transform:uppercase;
-
-    cursor:pointer;
-
-    backdrop-filter:blur(6px);
-}
-
-.music-control:hover{
-    border-color:#72dfe1;
-    background:rgba(15,53,60,.72);
-}
-
-.music-control.muted{
-    color:rgba(225,230,226,.48);
-    border-color:rgba(225,230,226,.20);
-}
-
-/* =========================================================
-   CONTENT
-========================================================= */
-
-.m3-content{
-    position:absolute;
-    z-index:10;
-
-    left:3.2vw;
-    top:7.7%;
-
-    width:680px;
-}
-
-.m3-eyebrow{
-    display:flex;
-    align-items:center;
-    gap:10px;
-
-    margin-bottom:7px;
-
-    color:#70dfe1;
-
-    font-family:Arial,sans-serif;
-    font-size:9px;
-    font-weight:bold;
-    letter-spacing:3px;
-    text-transform:uppercase;
-}
-
-.m3-eyebrow::before{
-    content:"";
-    width:36px;
-    height:1px;
-    background:#70dfe1;
-}
-
-.m3-title{
-    color:#fff8e8;
-
-    font-size:clamp(42px,4.2vw,63px);
-    line-height:.84;
-    font-weight:500;
-
-    text-transform:uppercase;
-
-    text-shadow:0 5px 24px rgba(0,0,0,.95);
-}
-
-.m3-title span{
-    display:block;
-    margin-top:5px;
-
-    color:#e3bd66;
-
-    font-size:.61em;
-    letter-spacing:2px;
-}
-
-.m3-divider{
-    width:105px;
-    height:1px;
-
-    margin:11px 0 9px;
-
-    background:
-        linear-gradient(
-            90deg,
-            #dfbc68,
-            transparent
-        );
-}
-
-.m3-story{
-    width:610px;
-
-    color:rgba(249,245,235,.90);
-
-    font-size:14px;
-    line-height:1.32;
-
-    text-shadow:0 2px 9px rgba(0,0,0,.95);
-}
-
-.m3-story strong{
-    color:#70dfe1;
-}
-
-/* =========================================================
-   QUIZ
-========================================================= */
-
-.m3-quiz-panel{
-    margin-top:11px;
-
-    width:680px;
-
-    padding:14px 20px 11px;
-
-    border-left:4px solid #70dfe1;
-    border-top:1px solid rgba(110,220,225,.18);
-    border-bottom:1px solid rgba(110,220,225,.14);
-
-    background:rgba(1,10,16,.89);
-
-    backdrop-filter:blur(8px);
-
-    box-shadow:0 18px 40px rgba(0,0,0,.45);
-}
-
-.m3-quiz-header{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    margin-bottom:7px;
-}
-
-.m3-quiz-label{
-    color:#70dfe1;
-
-    font-family:Arial,sans-serif;
-    font-size:8px;
-    font-weight:bold;
-    letter-spacing:2.4px;
-    text-transform:uppercase;
-}
-
-.m3-question-count{
-    color:rgba(237,239,233,.48);
-
-    font-family:Arial,sans-serif;
-    font-size:8px;
-    letter-spacing:1.7px;
-}
-
-.m3-question{
-    min-height:45px;
-
-    color:#fff7e7;
-
-    font-size:18px;
-    line-height:1.20;
-    font-weight:bold;
-}
-
-.m3-options{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-
-    gap:8px;
-
-    margin-top:9px;
-}
-
-.option{
-    position:relative;
-
-    min-height:78px;
-
-    display:flex;
-    align-items:center;
-    gap:10px;
-
-    padding:6px;
-
-    border:1px solid rgba(218,191,111,.35);
-
-    background:rgba(8,20,27,.82);
-
-    color:rgba(247,242,231,.88);
-
-    font-family:Georgia,"Times New Roman",serif;
-    font-size:11.5px;
-    line-height:1.25;
-
-    text-align:left;
-
-    cursor:pointer;
-
-    transition:
-        border-color .2s ease,
-        background .2s ease,
-        color .2s ease,
-        transform .2s ease;
-}
-
-.option:hover{
-    border-color:rgba(112,224,226,.78);
-    background:rgba(18,42,49,.90);
-    color:#fff;
-
-    transform:translateY(-2px);
-}
-
-.option:disabled{
-    cursor:default;
-}
-
-.option-image{
-    width:67px;
-    height:64px;
-
-    flex-shrink:0;
-
-    object-fit:cover;
-
-    border:1px solid rgba(230,220,190,.18);
-
-    filter:brightness(.78);
-
-    transition:filter .2s ease;
-}
-
-.option:hover .option-image{
-    filter:brightness(1);
-}
-
-.option-letter{
-    position:absolute;
-
-    top:5px;
-    left:5px;
-
-    width:19px;
-    height:19px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    border:1px solid rgba(219,190,105,.65);
-    border-radius:50%;
-
-    background:rgba(2,10,15,.85);
-
-    color:#dfbd6b;
-
-    font-family:Arial,sans-serif;
-    font-size:8px;
-    font-weight:bold;
-
-    z-index:3;
-}
-
-.option-text{
-    padding:4px 6px 4px 0;
-}
-
-.option.correct{
-    border-color:#6fe0e1;
-    background:rgba(26,72,76,.78);
-    color:#e9ffff;
-}
-
-.option.wrong{
-    border-color:#b87867;
-    background:rgba(82,39,32,.55);
-    color:rgba(255,225,215,.8);
-}
-
-.m3-feedback{
-    min-height:22px;
-
-    margin-top:6px;
-
-    color:rgba(239,239,232,.65);
-
-    font-family:Arial,sans-serif;
-    font-size:9px;
-    line-height:1.3;
-}
-
-.m3-progress-area{
-    margin-top:4px;
-
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
-
-.m3-progress-text{
-    color:rgba(236,239,234,.45);
-
-    font-family:Arial,sans-serif;
-    font-size:7px;
-    letter-spacing:1.5px;
-
-    white-space:nowrap;
-}
-
-.m3-progress-bar{
-    width:160px;
-    height:3px;
-
-    background:rgba(255,255,255,.12);
-
-    overflow:hidden;
-}
-
-.m3-progress-fill{
-    width:25%;
-    height:100%;
-
-    background:#70dfe1;
-
-    transition:width .3s ease;
-}
-
-/* =========================================================
-   FIELD TIP
-========================================================= */
-
-.m3-tip{
-    position:absolute;
-    z-index:20;
-
-    right:4vw;
-    top:10vh;
-
-    width:155px;
-
-    padding:15px;
-
-    transform:rotate(2deg);
-
-    background:#d8c18c;
-
-    color:#342c1d;
-
-    box-shadow:0 14px 30px rgba(0,0,0,.45);
-}
-
-.m3-tip::before{
-    content:"";
-
-    position:absolute;
-
-    top:-7px;
-    left:16px;
-
-    width:33px;
-    height:14px;
-
-    background:rgba(205,181,127,.65);
-}
-
-.m3-tip-title{
-    margin-bottom:7px;
-
-    font-family:Arial,sans-serif;
-    font-size:9px;
-    font-weight:bold;
-    letter-spacing:2px;
-    text-transform:uppercase;
-}
-
-.m3-tip-text{
-    font-size:12px;
-    line-height:1.42;
-}
-
-/* =========================================================
-   BOTTOM TOOLS
-========================================================= */
-
-.m3-bottom-tools{
-    position:absolute;
-    z-index:25;
-
-    left:3.2vw;
-    bottom:5.2vh;
-
-    display:flex;
-    gap:30px;
-}
-
-.m3-tool{
-    display:flex;
-    align-items:center;
-    gap:10px;
-
-    border:0;
-    background:none;
-
-    color:#d9b968;
-
-    cursor:pointer;
-
-    font-family:Arial,sans-serif;
-}
-
-.m3-tool:hover .m3-tool-icon{
-    border-color:#70dfe1;
-    color:#70dfe1;
-}
-
-.m3-tool-icon{
-    width:38px;
-    height:38px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    border:1px solid #d9b968;
-    border-radius:50%;
-
-    font-size:14px;
-}
-
-.m3-tool-label{
-    display:block;
-
-    font-size:9px;
-    font-weight:bold;
-    letter-spacing:1.6px;
-    text-transform:uppercase;
-}
-
-.m3-tool-small{
-    display:block;
-
-    margin-top:4px;
-
-    color:rgba(235,239,235,.43);
-
-    font-size:8px;
-}
-
-/* =========================================================
-   FOOTER
-========================================================= */
-
-.m3-footer{
-    position:absolute;
-    z-index:30;
-
-    left:3.2vw;
-    right:4vw;
-    bottom:10px;
-
-    height:30px;
-
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    border-top:1px solid rgba(230,235,225,.12);
-}
-
-.m3-back{
-    border:0;
-    background:none;
-
-    color:rgba(230,235,230,.45);
-
-    font-family:Arial,sans-serif;
-    font-size:8px;
-    letter-spacing:1.7px;
-
-    text-transform:uppercase;
-
-    cursor:pointer;
-}
-
-.m3-back:hover{
-    color:#70dfe1;
-}
-
-.m3-next{
-    padding:8px 20px;
-
-    border:1px solid rgba(220,190,105,.55);
-
-    background:rgba(2,12,17,.68);
-
-    color:#e1bd67;
-
-    font-family:Arial,sans-serif;
-    font-size:9px;
-    font-weight:bold;
-    letter-spacing:2px;
-
-    cursor:pointer;
-
-    opacity:.35;
-    pointer-events:none;
-}
-
-.m3-next.ready{
-    opacity:1;
-    pointer-events:auto;
-}
-
-.m3-next.ready:hover{
-    color:#70dfe1;
-    border-color:#70dfe1;
-}
-
-/* =========================================================
-   INFO MODAL
-========================================================= */
-
-.m3-modal{
-    position:fixed;
-    inset:0;
-
-    z-index:100;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    padding:30px;
-
-    background:rgba(0,5,9,.76);
-
-    backdrop-filter:blur(6px);
-
-    opacity:0;
-    visibility:hidden;
-    pointer-events:none;
-
-    transition:.2s ease;
-}
-
-.m3-modal.show{
-    opacity:1;
-    visibility:visible;
-    pointer-events:auto;
-}
-
-.m3-modal-box{
-    width:520px;
-    max-width:90vw;
-
-    padding:27px 30px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(4,19,27,.98),
-            rgba(1,10,16,.98)
-        );
-
-    border:1px solid rgba(112,224,226,.35);
-
-    border-left:4px solid #70dfe1;
-
-    box-shadow:0 28px 70px rgba(0,0,0,.78);
-}
-
-.m3-modal-label{
-    margin-bottom:8px;
-
-    color:#70dfe1;
-
-    font-family:Arial,sans-serif;
-    font-size:9px;
-    font-weight:bold;
-    letter-spacing:2.5px;
-    text-transform:uppercase;
-}
-
-.m3-modal-title{
-    margin-bottom:14px;
-
-    color:#e4bf67;
-
-    font-size:27px;
-    line-height:1;
-}
-
-.m3-modal-text{
-    color:rgba(244,241,232,.82);
-
-    font-size:14px;
-    line-height:1.55;
-}
-
-.m3-modal-close{
-    margin-top:18px;
-
-    padding:9px 20px;
-
-    border:1px solid rgba(217,185,104,.55);
-
-    background:transparent;
-
-    color:#dfbd68;
-
-    font-family:Arial,sans-serif;
-    font-size:9px;
-    font-weight:bold;
-    letter-spacing:2px;
-
-    cursor:pointer;
-}
-
-/* =========================================================
-   COMPLETION
-========================================================= */
-
-.m3-complete{
-    position:fixed;
-    inset:0;
-
-    z-index:120;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    background:rgba(0,5,9,.80);
-
-    backdrop-filter:blur(6px);
-
-    opacity:0;
-    visibility:hidden;
-    pointer-events:none;
-
-    transition:.25s ease;
-}
-
-.m3-complete.show{
-    opacity:1;
-    visibility:visible;
-    pointer-events:auto;
-}
-
-.m3-complete-box{
-    width:440px;
-    max-width:88vw;
-
-    padding:30px;
-
-    text-align:center;
-
-    border:1px solid rgba(112,224,226,.45);
-
-    background:rgba(2,12,18,.96);
-
-    box-shadow:0 30px 70px rgba(0,0,0,.75);
-}
-
-.m3-complete-label{
-    color:#70dfe1;
-
-    font-family:Arial,sans-serif;
-    font-size:9px;
-    font-weight:bold;
-    letter-spacing:2.5px;
-
-    margin-bottom:12px;
-}
-
-.m3-complete-box h2{
-    color:#e4c16d;
-
-    font-size:29px;
-
-    margin-bottom:12px;
-}
-
-.m3-complete-box p{
-    color:rgba(240,240,233,.76);
-
-    font-size:14px;
-    line-height:1.5;
-
-    margin-bottom:22px;
-}
-
-.m3-complete-button{
-    padding:11px 23px;
-
-    border:1px solid #d9b968;
-
-    background:transparent;
-
-    color:#e4c16d;
-
-    font-family:Arial,sans-serif;
-    font-size:9px;
-    font-weight:bold;
-    letter-spacing:2px;
-
-    cursor:pointer;
-}
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media(max-width:900px){
-
-    body{
-        overflow:auto;
+        min-height: 82px;
     }
 
-    .mission3{
-        min-height:100vh;
-        height:auto;
-    }
+    .option-image {
 
-    .m3-content{
-        position:relative;
-        top:auto;
-        left:auto;
+        width: 65px;
 
-        width:auto;
-
-        margin:0 22px;
-
-        padding-top:80px;
-        padding-bottom:150px;
-    }
-
-    .m3-story{
-        width:auto;
-    }
-
-    .m3-quiz-panel{
-        width:auto;
-    }
-
-    .m3-tip{
-        display:none;
-    }
-
-    .m3-bottom-tools{
-        left:22px;
-        bottom:55px;
-    }
-
-    .music-control{
-        right:22px;
+        height: 65px;
     }
 
 }
 
-@media(max-width:550px){
+&lt;/style&gt;
 
-    .m3-options{
-        grid-template-columns:1fr;
-    }
+&lt;/head&gt;
 
-    .m3-question{
-        font-size:18px;
-    }
 
-    .m3-title{
-        font-size:43px;
-    }
+&lt;body&gt;
 
-    .option{
-        min-height:82px;
-    }
 
-    .option-image{
-        width:65px;
-        height:65px;
-    }
+&lt;main class=&quot;mission&quot;&gt;
 
-}
 
-</style>
-</head>
-
-<body>
-
-<!-- ========================= AUDIO ========================= -->
-<audio id="oceanAudio" preload="auto" loop playsinline></audio>
-
-<!-- =========================================================
-     SHARED OCEAN MUSIC CONTROL
-     This is ONE button for both the intro and Mission 01.
-========================================================= -->
-<button id="musicControl" class="music-control intro-position" type="button">
-    <span id="musicIcon">♪</span>
-    <span id="musicText">OCEAN MUSIC · ON</span>
-</button>
-
-<!-- =========================================================
-     INTRO / BRIEFING PAGE
-========================================================= -->
-<section id="introScene" class="scene">
-
-    <img
-        id="introBg"
-        class="scene-bg"
-        alt=""
-    >
-
-    <div class="scene-shade"></div>
-
-    <header class="header intro-header">
-        <div class="operation">
-            COASTAL SYSTEM ONLINE
-        </div>
-    </header>
-
-    <section class="intro-content">
-
-        <div class="eyebrow">
-            COASTAL HERITAGE MISSION
-        </div>
-
-        <h1 class="intro-title">
-            OPERATION
-            <span>SEA WHISPER</span>
-        </h1>
-
-        <div class="divider"></div>
-
-        <p class="intro-story">
-            Along Odisha's coast, an extraordinary journey begins.
-            <strong>Listen. Observe. Protect.</strong>
-            Your mission is to understand the fragile journey of the
-            Olive Ridley turtle — from the open ocean to the nesting shore.
-        </p>
-
-        <div class="mission-brief">
-            <div class="brief-label">MISSION BRIEF</div>
-            <div class="brief-text">
-                Enter the coastal zone and uncover the story of one of
-                Odisha's most remarkable marine visitors. Every decision matters.
-            </div>
-        </div>
-
-        <div class="start-row">
-            <button id="beginButton" class="begin-button" type="button">
-                BEGIN OPERATION
-            </button>
-
-            <button id="ambienceButton" class="ambience-note" type="button">
-                <div class="ambience-dot">♪</div>
-                <span id="ambienceText">OCEAN AMBIENCE</span>
-            </button>
-        </div>
-
-    </section>
-
-    <footer class="intro-footer">
-        <div>ODISHA COAST</div>
-        <div>OLIVE RIDLEY</div>
-        <div>CONSERVATION</div>
-        <div>MISSION 01 · COASTAL ZONE</div>
-    </footer>
-
-</section>
-
-
-<!-- =========================================================
-     MISSION 01
-========================================================= -->
-<section id="missionScene" class="scene hidden">
-
-    <img
-        id="missionBg"
-        class="scene-bg"
-        alt=""
-    >
-
-    <div class="scene-shade"></div>
-
-    <header class="header">
-        <div></div>
-
-        <div class="operation">
-            FIELD OPERATION · 01 / 06
-        </div>
-    </header>
-
-    <section class="mission-content">
-
-        <div class="mission-eyebrow">
-            NIGHT PATROL · ODISHA COAST
-        </div>
-
-        <h1 class="mission-title">
-            THE SHORE
-            <span>IS SPEAKING</span>
-        </h1>
-
-        <div class="mission-divider"></div>
-
-        <p class="mission-story">
-            The moon is high. The tide has fallen quiet.
-            Somewhere along this beach, an <strong>Olive Ridley</strong>
-            has begun preparing for one of the most important journeys of its life.
-            <br><br>
-            Tonight, you are not here to interfere.
-            <strong>You are here to read the beach.</strong>
-        </p>
-
-        <div class="objective">
-
-            <div class="objective-top">
-                <div class="objective-label">
-                    FIELD INVESTIGATION · 01
-                </div>
-
-                <div id="investigationStatus" class="objective-status">
-                    EVIDENCE · 0 / 3 INSPECTED
-                </div>
-            </div>
-
-            <div class="field-log">
-                <strong>PATROL LOG · 03:17 AM</strong><br>
-                Three unusual signs have been recorded along the nesting beach.
-                <strong>Inspect all three.</strong>
-                Then decide which evidence should be recorded as
-                <strong>ACTIVE NESTING</strong>.
-            </div>
-
-            <div class="mission-task">
-                Don't guess from the label.<br>
-                <strong>Study the evidence.</strong>
-            </div>
-
-            <div id="clues" class="clues"></div>
-
-            <div id="feedback" class="feedback">
-                Begin your field inspection.
-            </div>
-
-            <div class="action-row">
-                <button id="guideButton" class="guide-button" type="button">
-                    🐢 TURTLE FIELD GUIDE
-                </button>
-            </div>
-
-        </div>
-
-    </section>
-
-    <aside class="heritage-note">
-        <div class="heritage-title">COASTAL HERITAGE</div>
-        Odisha's coast is home to some of the world's most important
-        Olive Ridley nesting beaches.
-        <br><br>
-        <strong>
-            Gahirmatha is recognised as one of the world's most important
-            Olive Ridley breeding grounds.
-        </strong>
-    </aside>
-
-    <!-- FIELD EVIDENCE MODAL -->
-    <div id="investigationModal" class="modal">
-        <div class="modal-box">
-
-            <div id="investigationModalLabel" class="modal-label">
-                FIELD EVIDENCE
-            </div>
-
-            <h2 id="investigationModalTitle">Evidence</h2>
-
-            <div class="modal-divider"></div>
-
-            <p id="investigationModalText"></p>
-
-            <button id="investigationModalClose" class="modal-close" type="button">
-                RETURN TO INVESTIGATION
-            </button>
-
-        </div>
-    </div>
-
-    <!-- TURTLE GUIDE -->
-    <div id="guideModal" class="modal">
-        <div class="modal-box">
-
-            <div class="modal-label">
-                FIELD GUIDE · OLIVE RIDLEY
-            </div>
-
-            <h2>KNOW YOUR SUBJECT</h2>
-
-            <div class="modal-divider"></div>
-
-            <p>
-                A good field observer knows what to look for before making a report.
-            </p>
-
-            <div class="fact-list">
-
-                <div class="fact">
-                    <span class="fact-title">01 · NESTING</span>
-                    Female Olive Ridley turtles come ashore to dig nests in
-                    sandy beaches and lay their eggs.
-                </div>
-
-                <div class="fact">
-                    <span class="fact-title">02 · NEST CHAMBER</span>
-                    The female uses her hind flippers to create a chamber
-                    in the sand where the eggs are deposited.
-                </div>
-
-                <div class="fact">
-                    <span class="fact-title">03 · ODISHA</span>
-                    Odisha's coast contains some of the world's most important
-                    Olive Ridley nesting beaches.
-                </div>
-
-                <div class="fact">
-                    <span class="fact-title">04 · ARRIBADA</span>
-                    Large numbers of Olive Ridleys can gather to nest during
-                    spectacular mass-nesting events called arribadas.
-                </div>
-
-                <div class="fact">
-                    <span class="fact-title">05 · FIELD RULE</span>
-                    Observe first. Avoid touching, moving or unnecessarily
-                    disturbing a nesting turtle or its nest.
-                </div>
-
-            </div>
-
-            <button id="guideClose" class="modal-close" type="button">
-                RETURN TO MISSION
-            </button>
-
-        </div>
-    </div>
-
-    <!-- SUCCESS MODAL -->
-    <div id="successModal" class="modal">
-        <div class="modal-box">
-
-            <div class="modal-label">
-                FIELD REPORT · VERIFIED
-            </div>
-
-            <h2>ACTIVE NESTING</h2>
-
-            <div class="modal-divider"></div>
-
-            <p>
-                You identified the
-                <strong>circular nest chamber</strong>
-                as the strongest evidence of active nesting.
-            </p>
-
-            <p>
-                The disturbed depression in the sand is consistent with a
-                turtle excavating a chamber for its eggs.
-            </p>
-
-            <p>
-                Most importantly, you reached the correct conclusion without
-                needing to touch the turtle or disturb the nest.
-            </p>
-
-            <p>
-                <strong>
-                    Observation complete. The beach remains undisturbed.
-                </strong>
-            </p>
-
-            <button id="successClose" class="modal-close" type="button">
-                COMPLETE FIELD REPORT
-            </button>
-
-        </div>
-    </div>
-
-    <footer class="footer">
-        <button id="backButton" class="back" type="button">
-            ← RETURN TO BRIEFING
-        </button>
-
-        <button id="nextButton" class="next" type="button">
-            CONTINUE →
-        </button>
-    </footer>
-
-</section>
-
-
-
-
-
-<section id="mission2Scene" class="m2-mission hidden">
-
-
-<!-- =======================================================
+&lt;!-- =======================================================
      HEADER
-======================================================= -->
+======================================================= --&gt;
 
-<header class="m2-header">
+&lt;header class=&quot;header&quot;&gt;
 
-        <div></div>
+    &lt;div class=&quot;brand&quot;&gt;
 
-        <div class="m2-mission-id">
+        &lt;div class=&quot;brand-symbol&quot;&gt;
+            ◈
+        &lt;/div&gt;
 
-        FIELD OPERATION · 02 / 06
+        OPERATION SEA WHISPER
 
-    </div>
-
-</header>
-
-
-
-<!-- =======================================================
-     MAIN CONTENT
-======================================================= -->
-
-<section class="m2-content">
+    &lt;/div&gt;
 
 
-    <div class="m2-eyebrow">
+    &lt;div class=&quot;mission-id&quot;&gt;
 
-        NIGHT PATROL · ODISHA COAST
+        FIELD OPERATION · 03 / 06
 
-    </div>
+    &lt;/div&gt;
 
-
-    <h1 class="m2-title">
-
-        KEEP THE
-
-        <span>
-            NIGHT QUIET
-        </span>
-
-    </h1>
-
-
-    <div class="m2-divider"></div>
-
-
-    <p class="m2-story">
-
-        The nest has been found.
-
-        <strong>
-            Now it must be protected.
-        </strong>
-
-        Your observations have revealed several
-        possible disturbances.
-
-        Before intervening, determine what
-        actually threatens the nesting turtle.
-
-    </p>
+&lt;/header&gt;
 
 
 
-    <!-- =================================================
+&lt;!-- =======================================================
+     CONTENT
+======================================================= --&gt;
+
+&lt;section class=&quot;content&quot;&gt;
+
+
+    &lt;div class=&quot;eyebrow&quot;&gt;
+
+        HATCHLING WATCH · ODISHA COAST
+
+    &lt;/div&gt;
+
+
+    &lt;h1 class=&quot;title&quot;&gt;
+
+        FIND THE
+
+        &lt;span&gt;
+            WAY HOME
+        &lt;/span&gt;
+
+    &lt;/h1&gt;
+
+
+    &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+
+
+    &lt;p class=&quot;story&quot;&gt;
+
+        The beach is quiet.
+
+        Then the sand begins to move.
+
+        Tiny hatchlings emerge from beneath
+        the nest — but something is wrong.
+
+        They are moving away from the ocean.
+
+        &lt;strong&gt;
+            Your next decision could determine
+            whether they reach the sea.
+        &lt;/strong&gt;
+
+    &lt;/p&gt;
+
+
+
+    &lt;!-- =================================================
          QUIZ
-    ================================================== -->
+    ================================================== --&gt;
 
-    <div class="m2-quiz-panel">
-
-
-        <div class="m2-quiz-header">
-
-            <div class="m2-quiz-label">
-
-                FIELD INVESTIGATION · 02
-
-            </div>
+    &lt;div class=&quot;quiz-panel&quot;&gt;
 
 
-            <div
-                class="m2-question-count"
-                id="m2-questionCount"
-            >
+        &lt;div class=&quot;quiz-header&quot;&gt;
+
+            &lt;div class=&quot;quiz-label&quot;&gt;
+
+                FIELD INVESTIGATION · 03
+
+            &lt;/div&gt;
+
+
+            &lt;div
+                class=&quot;question-count&quot;
+                id=&quot;questionCount&quot;
+            &gt;
 
                 QUESTION 1 / 4
 
-            </div>
+            &lt;/div&gt;
 
-        </div>
-
-
-        <div
-            class="m2-question"
-            id="m2-question"
-        ></div>
+        &lt;/div&gt;
 
 
-        <div
-            class="m2-options"
-            id="m2-options"
-        ></div>
+        &lt;div
+            class=&quot;question&quot;
+            id=&quot;question&quot;
+        &gt;&lt;/div&gt;
 
 
-        <div
-            class="m2-feedback"
-            id="m2-feedback"
-        ></div>
+        &lt;div
+            class=&quot;options&quot;
+            id=&quot;options&quot;
+        &gt;&lt;/div&gt;
 
 
-        <div class="m2-progress-area">
-
-            <div
-                class="m2-progress-text"
-                id="m2-progressText"
-            >
-
-                INVESTIGATION · 1 / 4
-
-            </div>
+        &lt;div
+            class=&quot;feedback&quot;
+            id=&quot;feedback&quot;
+        &gt;&lt;/div&gt;
 
 
-            <div class="m2-progress-bar">
+        &lt;div class=&quot;progress-area&quot;&gt;
 
-                <div
-                    class="m2-progress-fill"
-                    id="m2-progressFill"
-                ></div>
+            &lt;div
+                class=&quot;progress-text&quot;
+                id=&quot;progressText&quot;
+            &gt;
 
-            </div>
+                HATCHLING WATCH · 1 / 4
 
-        </div>
-
-    </div>
-
-</section>
+            &lt;/div&gt;
 
 
+            &lt;div class=&quot;progress-bar&quot;&gt;
 
-<!-- =======================================================
+                &lt;div
+                    class=&quot;progress-fill&quot;
+                    id=&quot;progressFill&quot;
+                &gt;&lt;/div&gt;
+
+            &lt;/div&gt;
+
+        &lt;/div&gt;
+
+    &lt;/div&gt;
+
+&lt;/section&gt;
+
+
+
+&lt;!-- =======================================================
      FIELD TIP
-======================================================= -->
+======================================================= --&gt;
 
-<div class="m2-tip">
+&lt;div class=&quot;tip&quot;&gt;
 
-    <div class="m2-tip-title">
+    &lt;div class=&quot;tip-title&quot;&gt;
 
         FIELD TIP
 
-    </div>
+    &lt;/div&gt;
 
 
-    <div class="m2-tip-text">
+    &lt;div class=&quot;tip-text&quot;&gt;
 
-        Not every disturbance
-        is equally dangerous.
+        Hatchlings do not need
+        to be carried to the sea
+        simply because they are
+        small.
 
-        <br><br>
+        &lt;br&gt;&lt;br&gt;
 
-        Think about what
-        affects the turtle's
-        natural behaviour.
+        First understand
+        what is affecting
+        their direction.
 
-    </div>
+    &lt;/div&gt;
 
-</div>
+&lt;/div&gt;
 
 
 
-<!-- =======================================================
+&lt;!-- =======================================================
      BOTTOM TOOLS
-======================================================= -->
+======================================================= --&gt;
 
-<div class="m2-bottom-tools">
+&lt;div class=&quot;bottom-tools&quot;&gt;
 
 
-    <button
-        class="m2-tool"
-        id="m2-fieldNotes"
-    >
+    &lt;button
+        class=&quot;tool&quot;
+        id=&quot;fieldNotes&quot;
+        type=&quot;button&quot;
+    &gt;
 
-        <span class="m2-tool-icon">
+        &lt;span class=&quot;tool-icon&quot;&gt;
             ◉
-        </span>
+        &lt;/span&gt;
 
-        <span>
+        &lt;span&gt;
 
-            <span class="m2-tool-label">
+            &lt;span class=&quot;tool-label&quot;&gt;
                 Field Notes
-            </span>
+            &lt;/span&gt;
 
-            <span class="m2-tool-small">
+            &lt;span class=&quot;tool-small&quot;&gt;
                 Click to read
-            </span>
+            &lt;/span&gt;
 
-        </span>
+        &lt;/span&gt;
 
-    </button>
+    &lt;/button&gt;
 
 
 
-    <button
-        class="m2-tool"
-        id="m2-turtleFact"
-    >
+    &lt;button
+        class=&quot;tool&quot;
+        id=&quot;turtleFact&quot;
+        type=&quot;button&quot;
+    &gt;
 
-        <span class="m2-tool-icon">
+        &lt;span class=&quot;tool-icon&quot;&gt;
             ♢
-        </span>
+        &lt;/span&gt;
 
-        <span>
+        &lt;span&gt;
 
-            <span class="m2-tool-label">
+            &lt;span class=&quot;tool-label&quot;&gt;
                 Turtle Fact
-            </span>
+            &lt;/span&gt;
 
-            <span class="m2-tool-small">
+            &lt;span class=&quot;tool-small&quot;&gt;
                 Learn a fact
-            </span>
+            &lt;/span&gt;
 
-        </span>
+        &lt;/span&gt;
 
-    </button>
-
-
-</div>
+    &lt;/button&gt;
 
 
-
-<!-- =======================================================
-     COMPLETION SCREEN
-======================================================= -->
-
-<div
-    class="m2-complete"
-    id="m2-complete"
->
-
-    <div class="m2-complete-box">
-
-        <div class="m2-complete-label">
-
-            FIELD OPERATION · 02
-
-        </div>
-
-
-        <h2>
-
-            INVESTIGATION COMPLETE
-
-        </h2>
-
-
-        <p>
-
-            You correctly analysed the nesting
-            beach and identified the major risks
-            without disturbing the turtle.
-
-            <br><br>
-
-            Proceed to the next operation.
-
-        </p>
-
-
-        <button
-            class="m2-complete-button"
-            id="m2-completeButton"
-        >
-
-            CONTINUE TO MISSION 03 →
-
-        </button>
-
-    </div>
-
-</div>
+&lt;/div&gt;
 
 
 
-<!-- =======================================================
-     FOOTER
-======================================================= -->
+&lt;!-- =======================================================
+     INFO MODAL
+======================================================= --&gt;
 
+&lt;div
+    class=&quot;info-modal&quot;
+    id=&quot;infoModal&quot;
+&gt;
 
-<!-- =======================================================
-     FIELD NOTES / TURTLE FACT MODAL
-======================================================= -->
+    &lt;div class=&quot;info-box&quot;&gt;
 
-<div
-    class="m2-info-modal"
-    id="m2-infoModal"
->
-
-    <div class="m2-info-box">
-
-        <div
-            class="m2-info-label"
-            id="m2-infoLabel"
-        >
+        &lt;div
+            class=&quot;info-label&quot;
+            id=&quot;infoLabel&quot;
+        &gt;
             FIELD NOTES
-        </div>
+        &lt;/div&gt;
 
 
-        <div
-            class="m2-info-title"
-            id="m2-infoTitle"
-        >
-            Keep Your Distance
-        </div>
+        &lt;div
+            class=&quot;info-title&quot;
+            id=&quot;infoTitle&quot;
+        &gt;
+            Hatchling Watch
+        &lt;/div&gt;
 
 
-        <ul
-            class="m2-info-list"
-            id="m2-infoList"
-        ></ul>
+        &lt;div
+            class=&quot;info-text&quot;
+            id=&quot;infoText&quot;
+        &gt;&lt;/div&gt;
 
 
-        <div
-            class="m2-info-source"
-            id="m2-infoSource"
-        ></div>
+        &lt;button
+            class=&quot;info-close&quot;
+            id=&quot;infoClose&quot;
+            type=&quot;button&quot;
+        &gt;
 
-
-        <button
-            class="m2-info-close"
-            id="m2-infoClose"
-            type="button"
-        >
             CLOSE
-        </button>
 
-    </div>
+        &lt;/button&gt;
 
-</div>
+    &lt;/div&gt;
 
-
-<footer class="m2-footer">
+&lt;/div&gt;
 
 
-    <button
-        class="m2-back"
-        id="m2-backButton"
-    >
 
-        ← MISSION 01
+&lt;!-- =======================================================
+     COMPLETION
+======================================================= --&gt;
 
-    </button>
+&lt;div
+    class=&quot;complete&quot;
+    id=&quot;complete&quot;
+&gt;
+
+    &lt;div class=&quot;complete-box&quot;&gt;
+
+        &lt;div class=&quot;complete-label&quot;&gt;
+
+            FIELD OPERATION · 03
+
+        &lt;/div&gt;
 
 
-    <button
-        class="m2-next"
-        id="m2-nextButton"
-    >
+        &lt;h2&gt;
+
+            HATCHLINGS REACH THE SEA
+
+        &lt;/h2&gt;
+
+
+        &lt;p&gt;
+
+            You identified the safest responses
+            without interfering unnecessarily
+            with the hatchlings&#x27; natural journey.
+
+            &lt;br&gt;&lt;br&gt;
+
+            Mission 03 complete.
+
+        &lt;/p&gt;
+
+
+        &lt;button
+            class=&quot;complete-button&quot;
+            id=&quot;completeButton&quot;
+            type=&quot;button&quot;
+        &gt;
+
+            CONTINUE TO MISSION 04 →
+
+        &lt;/button&gt;
+
+    &lt;/div&gt;
+
+&lt;/div&gt;
+
+
+
+&lt;!-- =======================================================
+     FOOTER
+======================================================= --&gt;
+
+&lt;footer class=&quot;footer&quot;&gt;
+
+
+    &lt;button
+        class=&quot;back&quot;
+        id=&quot;backButton&quot;
+        type=&quot;button&quot;
+    &gt;
+
+        ← MISSION 02
+
+    &lt;/button&gt;
+
+
+    &lt;button
+        class=&quot;next&quot;
+        id=&quot;nextButton&quot;
+        type=&quot;button&quot;
+    &gt;
 
         NEXT →
 
-    </button>
+    &lt;/button&gt;
 
-</footer>
-
-
+&lt;/footer&gt;
 
 
 
-<script>/* =========================================================
-   BACKGROUND DEBUG / FALLBACK
-   The code checks the exact new filenames first, then older
-   names so the page still works if the files were renamed.
-========================================================= */
-
-const imageCandidates = {
-    introBg: [
-        "assets/sea-whisper-bg.jpeg",
-        "assets/sea-whisper-bg.jpeg",
-        "assets/sea-whisper-bg.jpeg",
-        "assets/sea-whisper-bg.jpeg",
-        "assets/sea-whisper-bg.jpeg",
-        "sea-whisper-bg.jpeg",
-        "assets/mode2.jpeg",
-        "assets/mode2.jpeg"
-    ],
-    missionBg: [
-        "assets/mode2.jpeg",
-        "assets/mode2.jpeg",
-        "assets/mode2.jpeg",
-        "mode2.jpeg"
-    ]
-};
-
-function loadFirstWorkingImage(imgElement, candidates) {
-    let index = 0;
-
-    function tryNext() {
-        if (index >= candidates.length) {
-            console.error("No background image could be loaded.", candidates);
-            return;
-        }
-
-        const test = new Image();
-
-        test.onload = function () {
-            imgElement.src = candidates[index];
-        };
-
-        test.onerror = function () {
-            index++;
-            tryNext();
-        };
-
-        test.src = candidates[index];
-    }
-
-    tryNext();
-}
-
-loadFirstWorkingImage(
-    document.getElementById("introBg"),
-    imageCandidates.introBg
-);
-
-loadFirstWorkingImage(
-    document.getElementById("missionBg"),
-    imageCandidates.missionBg
-);
-
+&lt;script&gt;
 
 /* =========================================================
-   SINGLE SHARED OCEAN MUSIC SYSTEM
-   One audio element. One source. One state.
-========================================================= */
-
-const oceanAudio = document.getElementById("oceanAudio");
-const musicControl = document.getElementById("musicControl");
-const musicText = document.getElementById("musicText");
-const musicIcon = document.getElementById("musicIcon");
-const ambienceButton = document.getElementById("ambienceButton");
-const ambienceText = document.getElementById("ambienceText");
-
-let musicPlaying = false;
-let musicMutedByUser = false;
-
-/* The MP3 is beside this HTML file. */
-oceanAudio.src = "Ocean_sound.mp3";
-oceanAudio.preload = "auto";
-oceanAudio.loop = true;
-oceanAudio.playsInline = true;
-oceanAudio.volume = 0.32;
-
-function updateMusicUI(message = null) {
-    const label = message || (musicPlaying ? "OCEAN MUSIC · ON" : "MUSIC · OFF");
-    const icon = musicPlaying ? "♪" : "×";
-
-    if (musicText) musicText.textContent = label;
-    if (musicIcon) musicIcon.textContent = icon;
-    if (musicControl) musicControl.classList.toggle("muted", !musicPlaying);
-
-    if (ambienceText) ambienceText.textContent = musicPlaying ? "OCEAN AMBIENCE · ON" : "OCEAN AMBIENCE · OFF";
-    if (ambienceButton) ambienceButton.classList.toggle("muted", !musicPlaying);
-}
-
-async function startOceanMusic() {
-    musicMutedByUser = false;
-    updateMusicUI("OCEAN MUSIC · STARTING...");
-
-    try {
-        /* Reset only when not already playing; this preserves continuity. */
-        if (oceanAudio.paused) {
-            await oceanAudio.play();
-        }
-
-        musicPlaying = true;
-        updateMusicUI();
-        return true;
-    } catch (error) {
-        musicPlaying = false;
-        updateMusicUI("CLICK AGAIN TO PLAY MUSIC");
-        console.error("Ocean_sound.mp3 playback failed:", error);
-        return false;
-    }
-}
-
-function stopOceanMusic() {
-    oceanAudio.pause();
-    musicPlaying = false;
-    musicMutedByUser = true;
-    updateMusicUI();
-}
-
-async function toggleMusic(event) {
-    if (event) {
-        event.preventDefault();
-        event.stopPropagation();
-    }
-
-    if (musicPlaying && !oceanAudio.paused) {
-        stopOceanMusic();
-    } else {
-        await startOceanMusic();
-    }
-}
-
-musicControl.addEventListener("click", toggleMusic);
-
-if (ambienceButton) {
-    ambienceButton.addEventListener("click", toggleMusic);
-}
-
-/* Explicit loop safety. */
-oceanAudio.addEventListener("ended", async function () {
-    if (!musicMutedByUser) {
-        oceanAudio.currentTime = 0;
-        try {
-            await oceanAudio.play();
-            musicPlaying = true;
-            updateMusicUI();
-        } catch (error) {
-            musicPlaying = false;
-            updateMusicUI("CLICK TO RESUME MUSIC");
-        }
-    }
-});
-
-oceanAudio.addEventListener("play", function () {
-    musicPlaying = true;
-    updateMusicUI();
-});
-
-oceanAudio.addEventListener("pause", function () {
-    if (!musicMutedByUser) {
-        musicPlaying = false;
-        updateMusicUI();
-    }
-});
-
-oceanAudio.addEventListener("error", function () {
-    musicPlaying = false;
-    updateMusicUI("AUDIO FILE NOT FOUND");
-    console.error("Cannot load Ocean_sound.mp3. It must be beside this HTML file.");
-});
-
-updateMusicUI();
-
-/* =========================================================
-   PAGE SWITCH
-========================================================= */
-
-const introScene =
-    document.getElementById("introScene");
-
-const missionScene =
-    document.getElementById("missionScene");
-
-const beginButton =
-    document.getElementById("beginButton");
-
-
-beginButton.addEventListener(
-    "click",
-    async function () {
-
-        /* BEGIN OPERATION is an explicit user gesture, so the
-           browser is allowed to start the audio here. */
-        if (!musicPlaying) {
-            await startOceanMusic();
-        }
-
-        introScene.classList.add("hidden");
-        missionScene.classList.remove("hidden");
-
-        /* Move the SAME button to the Mission 01 position.
-           The SAME audio element keeps playing; it is never recreated. */
-        musicControl.classList.remove("intro-position");
-        musicControl.classList.add("mission-position");
-
-    }
-);
-
-
-/* =========================================================
-   MISSION 01 DATA
-========================================================= */
-
-const evidenceData = [
-
-    {
-        image: "assets/sandheap.jpeg",
-        label: "DISTURBED SAND",
-        correct: false,
-        explanation:
-            "A loose mound of disturbed sand shows that the beach surface has been altered, but by itself it is not enough evidence to confidently record active nesting. Continue inspecting the other signs."
-    },
-
-    {
-        image: "assets/sandpit.jpeg",
-        label: "CIRCULAR DEPRESSION",
-        correct: true,
-        explanation:
-            "This is the strongest clue. The defined circular depression is consistent with a turtle excavating a nest chamber in the sand."
-    },
-
-    {
-        image: "assets/plasticbottle.jpeg",
-        label: "BEACH DEBRIS",
-        correct: false,
-        explanation:
-            "The plastic bottle is evidence of human activity and a potential conservation concern, but it tells you nothing about whether a turtle has begun excavating a nest."
-    }
-
-];
-
-
-function shuffle(array) {
-
-    const shuffled = [...array];
-
-    for (
-        let i = shuffled.length - 1;
-        i > 0;
-        i--
-    ) {
-
-        const j =
-            Math.floor(
-                Math.random() * (i + 1)
-            );
-
-        [
-            shuffled[i],
-            shuffled[j]
-        ] =
-        [
-            shuffled[j],
-            shuffled[i]
-        ];
-    }
-
-    return shuffled;
-}
-
-
-/* =========================================================
-   MISSION ELEMENTS
-========================================================= */
-
-const clues =
-    document.getElementById("clues");
-
-const feedback =
-    document.getElementById("feedback");
-
-const investigationStatus =
-    document.getElementById("investigationStatus");
-
-const nextButton =
-    document.getElementById("nextButton");
-
-const backButton =
-    document.getElementById("backButton");
-
-
-const investigationModal =
-    document.getElementById("investigationModal");
-
-const investigationModalLabel =
-    document.getElementById("investigationModalLabel");
-
-const investigationModalTitle =
-    document.getElementById("investigationModalTitle");
-
-const investigationModalText =
-    document.getElementById("investigationModalText");
-
-const investigationModalClose =
-    document.getElementById("investigationModalClose");
-
-
-const guideButton =
-    document.getElementById("guideButton");
-
-const guideModal =
-    document.getElementById("guideModal");
-
-const guideClose =
-    document.getElementById("guideClose");
-
-
-const successModal =
-    document.getElementById("successModal");
-
-const successClose =
-    document.getElementById("successClose");
-
-
-let inspectedCount = 0;
-let inspected = new Set();
-let solved = false;
-
-
-/* =========================================================
-   EVIDENCE MODAL
-========================================================= */
-
-function openInvestigationModal(
-    label,
-    title,
-    text
-) {
-
-    investigationModalLabel.textContent = label;
-    investigationModalTitle.textContent = title;
-    investigationModalText.innerHTML = text;
-
-    investigationModal.classList.add("show");
-}
-
-
-investigationModalClose.addEventListener(
-    "click",
-    function () {
-
-        investigationModal.classList.remove("show");
-
-    }
-);
-
-
-/* =========================================================
-   CREATE RANDOM CLUES
-========================================================= */
-
-shuffle(evidenceData).forEach(
-    function (item, index) {
-
-        const clue =
-            document.createElement("button");
-
-        clue.type = "button";
-        clue.className = "clue";
-
-        clue.innerHTML = `
-            <span class="clue-number">
-                ${String.fromCharCode(65 + index)}
-            </span>
-
-            <img
-                src="${item.image}"
-                alt="${item.label}"
-            >
-        `;
-
-
-        clue.addEventListener(
-            "click",
-            function () {
-
-                if (solved) return;
-
-
-                if (!inspected.has(index)) {
-
-                    inspected.add(index);
-
-                    inspectedCount++;
-
-                    clue.classList.add("inspected");
-
-                    investigationStatus.textContent =
-                        "EVIDENCE · " +
-                        inspectedCount +
-                        " / 3 INSPECTED";
-                }
-
-
-                if (item.correct) {
-
-                    clue.classList.add("correct");
-
-                    solved = true;
-
-                    investigationStatus.textContent =
-                        "FIELD REPORT · VERIFIED";
-
-                    feedback.innerHTML =
-                        "✓ Evidence verified. This is the strongest sign of active nesting.";
-
-                    feedback.style.color = "#70dfe2";
-
-                    nextButton.classList.add("ready");
-
-                    nextButton.textContent =
-                        "FIELD REPORT COMPLETE";
-
-                    successModal.classList.add("show");
-
-                } else {
-
-                    clue.classList.add("wrong");
-
-                    feedback.innerHTML =
-                        "Not enough evidence. Read the field explanation and continue your inspection.";
-
-                    feedback.style.color = "#d8846d";
-
-                    openInvestigationModal(
-                        "FIELD EVIDENCE",
-                        item.label,
-                        item.explanation
-                    );
-
-                    setTimeout(
-                        function () {
-                            clue.classList.remove("wrong");
-                        },
-                        500
-                    );
-                }
-
-            }
-        );
-
-        clues.appendChild(clue);
-    }
-);
-
-
-/* =========================================================
-   GUIDE
-========================================================= */
-
-guideButton.addEventListener(
-    "click",
-    function () {
-        guideModal.classList.add("show");
-    }
-);
-
-guideClose.addEventListener(
-    "click",
-    function () {
-        guideModal.classList.remove("show");
-    }
-);
-
-
-/* =========================================================
-   SUCCESS
-========================================================= */
-
-successClose.addEventListener(
-    "click",
-    function () {
-
-        successModal.classList.remove("show");
-
-    }
-);
-
-
-/* =========================================================
-   MODAL OUTSIDE CLICK
-========================================================= */
-
-[
-    investigationModal,
-    guideModal,
-    successModal
-].forEach(
-    function (modal) {
-
-        modal.addEventListener(
-            "click",
-            function (event) {
-
-                if (event.target === modal) {
-
-                    modal.classList.remove("show");
-
-                }
-            }
-        );
-
-    }
-);
-
-
-/* =========================================================
-   ESC KEY
-========================================================= */
-
-document.addEventListener(
-    "keydown",
-    function (event) {
-
-        if (event.key === "Escape") {
-
-            investigationModal.classList.remove("show");
-
-            guideModal.classList.remove("show");
-
-            successModal.classList.remove("show");
-
-        }
-    }
-);
-
-
-/* =========================================================
-   BACK TO START
-========================================================= */
-
-backButton.addEventListener(
-    "click",
-    function () {
-
-        missionScene.classList.add("hidden");
-        introScene.classList.remove("hidden");
-
-        musicControl.classList.remove("mission-position");
-        musicControl.classList.add("intro-position");
-
-    }
-);
-
-
-/* =========================================================
-   CONTINUE FROM MISSION 01 TO MISSION 02
-========================================================= */
-
-const mission2Scene =
-    document.getElementById("mission2Scene");
-
-nextButton.addEventListener(
-    "click",
-    function () {
-
-        if (!solved) {
-
-            feedback.innerHTML =
-                "Inspect the evidence and identify the strongest sign of active nesting.";
-
-            feedback.style.color =
-                "#e5c474";
-
-            return;
-        }
-
-        successModal.classList.remove("show");
-
-        missionScene.classList.add("hidden");
-        mission2Scene.classList.remove("hidden");
-
-        nextButton.textContent =
-            "CONTINUE →";
-
-        nextButton.classList.remove("ready");
-
-        if (typeof loadQuestion === "function") {
-            loadQuestion();
-        }
-
-    }
-);
-
-
-/* =========================================================
-   MISSION 02 CONNECTED SCRIPT
-========================================================= */
-
-
-
-/* =========================================================
-   QUESTIONS
+   MISSION 03 QUESTIONS
 ========================================================= */
 
 const questions = [
@@ -3785,24 +1762,56 @@ const questions = [
     {
 
         question:
-            "A nesting Olive Ridley is approaching the beach at night. Which observation would be the strongest reason to intervene immediately?",
+            &quot;You see several hatchlings emerging at night. Instead of moving toward the ocean, they are crawling toward a brightly lit building. What should be addressed FIRST?&quot;,
 
         options: [
 
-            "The turtle pauses several times before reaching the sand.",
+            {
+                /*
+                   If flashlight.jpeg exists, it will be used.
+                   If it does not, ocean.jpeg is shown instead,
+                   so there will never be a broken image.
+                */
+                image:
+                    &quot;assets/flashlight.jpeg&quot;,
 
-            "A person is using a bright white flashlight directly toward the turtle.",
+                fallback:
+                    &quot;assets/ocean.jpeg&quot;,
 
-            "The turtle changes direction once before reaching the nesting area.",
+                text:
+                    &quot;Remove, shield or reduce the artificial light visible from the beach.&quot;
+            },
 
-            "The beach is unusually quiet."
+            {
+                image:
+                    &quot;assets/adult.jpeg&quot;,
+
+                text:
+                    &quot;Pick up every hatchling and carry them directly into the water.&quot;
+            },
+
+            {
+                image:
+                    &quot;assets/plasticbottle.jpeg&quot;,
+
+                text:
+                    &quot;Use a bright phone flashlight to create a new path toward the sea.&quot;
+            },
+
+            {
+                image:
+                    &quot;assets/sandpit.jpeg&quot;,
+
+                text:
+                    &quot;Make loud noises so the hatchlings turn around.&quot;
+            }
 
         ],
 
-        correct: 1,
+        correct: 0,
 
         explanation:
-            "Correct. Direct artificial light can disorient a nesting turtle and interfere with its movement."
+            &quot;Correct. Artificial light can disrupt hatchlings&#x27; natural seaward orientation. The first response should be to address the light source rather than handling the hatchlings unnecessarily.&quot;
 
     },
 
@@ -3810,24 +1819,51 @@ const questions = [
     {
 
         question:
-            "Why can artificial light be especially dangerous to sea turtles during the nesting and hatching cycle?",
+            &quot;Why do newly emerged hatchlings normally move toward the open ocean at night?&quot;,
 
         options: [
 
-            "It increases the temperature of the entire beach immediately.",
+            {
+                image:
+                    &quot;assets/ocean.jpeg&quot;,
 
-            "It makes the sand too soft for turtles to dig.",
+                text:
+                    &quot;They use visual cues from the brighter seaward horizon to orient away from the darker landward silhouette.&quot;
+            },
 
-            "It can interfere with natural orientation cues used during movement between land and sea.",
+            {
+                image:
+                    &quot;assets/adult.jpeg&quot;,
 
-            "It causes adult turtles to stop producing eggs."
+                text:
+                    &quot;They can smell the exact location of the sea from the nest.&quot;
+            },
+
+            {
+                image:
+                    &quot;assets/flashlight.jpeg&quot;,
+
+                fallback:
+                    &quot;assets/ocean.jpeg&quot;,
+
+                text:
+                    &quot;They follow the strongest artificial light because it resembles moonlight.&quot;
+            },
+
+            {
+                image:
+                    &quot;assets/plasticbottle.jpeg&quot;,
+
+                text:
+                    &quot;They instinctively follow objects that reflect light on the beach.&quot;
+            }
 
         ],
 
-        correct: 2,
+        correct: 0,
 
         explanation:
-            "Correct. Artificial light can interfere with natural orientation cues, especially when hatchlings are trying to locate the sea."
+            &quot;Correct. Hatchlings use visual orientation cues. The open seaward horizon is normally brighter than the landward side, helping them find the ocean.&quot;
 
     },
 
@@ -3835,24 +1871,51 @@ const questions = [
     {
 
         question:
-            "You discover plastic waste several metres away from a nest. What is the BEST response during a nesting patrol?",
+            &quot;A volunteer finds a hatchling crawling across a beach where a small sand ridge is blocking its path. What is the most appropriate principle to follow?&quot;,
 
         options: [
 
-            "Immediately pick it up while the turtle is nesting beside it.",
+            {
+                image:
+                    &quot;assets/sandheap.jpeg&quot;,
 
-            "Leave all waste permanently because removing it may disturb the beach.",
+                text:
+                    &quot;Remove or reduce the obstacle only if it can be done safely without unnecessarily handling the hatchling.&quot;
+            },
 
-            "Wait for a safe opportunity and remove the waste without approaching or disturbing the turtle.",
+            {
+                image:
+                    &quot;assets/adult.jpeg&quot;,
 
-            "Move the nest to a cleaner section of the beach."
+                text:
+                    &quot;Carry the hatchling immediately because every minute on land is dangerous.&quot;
+            },
+
+            {
+                image:
+                    &quot;assets/flashlight.jpeg&quot;,
+
+                fallback:
+                    &quot;assets/ocean.jpeg&quot;,
+
+                text:
+                    &quot;Shine a light behind it so it moves faster toward the ocean.&quot;
+            },
+
+            {
+                image:
+                    &quot;assets/plasticbottle.jpeg&quot;,
+
+                text:
+                    &quot;Leave the obstacle because human intervention is never appropriate.&quot;
+            }
 
         ],
 
-        correct: 2,
+        correct: 0,
 
         explanation:
-            "Correct. Removing hazardous waste is useful, but an actively nesting turtle should not be disturbed. A nest should never simply be relocated because the surrounding beach is inconvenient."
+            &quot;Correct. The goal is to remove avoidable human-created obstacles while keeping intervention as limited as possible.&quot;
 
     },
 
@@ -3860,24 +1923,51 @@ const questions = [
     {
 
         question:
-            "A group wants to watch a nesting turtle. They suggest standing close to her, using phone flash occasionally, and speaking quietly. Which assessment is MOST scientifically appropriate?",
+            &quot;A hatchling reaches the shoreline, but a person suggests holding it for a photograph before releasing it. Which response best reflects responsible conservation practice?&quot;,
 
         options: [
 
-            "It is safe because the group is not touching the turtle.",
+            {
+                image:
+                    &quot;assets/adult.jpeg&quot;,
 
-            "It is safe as long as nobody photographs the eggs.",
+                text:
+                    &quot;Do not handle it for a photograph. Allow the hatchling to continue its natural journey unless trained responders have a specific reason to intervene.&quot;
+            },
 
-            "It can still disturb the turtle because proximity, light and movement can affect nesting behaviour.",
+            {
+                image:
+                    &quot;assets/flashlight.jpeg&quot;,
 
-            "It is safe because Olive Ridleys are accustomed to humans."
+                fallback:
+                    &quot;assets/ocean.jpeg&quot;,
+
+                text:
+                    &quot;Hold it briefly because a photograph cannot affect its survival.&quot;
+            },
+
+            {
+                image:
+                    &quot;assets/plasticbottle.jpeg&quot;,
+
+                text:
+                    &quot;Move it to a brighter part of the beach so the photograph is clearer.&quot;
+            },
+
+            {
+                image:
+                    &quot;assets/ocean.jpeg&quot;,
+
+                text:
+                    &quot;Carry it back to the nest so it can try the journey again.&quot;
+            }
 
         ],
 
-        correct: 2,
+        correct: 0,
 
         explanation:
-            "Correct. Physical contact is not required for disturbance. Light, movement, noise and proximity can all alter the behaviour of a nesting turtle."
+            &quot;Correct. Wildlife observation should minimise unnecessary handling and disturbance. The objective is to protect the hatchling&#x27;s natural journey, not turn it into an interaction.&quot;
 
     }
 
@@ -3898,34 +1988,34 @@ let answeredCorrectly = false;
 ========================================================= */
 
 const questionElement =
-    document.getElementById("m2-question");
+    document.getElementById(&quot;question&quot;);
 
 const optionsElement =
-    document.getElementById("m2-options");
+    document.getElementById(&quot;options&quot;);
 
 const feedbackElement =
-    document.getElementById("m2-feedback");
+    document.getElementById(&quot;feedback&quot;);
 
 const questionCountElement =
-    document.getElementById("m2-questionCount");
+    document.getElementById(&quot;questionCount&quot;);
 
 const progressTextElement =
-    document.getElementById("m2-progressText");
+    document.getElementById(&quot;progressText&quot;);
 
 const progressFillElement =
-    document.getElementById("m2-progressFill");
+    document.getElementById(&quot;progressFill&quot;);
 
-const m2NextButton =
-    document.getElementById("m2-nextButton");
+const nextButton =
+    document.getElementById(&quot;nextButton&quot;);
 
-const m2BackButton =
-    document.getElementById("m2-backButton");
+const backButton =
+    document.getElementById(&quot;backButton&quot;);
 
 const completeScreen =
-    document.getElementById("m2-complete");
+    document.getElementById(&quot;complete&quot;);
 
 const completeButton =
-    document.getElementById("m2-completeButton");
+    document.getElementById(&quot;completeButton&quot;);
 
 
 /* =========================================================
@@ -3951,7 +2041,7 @@ function loadQuestion() {
 
 
     progressTextElement.textContent =
-        `INVESTIGATION · ${currentQuestion + 1} / ${questions.length}`;
+        `HATCHLING WATCH · ${currentQuestion + 1} / ${questions.length}`;
 
 
     progressFillElement.style.width =
@@ -3959,51 +2049,121 @@ function loadQuestion() {
 
 
     feedbackElement.textContent =
-        "Choose the most scientifically appropriate answer.";
+        &quot;Choose the response that best protects the hatchlings while minimising disturbance.&quot;;
 
 
     feedbackElement.style.color =
-        "rgba(239,239,232,0.65)";
+        &quot;rgba(239,239,232,0.65)&quot;;
 
 
-    m2NextButton.classList.remove(
-        "ready"
+    nextButton.classList.remove(
+        &quot;ready&quot;
     );
 
 
     optionsElement.innerHTML =
-        "";
+        &quot;&quot;;
 
 
     q.options.forEach(
-        function(optionText, index) {
+        function(optionData, index) {
 
 
             const button =
-                document.createElement("button");
-
-
-            button.className =
-                "option";
+                document.createElement(&quot;button&quot;);
 
 
             button.type =
-                "button";
+                &quot;button&quot;;
 
 
-            button.innerHTML =
+            button.className =
+                &quot;option&quot;;
 
-                `
-                <span class="option-letter">
-                    ${String.fromCharCode(65 + index)}
-                </span>
 
-                ${optionText}
-                `;
+            const image =
+                document.createElement(&quot;img&quot;);
+
+
+            image.className =
+                &quot;option-image&quot;;
+
+
+            image.src =
+                optionData.image;
+
+
+            image.alt =
+                &quot;&quot;;
+
+
+            /*
+               Prevent broken image icons.
+               If the requested image is missing,
+               use the fallback image.
+            */
+
+            image.onerror =
+                function() {
+
+                    if (
+                        optionData.fallback &amp;&amp;
+                        image.src.indexOf(
+                            optionData.fallback
+                        ) === -1
+                    ) {
+
+                        image.src =
+                            optionData.fallback;
+
+                    }
+
+                };
+
+
+            const letter =
+                document.createElement(&quot;span&quot;);
+
+
+            letter.className =
+                &quot;option-letter&quot;;
+
+
+            letter.textContent =
+                String.fromCharCode(
+                    65 + index
+                );
+
+
+            const optionText =
+                document.createElement(&quot;span&quot;);
+
+
+            optionText.className =
+                &quot;option-text&quot;;
+
+
+            optionText.textContent =
+                optionData.text;
+
+
+            button.appendChild(
+                letter
+            );
+
+
+            button.appendChild(
+                image
+            );
+
+
+            button.appendChild(
+                optionText
+            );
 
 
             button.addEventListener(
-                "click",
+                &quot;click&quot;,
                 function() {
 
                     checkAnswer(
@@ -4054,46 +2214,43 @@ function checkAnswer(
 
 
         selectedButton.classList.add(
-            "correct"
+            &quot;correct&quot;
         );
 
 
         feedbackElement.textContent =
-            "✓ " + q.explanation;
+            &quot;✓ &quot; + q.explanation;
 
 
         feedbackElement.style.color =
-            "#73dfe1";
+            &quot;#73dfe1&quot;;
 
 
-        const allOptions =
-            document.querySelectorAll(
-                ".option"
+        document
+            .querySelectorAll(&quot;.option&quot;)
+            .forEach(
+                function(option, index) {
+
+                    option.disabled =
+                        true;
+
+
+                    if (
+                        index === q.correct
+                    ) {
+
+                        option.classList.add(
+                            &quot;correct&quot;
+                        );
+
+                    }
+
+                }
             );
 
 
-        allOptions.forEach(
-            function(option, index) {
-
-                option.disabled =
-                    true;
-
-                if (
-                    index === q.correct
-                ) {
-
-                    option.classList.add(
-                        "correct"
-                    );
-
-                }
-
-            }
-        );
-
-
-        m2NextButton.classList.add(
-            "ready"
+        nextButton.classList.add(
+            &quot;ready&quot;
         );
 
     }
@@ -4101,16 +2258,16 @@ function checkAnswer(
     else {
 
         selectedButton.classList.add(
-            "wrong"
+            &quot;wrong&quot;
         );
 
 
         feedbackElement.textContent =
-            "✕ Not quite. Reconsider the difference between a harmless observation and an actual conservation risk.";
+            &quot;✕ Not quite. Think about the principle of protecting the hatchlings while allowing their natural behaviour to continue.&quot;;
 
 
         feedbackElement.style.color =
-            "#d69a86";
+            &quot;#d69a86&quot;;
 
 
         selectedButton.disabled =
@@ -4125,8 +2282,8 @@ function checkAnswer(
    NEXT QUESTION
 ========================================================= */
 
-m2NextButton.addEventListener(
-    "click",
+nextButton.addEventListener(
+    &quot;click&quot;,
     function() {
 
 
@@ -4141,7 +2298,7 @@ m2NextButton.addEventListener(
 
 
         if (
-            currentQuestion <
+            currentQuestion &lt;
             questions.length
         ) {
 
@@ -4160,78 +2317,75 @@ m2NextButton.addEventListener(
 
 
 /* =========================================================
-   COMPLETE
+   COMPLETE MISSION
 ========================================================= */
 
 function completeMission() {
 
     completeScreen.classList.add(
-        "show"
+        &quot;show&quot;
     );
 
 
-    m2NextButton.classList.remove(
-        "ready"
+    nextButton.classList.remove(
+        &quot;ready&quot;
     );
 
 }
 
 
 /* =========================================================
-   MISSION 03
+   MISSION 04
 ========================================================= */
 
 completeButton.addEventListener(
-    "click",
+    &quot;click&quot;,
     function() {
 
-        window.showMission3();
+        window.parent.postMessage({ type: &quot;SEA_WHISPER_NAV&quot;, target: &quot;mission4&quot; }, &quot;*&quot;);
 
     }
 );
 
 
 /* =========================================================
-   BACK
+   BACK TO MISSION 02
 ========================================================= */
 
-m2BackButton.addEventListener(
-    "click",
+backButton.addEventListener(
+    &quot;click&quot;,
     function() {
-        mission2Scene.classList.add("hidden");
-        missionScene.classList.remove("hidden");
+
+        window.parent.postMessage({ type: &quot;SEA_WHISPER_NAV&quot;, target: &quot;mission2&quot; }, &quot;*&quot;);
+
     }
 );
 
 
 /* =========================================================
-   FIELD NOTES / TURTLE FACT MODAL
+   INFORMATION MODAL
 ========================================================= */
 
 const infoModal =
-    document.getElementById("m2-infoModal");
+    document.getElementById(&quot;infoModal&quot;);
 
 const infoLabel =
-    document.getElementById("m2-infoLabel");
+    document.getElementById(&quot;infoLabel&quot;);
 
 const infoTitle =
-    document.getElementById("m2-infoTitle");
+    document.getElementById(&quot;infoTitle&quot;);
 
-const infoList =
-    document.getElementById("m2-infoList");
-
-const infoSource =
-    document.getElementById("m2-infoSource");
+const infoText =
+    document.getElementById(&quot;infoText&quot;);
 
 const infoClose =
-    document.getElementById("m2-infoClose");
+    document.getElementById(&quot;infoClose&quot;);
 
 
 function openInfo(
     label,
     title,
-    points,
-    source
+    text
 ) {
 
     infoLabel.textContent =
@@ -4240,126 +2394,33 @@ function openInfo(
     infoTitle.textContent =
         title;
 
-    infoList.innerHTML =
-        points
-            .map(function(point) {
-                return `<li>${point}</li>`;
-            })
-            .join("");
-
-    infoSource.innerHTML =
-        source;
+    infoText.textContent =
+        text;
 
     infoModal.classList.add(
-        "show"
+        &quot;show&quot;
     );
+
 }
 
 
 function closeInfo() {
 
     infoModal.classList.remove(
-        "show"
+        &quot;show&quot;
     );
+
 }
 
 
 infoClose.addEventListener(
-    "click",
+    &quot;click&quot;,
     closeInfo
 );
 
 
-/* =========================================================
-   FIELD NOTES
-========================================================= */
-
-document
-    .getElementById("m2-fieldNotes")
-    .addEventListener(
-        "click",
-        function() {
-
-            openInfo(
-
-                "FIELD NOTES",
-
-                "Protect the Nesting Beach",
-
-                [
-
-                    "Observe nesting turtles quietly and maintain a safe distance. Avoid surrounding, touching or blocking a turtle's path.",
-
-                    "Do not shine bright artificial light directly at a nesting turtle. Light can interfere with natural behaviour and orientation.",
-
-                    "Keep noise and unnecessary movement to a minimum. A nesting beach should remain as calm and dark as possible.",
-
-                    "Do not step around a nest or disturb the sand unnecessarily. The nest is hidden beneath the beach surface after the female covers it.",
-
-                    "If plastic, fishing gear or other dangerous waste is found, it should be removed only when doing so will not disturb an actively nesting turtle.",
-
-                    "Conservation in Odisha involves organised protection and monitoring. Odisha Tourism notes the participation of government teams and local village volunteers around the Rushikulya rookery.",
-
-                    "The goal of a patrol is not to get closer to the turtle. It is to protect the conditions the turtle needs while causing as little disturbance as possible."
-
-                ],
-
-                "<strong>Verified sources:</strong> Odisha Tourism · Forest, Environment & Climate Change Department, Government of Odisha"
-
-            );
-
-        }
-    );
-
-
-/* =========================================================
-   TURTLE FACT
-========================================================= */
-
-document
-    .getElementById("m2-turtleFact")
-    .addEventListener(
-        "click",
-        function() {
-
-            openInfo(
-
-                "TURTLE FACT",
-
-                "The Olive Ridley & Odisha",
-
-                [
-
-                    "The Olive Ridley sea turtle (Lepidochelys olivacea) is known for arribada — a mass-nesting event in which very large numbers of females come ashore to lay eggs.",
-
-                    "Odisha is one of the world's most important Olive Ridley nesting regions. Major nesting areas include Gahirmatha, Rushikulya and the Devi river mouth.",
-
-                    "Gahirmatha is recognised as one of the world's major Olive Ridley nesting grounds, while Rushikulya is renowned for its spectacular mass-nesting events.",
-
-                    "During nesting, a female digs a chamber in the sand with her hind flippers, lays her eggs and then covers the nest with sand before returning to the sea.",
-
-                    "Olive Ridley nesting is an important part of Odisha's natural heritage. Odisha Tourism describes arribada as a unique natural phenomenon and highlights the role of local villagers and volunteers in protecting the turtles.",
-
-                    "The turtles therefore connect conservation with Odisha's coastal identity: protecting their nesting beaches also protects a remarkable natural phenomenon that is associated with the state's coastline.",
-
-                    "Government conservation programmes, protected areas, monitoring and local participation all contribute to safeguarding these nesting populations for future generations."
-
-                ],
-
-                "<strong>Verified sources:</strong> Odisha Tourism · Government of Odisha · Odisha Forest, Environment & Climate Change Department"
-
-            );
-
-        }
-    );
-
-
-/* =========================================================
-   CLOSE MODAL
-========================================================= */
-
 infoModal.addEventListener(
-    "click",
+    &quot;click&quot;,
     function(event) {
 
         if (
@@ -4374,12 +2435,64 @@ infoModal.addEventListener(
 );
 
 
+/* =========================================================
+   FIELD NOTES
+========================================================= */
+
+document
+    .getElementById(&quot;fieldNotes&quot;)
+    .addEventListener(
+        &quot;click&quot;,
+        function() {
+
+            openInfo(
+
+                &quot;FIELD NOTES&quot;,
+
+                &quot;HATCHLING WATCH&quot;,
+
+                &quot;Hatchlings normally orient toward the open sea using visual cues from the brighter seaward horizon. Artificial coastal lighting can interfere with this orientation. Keep nesting beaches dark, remove avoidable obstacles and minimise unnecessary handling. The safest conservation response is usually to address the human-created disturbance rather than interfere with the animal&#x27;s natural movement.&quot;
+
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   TURTLE FACT
+========================================================= */
+
+document
+    .getElementById(&quot;turtleFact&quot;)
+    .addEventListener(
+        &quot;click&quot;,
+        function() {
+
+            openInfo(
+
+                &quot;TURTLE FACT&quot;,
+
+                &quot;A JOURNEY THAT STARTS IN THE SAND&quot;,
+
+                &quot;Olive Ridley hatchlings emerge after incubation and begin a dangerous journey toward the sea. Odisha&#x27;s coast is one of the world&#x27;s most important Olive Ridley nesting regions, including major sites such as Gahirmatha, Rushikulya and the Devi river mouth. During arribada, very large numbers of females gather to nest. Protecting the darkness and natural conditions of these beaches helps preserve one of Odisha&#x27;s most remarkable natural phenomena.&quot;
+
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   ESC CLOSE
+========================================================= */
+
 document.addEventListener(
-    "keydown",
+    &quot;keydown&quot;,
     function(event) {
 
         if (
-            event.key === "Escape"
+            event.key === &quot;Escape&quot;
         ) {
 
             closeInfo();
@@ -4396,731 +2509,2241 @@ document.addEventListener(
 
 loadQuestion();
 
+&lt;/script&gt;
+
+
+&lt;/main&gt;
+
+&lt;/body&gt;
+
+&lt;/html&gt;"></iframe>
+<iframe id="mission4Frame" title="Operation Sea Whisper — Mission 04" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+
+&lt;head&gt;
+&lt;base href=&quot;./&quot;&gt;
+
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+
+&lt;title&gt;Operation Sea Whisper — Mission 04&lt;/title&gt;
+
+&lt;style&gt;
 
 /* =========================================================
-   MERGED MISSION 03 NAVIGATION
+   RESET
 ========================================================= */
-window.showMission3 = function(){
-    const intro = document.getElementById("introScene");
-    const m1 = document.getElementById("missionScene");
-    const m2 = document.getElementById("mission2Scene");
-    const m3 = document.getElementById("mission3Scene");
-    if (intro) intro.classList.add("hidden");
-    if (m1) m1.classList.add("hidden");
-    if (m2) m2.classList.add("hidden");
-    if (m3) m3.classList.remove("hidden");
-    const music = document.getElementById("musicControl");
-    if (music) {
-        music.classList.remove("intro-position");
-        music.classList.add("mission-position");
-    }
-};
 
-</script>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
 
-<!-- =========================================================
-     MISSION 03 — CLEAN VERSION, MERGED
-========================================================= -->
-<main class="m3-mission3 hidden" id="mission3Scene">
-<!-- =====================================================
-         HEADER
-    ====================================================== -->
-<header class="m3-header">
-<div class="m3-brand">
-<div class="m3-brand-symbol">◈</div>
-
-            OPERATION SEA WHISPER
-
-        </div>
-<div class="m3-mission-id">
-            FIELD OPERATION · 03 / 06
-        </div>
-</header>
-<!-- =====================================================
-         OCEAN MUSIC
-    ====================================================== -->
-
-
-<!-- =====================================================
-         MAIN CONTENT
-    ====================================================== -->
-<section class="m3-content">
-<div class="m3-eyebrow">
-            HATCHLING WATCH · ODISHA COAST
-        </div>
-<h1 class="m3-title">
-
-            FIND THE
-
-            <span>
-                WAY HOME
-            </span>
-</h1>
-<div class="m3-divider"></div>
-<p class="m3-story">
-
-            The beach is quiet.
-
-            Then the sand begins to move.
-
-            Tiny hatchlings emerge from beneath the nest —
-            but something is wrong.
-
-            They are moving away from the ocean.
-
-            <strong>
-                Your next decision could determine
-                whether they reach the sea.
-            </strong>
-</p>
-<!-- =================================================
-             QUIZ PANEL
-        ================================================== -->
-<div class="m3-quiz-panel">
-<div class="m3-quiz-header">
-<div class="m3-quiz-label">
-                    FIELD INVESTIGATION · 03
-                </div>
-<div class="m3-question-count" id="m3-questionCount">
-                    QUESTION 1 / 4
-                </div>
-</div>
-<div class="m3-question" id="m3-question"></div>
-<div class="m3-options" id="m3-options"></div>
-<div class="m3-feedback" id="m3-feedback"></div>
-<div class="m3-progress-area">
-<div class="m3-progress-text" id="m3-progressText">
-                    HATCHLING WATCH · 1 / 4
-                </div>
-<div class="m3-progress-bar">
-<div class="m3-progress-fill" id="m3-progressFill"></div>
-</div>
-</div>
-</div>
-</section>
-<!-- =====================================================
-         FIELD TIP
-    ====================================================== -->
-<div class="m3-tip">
-<div class="m3-tip-title">
-            FIELD TIP
-        </div>
-<div class="m3-tip-text">
-
-            Hatchlings do not need
-            to be carried to the sea
-            simply because they are
-            small.
-
-            <br/><br/>
-
-            First understand
-            what is affecting
-            their direction.
-
-        </div>
-</div>
-<!-- =====================================================
-         FIELD NOTES + TURTLE FACT
-    ====================================================== -->
-<div class="m3-bottom-tools">
-<button class="m3-tool" id="m3-fieldNotes" type="button">
-<span class="m3-tool-icon">
-                ◉
-            </span>
-<span>
-<span class="m3-tool-label">
-                    Field Notes
-                </span>
-<span class="m3-tool-small">
-                    Click to read
-                </span>
-</span>
-</button>
-<button class="m3-tool" id="m3-turtleFact" type="button">
-<span class="m3-tool-icon">
-                ♢
-            </span>
-<span>
-<span class="m3-tool-label">
-                    Turtle Fact
-                </span>
-<span class="m3-tool-small">
-                    Learn a fact
-                </span>
-</span>
-</button>
-</div>
-<!-- =====================================================
-         INFO MODAL
-    ====================================================== -->
-<div class="m3-modal" id="m3-infoModal">
-<div class="m3-modal-box">
-<div class="m3-modal-label" id="m3-infoLabel">
-                FIELD NOTES
-            </div>
-<h2 class="m3-modal-title" id="m3-infoTitle">
-                Hatchling Watch
-            </h2>
-<div class="m3-modal-text" id="m3-infoText"></div>
-<button class="m3-modal-close" id="m3-infoClose" type="button">
-                CLOSE
-            </button>
-</div>
-</div>
-<!-- =====================================================
-         COMPLETION
-    ====================================================== -->
-<div class="m3-complete" id="m3-complete">
-<div class="m3-complete-box">
-<div class="m3-complete-label">
-                FIELD OPERATION · 03
-            </div>
-<h2>
-                HATCHLINGS REACH THE SEA
-            </h2>
-<p>
-
-                You identified the safest responses
-                without interfering unnecessarily
-                with the hatchlings' natural journey.
-
-                <br/><br/>
-<strong>
-                    Mission 03 complete.
-                </strong>
-</p>
-<button class="m3-complete-button" id="m3-completeButton" type="button">
-                BACK TO MISSION 02
-            </button>
-</div>
-</div>
-<!-- =====================================================
-         FOOTER
-    ====================================================== -->
-<footer class="m3-footer">
-<button class="m3-back" id="m3-backButton" type="button">
-            ← MISSION 02
-        </button>
-<button class="m3-next" id="m3-nextButton" type="button">
-            NEXT →
-        </button>
-</footer>
-</main>
-<script id="mission3-merged-script">
-(function(){
+body {
+    overflow: hidden;
+    background: #030a10;
+    color: #f4eee1;
+    font-family: Georgia, &quot;Times New Roman&quot;, serif;
+}
 
 
 /* =========================================================
-   QUESTIONS
+   MAIN PAGE
 ========================================================= */
 
-const m3Questions = [
+.mission {
 
-    {
-        question:
-            "You see several hatchlings emerging at night. Instead of moving toward the ocean, they are crawling toward a brightly lit building. What should be addressed FIRST?",
+    position: relative;
 
-        options: [
+    width: 100vw;
+    height: 100vh;
 
-            {
-                image: "assets/lamp.jpeg",
-                fallback: "assets/ocean.jpeg",
-                text:
-                    "Remove, shield or reduce the artificial light visible from the beach."
-            },
+    overflow: hidden;
 
-            {
-                image: "assets/adult.jpeg",
-                text:
-                    "Pick up every hatchling and carry them directly into the water."
-            },
+    background-image:
 
-            {
-                image: "assets/plasticbottle.jpeg",
-                text:
-                    "Use a bright phone flashlight to create a new path toward the sea."
-            },
+        linear-gradient(
+            90deg,
+            rgba(0, 5, 10, 0.84) 0%,
+            rgba(0, 7, 12, 0.60) 38%,
+            rgba(0, 7, 12, 0.22) 72%,
+            rgba(0, 5, 10, 0.30) 100%
+        ),
 
-            {
-                image: "assets/sandpit.jpeg",
-                text:
-                    "Make loud noises so the hatchlings turn around."
-            }
+        linear-gradient(
+            180deg,
+            rgba(0, 4, 8, 0.12) 0%,
+            rgba(0, 5, 10, 0.10) 45%,
+            rgba(0, 4, 8, 0.62) 100%
+        ),
 
-        ],
+        url(&quot;assets/mode2.jpeg&quot;);
 
-        correct: 0,
-
-        explanation:
-            "Correct. Artificial light can disrupt hatchlings' natural seaward orientation. The first response should be to address the light source rather than handling the hatchlings unnecessarily."
-
-    },
-
-
-    {
-        question:
-            "Why do newly emerged hatchlings normally move toward the open ocean at night?",
-
-        options: [
-
-            {
-                image: "assets/ocean.jpeg",
-                text:
-                    "They use visual cues from the brighter seaward horizon to orient away from the darker landward silhouette."
-            },
-
-            {
-                image: "assets/adult.jpeg",
-                text:
-                    "They can smell the exact location of the sea from the nest."
-            },
-
-            {
-                image: "assets/lamp.jpeg",
-                fallback: "assets/ocean.jpeg",
-                text:
-                    "They follow the strongest artificial light because it resembles moonlight."
-            },
-
-            {
-                image: "assets/plasticbottle.jpeg",
-                text:
-                    "They instinctively follow objects that reflect light on the beach."
-            }
-
-        ],
-
-        correct: 0,
-
-        explanation:
-            "Correct. Hatchlings use visual orientation cues. The open seaward horizon is normally brighter than the landward side, helping them find the ocean."
-
-    },
-
-
-    {
-        question:
-            "A volunteer finds a hatchling crawling across a beach where a small sand ridge is blocking its path. What is the most appropriate principle to follow?",
-
-        options: [
-
-            {
-                image: "assets/sandheap.jpeg",
-                text:
-                    "Remove or reduce the obstacle only if it can be done safely without unnecessarily handling the hatchling."
-            },
-
-            {
-                image: "assets/adult.jpeg",
-                text:
-                    "Carry the hatchling immediately because every minute on land is dangerous."
-            },
-
-            {
-                image: "assets/lamp.jpeg",
-                fallback: "assets/ocean.jpeg",
-                text:
-                    "Shine a light behind it so it moves faster toward the ocean."
-            },
-
-            {
-                image: "assets/plasticbottle.jpeg",
-                text:
-                    "Leave the obstacle because human intervention is never appropriate."
-            }
-
-        ],
-
-        correct: 0,
-
-        explanation:
-            "Correct. The goal is to remove avoidable human-created obstacles while keeping intervention as limited as possible."
-
-    },
-
-
-    {
-        question:
-            "A hatchling reaches the shoreline, but a person suggests holding it for a photograph before releasing it. Which response best reflects responsible conservation practice?",
-
-        options: [
-
-            {
-                image: "assets/adult.jpeg",
-                text:
-                    "Do not handle it for a photograph. Allow the hatchling to continue its natural journey unless trained responders have a specific reason to intervene."
-            },
-
-            {
-                image: "assets/lamp.jpeg",
-                fallback: "assets/ocean.jpeg",
-                text:
-                    "Hold it briefly because a photograph cannot affect its survival."
-            },
-
-            {
-                image: "assets/plasticbottle.jpeg",
-                text:
-                    "Move it to a brighter part of the beach so the photograph is clearer."
-            },
-
-            {
-                image: "assets/ocean.jpeg",
-                text:
-                    "Carry it back to the nest so it can try the journey again."
-            }
-
-        ],
-
-        correct: 0,
-
-        explanation:
-            "Correct. Wildlife observation should minimise unnecessary handling and disturbance. The objective is to protect the hatchling's natural journey, not turn it into an interaction."
-
-    }
-
-];
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
 
 
 /* =========================================================
-   RANDOMISE ANSWER POSITIONS
+   HEADER
 ========================================================= */
 
-function shuffleOptions(options, correctIndex){
+.header {
 
-    const tagged =
-        options.map(
-            (option,index)=>({
-                option,
-                correct: index === correctIndex
-            })
+    position: absolute;
+
+    z-index: 20;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 4vw;
+
+    border-bottom:
+        1px solid rgba(225, 235, 230, 0.10);
+}
+
+
+.brand {
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    color: #e6c36f;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    letter-spacing: 2.5px;
+
+    text-transform: uppercase;
+}
+
+
+.brand-circle {
+
+    width: 29px;
+    height: 29px;
+
+    border:
+        1px solid rgba(230, 195, 111, 0.75);
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 9px;
+}
+
+
+.operation {
+
+    color:
+        rgba(220, 231, 226, 0.52);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
+
+.content {
+
+    position: absolute;
+
+    z-index: 10;
+
+    top: 11vh;
+
+    left: 3.8vw;
+
+    width: 760px;
+}
+
+
+/* =========================================================
+   EYEBROW
+========================================================= */
+
+.eyebrow {
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 8px;
+
+    color: #73dfe1;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    letter-spacing: 3px;
+
+    text-transform: uppercase;
+}
+
+
+.eyebrow::before {
+
+    content: &quot;&quot;;
+
+    width: 38px;
+    height: 1px;
+
+    background: #73dfe1;
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.title {
+
+    color: #fff8ea;
+
+    font-size:
+        clamp(52px, 5vw, 74px);
+
+    line-height: 0.84;
+
+    font-weight: 500;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+
+    text-shadow:
+        0 4px 20px rgba(0,0,0,0.8);
+}
+
+
+.title span {
+
+    display: block;
+
+    margin-top: 4px;
+
+    color: #e5c36e;
+
+    font-size: 0.62em;
+
+    letter-spacing: 2px;
+}
+
+
+/* =========================================================
+   DIVIDER
+========================================================= */
+
+.divider {
+
+    width: 95px;
+    height: 1px;
+
+    margin:
+        12px 0 10px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #d9b55e,
+            transparent
+        );
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.description {
+
+    width: 700px;
+
+    color:
+        rgba(247, 242, 231, 0.92);
+
+    font-size: 15px;
+
+    line-height: 1.38;
+
+    text-shadow:
+        0 2px 10px rgba(0,0,0,0.8);
+}
+
+
+.description strong {
+    color: #71dfe1;
+}
+
+
+/* =========================================================
+   INVESTIGATION BOX
+========================================================= */
+
+.investigation {
+
+    width: 760px;
+
+    margin-top: 13px;
+
+    padding:
+        13px 20px 12px;
+
+    border-left:
+        4px solid #70dfe1;
+
+    border-top:
+        1px solid rgba(113, 223, 225, 0.12);
+
+    border-bottom:
+        1px solid rgba(113, 223, 225, 0.12);
+
+    background:
+        rgba(1, 12, 18, 0.88);
+
+    box-shadow:
+        0 16px 35px rgba(0,0,0,0.35);
+
+    backdrop-filter:
+        blur(7px);
+}
+
+
+/* =========================================================
+   INVESTIGATION HEADER
+========================================================= */
+
+.investigation-top {
+
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 6px;
+}
+
+
+.investigation-label {
+
+    color: #71dfe1;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    font-weight: bold;
+
+    letter-spacing: 2.4px;
+
+    text-transform: uppercase;
+}
+
+
+.threat-counter {
+
+    color:
+        rgba(221, 231, 226, 0.50);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    font-weight: bold;
+
+    letter-spacing: 1.4px;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   QUESTION
+========================================================= */
+
+.question {
+
+    color: #fff8ea;
+
+    font-size: 20px;
+
+    line-height: 1.18;
+
+    font-weight: bold;
+
+    margin-bottom: 10px;
+}
+
+
+/* =========================================================
+   THREAT GRID
+========================================================= */
+
+.threat-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 8px;
+
+    width: 100%;
+}
+
+
+/* =========================================================
+   THREAT CARD
+========================================================= */
+
+.threat-card {
+
+    position: relative;
+
+    height: 112px;
+
+    padding: 0;
+
+    overflow: hidden;
+
+    border:
+        1px solid rgba(222, 188, 99, 0.50);
+
+    background: #07131a;
+
+    cursor: pointer;
+
+    text-align: left;
+
+    transition:
+        transform 0.22s ease,
+        border-color 0.22s ease,
+        box-shadow 0.22s ease;
+}
+
+
+.threat-card:hover {
+
+    transform: translateY(-3px);
+
+    border-color: #73dfe1;
+
+    box-shadow:
+        0 9px 20px rgba(80, 200, 210, 0.18);
+}
+
+
+.threat-card img {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+
+    opacity: 0.84;
+
+    transition:
+        transform 0.25s ease,
+        opacity 0.25s ease;
+}
+
+
+.threat-card:hover img {
+
+    opacity: 1;
+
+    transform: scale(1.06);
+}
+
+
+/* =========================================================
+   IMAGE OVERLAY
+========================================================= */
+
+.threat-card::after {
+
+    content: &quot;&quot;;
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            transparent 30%,
+            rgba(0,0,0,0.90) 100%
         );
 
+    pointer-events: none;
+}
 
-    for(
-        let i = tagged.length - 1;
-        i > 0;
+
+/* =========================================================
+   NUMBER
+========================================================= */
+
+.threat-number {
+
+    position: absolute;
+
+    z-index: 4;
+
+    top: 7px;
+    left: 7px;
+
+    width: 21px;
+    height: 21px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border:
+        1px solid #d8b65e;
+
+    border-radius: 50%;
+
+    background:
+        rgba(2, 11, 16, 0.82);
+
+    color: #e5c16b;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   CARD TITLE
+========================================================= */
+
+.threat-title {
+
+    position: absolute;
+
+    z-index: 5;
+
+    left: 9px;
+    right: 7px;
+
+    bottom: 8px;
+
+    color: #f5f0e5;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    font-weight: bold;
+
+    letter-spacing: 1.15px;
+
+    text-transform: uppercase;
+
+    text-shadow:
+        0 2px 7px #000;
+}
+
+
+/* =========================================================
+   CORRECT
+========================================================= */
+
+.threat-card.correct {
+
+    border:
+        2px solid #71e0e1;
+
+    box-shadow:
+        0 0 20px rgba(113,224,225,0.25);
+}
+
+
+.threat-card.correct::after {
+
+    background:
+        linear-gradient(
+            transparent 20%,
+            rgba(0, 45, 48, 0.78) 100%
+        );
+}
+
+
+/* =========================================================
+   WRONG
+========================================================= */
+
+.threat-card.wrong {
+
+    border:
+        2px solid #c77d69;
+
+    animation:
+        shake 0.28s ease;
+}
+
+
+@keyframes shake {
+
+    20% {
+        transform: translateX(-4px);
+    }
+
+    40% {
+        transform: translateX(4px);
+    }
+
+    60% {
+        transform: translateX(-3px);
+    }
+
+    80% {
+        transform: translateX(3px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+
+/* =========================================================
+   BOTTOM INVESTIGATION INFO
+========================================================= */
+
+.investigation-bottom {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-top: 8px;
+
+    min-height: 14px;
+}
+
+
+.scan-text {
+
+    color:
+        rgba(223, 231, 226, 0.54);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 7px;
+
+    line-height: 1;
+
+    letter-spacing: 1.1px;
+
+    text-transform: uppercase;
+}
+
+
+.progress-area {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    width: 235px;
+}
+
+
+.progress-label {
+
+    color:
+        rgba(223, 231, 226, 0.45);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 7px;
+
+    letter-spacing: 1.1px;
+
+    white-space: nowrap;
+
+    text-transform: uppercase;
+}
+
+
+.progress-track {
+
+    flex: 1;
+
+    height: 3px;
+
+    background:
+        rgba(214, 228, 224, 0.14);
+
+    overflow: hidden;
+}
+
+
+.progress {
+
+    width: 0%;
+
+    height: 100%;
+
+    background: #71dfe1;
+
+    transition:
+        width 0.35s ease;
+}
+
+
+/* =========================================================
+   FIELD TIP
+========================================================= */
+
+.field-tip {
+
+    position: absolute;
+
+    z-index: 15;
+
+    top: 5vh;
+
+    right: 4vw;
+
+    width: 150px;
+
+    min-height: 160px;
+
+    padding:
+        17px 14px;
+
+    background:
+        #dfc681;
+
+    color:
+        #25302e;
+
+    transform:
+        rotate(1.8deg);
+
+    box-shadow:
+        0 10px 24px rgba(0,0,0,0.32);
+}
+
+
+.field-tip::before {
+
+    content: &quot;&quot;;
+
+    position: absolute;
+
+    top: -8px;
+
+    left: 25px;
+
+    width: 45px;
+    height: 15px;
+
+    background:
+        rgba(214,190,123,0.82);
+}
+
+
+.field-tip-title {
+
+    margin-bottom: 8px;
+
+    color: #273331;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+}
+
+
+.field-tip p {
+
+    margin-bottom: 9px;
+
+    font-size: 11px;
+
+    line-height: 1.45;
+}
+
+
+/* =========================================================
+   ANSWER POPUP
+========================================================= */
+
+.threat-popup {
+
+    position: fixed;
+
+    z-index: 100;
+
+    inset: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background:
+        rgba(0, 5, 9, 0.78);
+
+    backdrop-filter:
+        blur(8px);
+}
+
+
+.popup-box {
+
+    width:
+        min(520px, 88vw);
+
+    padding:
+        28px 30px;
+
+    border-left:
+        4px solid #73e0e1;
+
+    border-top:
+        1px solid rgba(113,224,225,0.20);
+
+    border-right:
+        1px solid rgba(113,224,225,0.20);
+
+    border-bottom:
+        1px solid rgba(113,224,225,0.20);
+
+    background:
+        rgba(3, 17, 23, 0.98);
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,0.65);
+}
+
+
+.popup-label {
+
+    margin-bottom: 8px;
+
+    color: #73e0e1;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    font-weight: bold;
+
+    letter-spacing: 2.5px;
+
+    text-transform: uppercase;
+}
+
+
+.popup-box h2 {
+
+    margin-bottom: 12px;
+
+    color: #e5c16c;
+
+    font-size: 25px;
+
+    line-height: 1.1;
+
+    text-transform: uppercase;
+}
+
+
+.popup-box p {
+
+    color:
+        rgba(244,239,227,0.91);
+
+    font-size: 14px;
+
+    line-height: 1.55;
+
+    margin-bottom: 18px;
+}
+
+
+.popup-box button {
+
+    padding:
+        9px 18px;
+
+    border:
+        1px solid rgba(225,194,109,0.60);
+
+    background:
+        rgba(3,13,19,0.70);
+
+    color: #e5c16c;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    cursor: pointer;
+
+    text-transform: uppercase;
+}
+
+
+.popup-box button:hover {
+
+    border-color: #73e0e1;
+
+    color: #73e0e1;
+}
+
+
+/* =========================================================
+   MISSION COMPLETE POPUP
+========================================================= */
+
+.completion-popup {
+
+    position: fixed;
+
+    z-index: 200;
+
+    inset: 0;
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background:
+        rgba(0, 4, 8, 0.78);
+
+    backdrop-filter:
+        blur(9px);
+}
+
+
+.completion-popup.show {
+
+    display: flex;
+
+    animation:
+        popupFadeIn 0.35s ease;
+}
+
+
+@keyframes popupFadeIn {
+
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+/* =========================================================
+   COMPLETION BOX
+========================================================= */
+
+.completion-box {
+
+    position: relative;
+
+    width:
+        min(620px, 86vw);
+
+    padding:
+        34px 38px 30px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(4, 22, 29, 0.98),
+            rgba(1, 11, 17, 0.98)
+        );
+
+    border-left:
+        4px solid #73e0e1;
+
+    border-top:
+        1px solid rgba(115, 224, 225, 0.35);
+
+    border-right:
+        1px solid rgba(115, 224, 225, 0.18);
+
+    border-bottom:
+        1px solid rgba(115, 224, 225, 0.18);
+
+    box-shadow:
+        0 30px 90px rgba(0,0,0,0.72),
+        0 0 45px rgba(71,203,211,0.10);
+
+    animation:
+        completionRise 0.45s ease;
+}
+
+
+@keyframes completionRise {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(20px)
+            scale(0.97);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+
+    }
+}
+
+
+/* =========================================================
+   COMPLETION TOP LABEL
+========================================================= */
+
+.completion-popup-label {
+
+    margin-bottom: 12px;
+
+    color: #73e0e1;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    letter-spacing: 3px;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   COMPLETION HEADING
+========================================================= */
+
+.completion-popup h2 {
+
+    margin-bottom: 18px;
+
+    color: #e5c16c;
+
+    font-family:
+        Georgia,
+        &quot;Times New Roman&quot;,
+        serif;
+
+    font-size:
+        clamp(30px, 4vw, 43px);
+
+    line-height: 0.95;
+
+    font-weight: 500;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   COMPLETION DIVIDER
+========================================================= */
+
+.completion-popup-divider {
+
+    width: 110px;
+
+    height: 1px;
+
+    margin-bottom: 18px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #73e0e1,
+            transparent
+        );
+}
+
+
+/* =========================================================
+   COMPLETION MESSAGE
+========================================================= */
+
+.completion-popup p {
+
+    margin-bottom: 12px;
+
+    color:
+        rgba(245,241,230,0.90);
+
+    font-size: 15px;
+
+    line-height: 1.55;
+}
+
+
+.completion-popup strong {
+
+    color: #73e0e1;
+}
+
+
+/* =========================================================
+   COMPLETION FINAL LINE
+========================================================= */
+
+.completion-final-line {
+
+    margin-top: 20px;
+
+    padding-top: 14px;
+
+    border-top:
+        1px solid rgba(220,231,226,0.12);
+
+    color:
+        rgba(229,193,108,0.78);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   COMPLETION CONTINUE
+========================================================= */
+
+.completion-continue {
+
+    margin-top: 22px;
+
+    padding:
+        11px 21px;
+
+    border:
+        1px solid rgba(229,193,108,0.65);
+
+    background:
+        rgba(3,13,19,0.75);
+
+    color:
+        #e5c16c;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    cursor: pointer;
+
+    text-transform: uppercase;
+
+    transition: 0.25s ease;
+}
+
+
+.completion-continue:hover {
+
+    border-color: #73e0e1;
+
+    color: #73e0e1;
+
+    background:
+        rgba(20,62,68,0.55);
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer {
+
+    position: absolute;
+
+    z-index: 20;
+
+    left: 3.8vw;
+
+    right: 4vw;
+
+    bottom: 10px;
+
+    height: 29px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    border-top:
+        1px solid rgba(220,231,226,0.12);
+}
+
+
+.back {
+
+    border: none;
+
+    background: none;
+
+    color:
+        rgba(222,231,227,0.45);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    letter-spacing: 1.5px;
+
+    cursor: pointer;
+
+    text-transform: uppercase;
+}
+
+
+.back:hover {
+    color: #73e0e1;
+}
+
+
+.next {
+
+    padding:
+        8px 18px;
+
+    border:
+        1px solid rgba(225,194,109,0.38);
+
+    background:
+        rgba(2,12,17,0.65);
+
+    color:
+        rgba(225,194,109,0.45);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    letter-spacing: 1.7px;
+
+    cursor: default;
+
+    text-transform: uppercase;
+}
+
+
+.next.ready {
+
+    color: #e5c16c;
+
+    border-color:
+        rgba(225,194,109,0.75);
+
+    cursor: pointer;
+}
+
+
+.next.ready:hover {
+
+    color: #73e0e1;
+
+    border-color: #73e0e1;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    body {
+        overflow: auto;
+    }
+
+    .mission {
+
+        height: auto;
+
+        min-height: 100vh;
+
+        overflow: hidden;
+
+        padding-bottom: 75px;
+    }
+
+    .content {
+
+        position: relative;
+
+        top: auto;
+
+        left: auto;
+
+        width: auto;
+
+        margin: 0 20px;
+
+        padding-top: 85px;
+    }
+
+    .description {
+        width: auto;
+    }
+
+    .investigation {
+        width: 100%;
+    }
+
+    .threat-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .field-tip {
+        display: none;
+    }
+
+    .footer {
+        left: 20px;
+        right: 20px;
+    }
+
+}
+
+
+@media (max-width: 520px) {
+
+    .threat-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .threat-card {
+        height: 145px;
+    }
+
+    .title {
+        font-size: 46px;
+    }
+
+    .question {
+        font-size: 18px;
+    }
+
+    .completion-box {
+
+        padding:
+            27px 24px 25px;
+    }
+
+}
+
+&lt;/style&gt;
+
+&lt;/head&gt;
+
+
+&lt;body&gt;
+
+
+&lt;main class=&quot;mission&quot;&gt;
+
+
+&lt;!-- =====================================================
+     HEADER
+===================================================== --&gt;
+
+&lt;header class=&quot;header&quot;&gt;
+
+    &lt;div class=&quot;brand&quot;&gt;
+
+        &lt;div class=&quot;brand-circle&quot;&gt;
+            ◈
+        &lt;/div&gt;
+
+        &lt;span&gt;
+            Operation Sea Whisper
+        &lt;/span&gt;
+
+    &lt;/div&gt;
+
+
+    &lt;div class=&quot;operation&quot;&gt;
+
+        FIELD OPERATION · 04 / 06
+
+    &lt;/div&gt;
+
+&lt;/header&gt;
+
+
+
+&lt;!-- =====================================================
+     MAIN CONTENT
+===================================================== --&gt;
+
+&lt;section class=&quot;content&quot;&gt;
+
+
+    &lt;div class=&quot;eyebrow&quot;&gt;
+
+        NIGHT PATROL · ODISHA COAST
+
+    &lt;/div&gt;
+
+
+    &lt;h1 class=&quot;title&quot;&gt;
+
+        LIGHTS
+
+        &lt;span&gt;
+            OUT
+        &lt;/span&gt;
+
+    &lt;/h1&gt;
+
+
+    &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+
+
+    &lt;p class=&quot;description&quot;&gt;
+
+        The nesting beach is finally quiet.
+        Then your patrol scanner detects several disturbances.
+
+        &lt;strong&gt;
+            Four of them are human-made.
+        &lt;/strong&gt;
+
+        Find them and secure the beach before the night&#x27;s
+        nesting activity is disturbed.
+
+    &lt;/p&gt;
+
+
+
+    &lt;!-- =================================================
+         INVESTIGATION
+    ================================================== --&gt;
+
+    &lt;section class=&quot;investigation&quot;&gt;
+
+
+        &lt;div class=&quot;investigation-top&quot;&gt;
+
+            &lt;div class=&quot;investigation-label&quot;&gt;
+
+                NIGHT PATROL · 04
+
+            &lt;/div&gt;
+
+
+            &lt;div
+                id=&quot;threatCounter&quot;
+                class=&quot;threat-counter&quot;
+            &gt;
+
+                THREATS FOUND · 0 / 4
+
+            &lt;/div&gt;
+
+        &lt;/div&gt;
+
+
+
+        &lt;div class=&quot;question&quot;&gt;
+
+            Tap the things that
+            &lt;span style=&quot;color:#73e0e1;&quot;&gt;
+                should not be here.
+            &lt;/span&gt;
+
+        &lt;/div&gt;
+
+
+
+        &lt;div
+            id=&quot;threatGrid&quot;
+            class=&quot;threat-grid&quot;
+        &gt;&lt;/div&gt;
+
+
+
+        &lt;div
+            id=&quot;feedback&quot;
+            class=&quot;feedback&quot;
+        &gt;&lt;/div&gt;
+
+
+
+        &lt;div class=&quot;investigation-bottom&quot;&gt;
+
+
+            &lt;div class=&quot;scan-text&quot;&gt;
+
+                Scan the beach carefully.
+
+            &lt;/div&gt;
+
+
+            &lt;div class=&quot;progress-area&quot;&gt;
+
+                &lt;div class=&quot;progress-label&quot;&gt;
+
+                    BEACH SECURED
+
+                &lt;/div&gt;
+
+
+                &lt;div class=&quot;progress-track&quot;&gt;
+
+                    &lt;div
+                        id=&quot;progress&quot;
+                        class=&quot;progress&quot;
+                    &gt;&lt;/div&gt;
+
+                &lt;/div&gt;
+
+            &lt;/div&gt;
+
+
+        &lt;/div&gt;
+
+
+    &lt;/section&gt;
+
+
+&lt;/section&gt;
+
+
+
+&lt;!-- =====================================================
+     FIELD TIP
+===================================================== --&gt;
+
+&lt;aside class=&quot;field-tip&quot;&gt;
+
+
+    &lt;div class=&quot;field-tip-title&quot;&gt;
+
+        FIELD TIP
+
+    &lt;/div&gt;
+
+
+    &lt;p&gt;
+
+        Not every unusual
+        disturbance is equally
+        dangerous.
+
+    &lt;/p&gt;
+
+
+    &lt;p&gt;
+
+        Look for disturbances
+        caused by people.
+
+    &lt;/p&gt;
+
+
+    &lt;p&gt;
+
+        Protect the beach
+        without disturbing
+        the nest.
+
+    &lt;/p&gt;
+
+
+&lt;/aside&gt;
+
+
+
+&lt;!-- =====================================================
+     CONGRATULATIONS BOX
+===================================================== --&gt;
+
+&lt;div
+    id=&quot;completionPopup&quot;
+    class=&quot;completion-popup&quot;
+&gt;
+
+    &lt;div class=&quot;completion-box&quot;&gt;
+
+
+        &lt;div class=&quot;completion-popup-label&quot;&gt;
+
+            ✦ FIELD OPERATION COMPLETE ✦
+
+        &lt;/div&gt;
+
+
+        &lt;h2&gt;
+
+            CONGRATULATIONS
+
+        &lt;/h2&gt;
+
+
+        &lt;div class=&quot;completion-popup-divider&quot;&gt;&lt;/div&gt;
+
+
+        &lt;p&gt;
+
+            &lt;strong&gt;
+                YOU HAVE PASSED MISSION 04
+            &lt;/strong&gt;
+
+        &lt;/p&gt;
+
+
+        &lt;p&gt;
+
+            You successfully identified all four
+            human-made threats on the nesting beach.
+
+        &lt;/p&gt;
+
+
+        &lt;p&gt;
+
+            Your careful observations helped protect
+            the nesting turtle and kept the beach safer
+            during its journey.
+
+        &lt;/p&gt;
+
+
+        &lt;p&gt;
+
+            You didn&#x27;t just complete the mission —
+            &lt;strong&gt;
+                you helped protect a part of
+                Odisha&#x27;s coastal heritage.
+            &lt;/strong&gt;
+
+        &lt;/p&gt;
+
+
+        &lt;div class=&quot;completion-final-line&quot;&gt;
+
+            ✦ THE TURTLE&#x27;S JOURNEY IS SAFER BECAUSE OF YOU ✦
+
+        &lt;/div&gt;
+
+
+        &lt;button
+            id=&quot;completionContinue&quot;
+            class=&quot;completion-continue&quot;
+            type=&quot;button&quot;
+        &gt;
+
+            CONTINUE →
+
+        &lt;/button&gt;
+
+
+    &lt;/div&gt;
+
+&lt;/div&gt;
+
+
+
+&lt;!-- =====================================================
+     FOOTER
+===================================================== --&gt;
+
+&lt;footer class=&quot;footer&quot;&gt;
+
+
+    &lt;button
+        id=&quot;backButton&quot;
+        class=&quot;back&quot;
+        type=&quot;button&quot;
+    &gt;
+
+        ← MISSION 03
+
+    &lt;/button&gt;
+
+
+    &lt;button
+        id=&quot;nextButton&quot;
+        class=&quot;next&quot;
+        type=&quot;button&quot;
+    &gt;
+
+        NEXT →
+
+    &lt;/button&gt;
+
+
+&lt;/footer&gt;
+
+
+&lt;/main&gt;
+
+
+
+&lt;script&gt;
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+let found = 0;
+
+let missionCompleted = false;
+
+
+/* =========================================================
+   SHUFFLE
+========================================================= */
+
+function shuffle(array) {
+
+    const shuffled = [...array];
+
+    for (
+        let i = shuffled.length - 1;
+        i &gt; 0;
         i--
-    ){
+    ) {
 
         const j =
             Math.floor(
                 Math.random() * (i + 1)
             );
 
-
         [
-            tagged[i],
-            tagged[j]
+            shuffled[i],
+            shuffled[j]
         ] =
         [
-            tagged[j],
-            tagged[i]
+            shuffled[j],
+            shuffled[i]
         ];
 
     }
 
-
-    return tagged;
-
+    return shuffled;
 }
 
 
 /* =========================================================
-   GAME STATE
+   OPTIONS
 ========================================================= */
 
-let m3CurrentQuestion = 0;
+const threatOptions = [
 
-let m3AnsweredCorrectly = false;
+    {
+        image: &quot;assets/dogsniffing.jpeg&quot;,
+
+        title: &quot;DOG NEAR NEST&quot;,
+
+        correct: true,
+
+        explanation:
+            &quot;A dog near a nesting area can disturb a nesting turtle, interfere with natural nesting behaviour, and potentially damage nests or eggs.&quot;
+    },
+
+
+    {
+        image: &quot;assets/lamp.jpeg&quot;,
+
+        title: &quot;ARTIFICIAL LIGHT&quot;,
+
+        correct: true,
+
+        explanation:
+            &quot;Artificial light can interfere with the natural behaviour of nesting turtles and can also affect hatchlings when they emerge and orient toward the sea.&quot;
+    },
+
+
+    {
+        image: &quot;assets/plasticbottle.jpeg&quot;,
+
+        title: &quot;PLASTIC WASTE&quot;,
+
+        correct: true,
+
+        explanation:
+            &quot;Plastic waste is a human-made hazard. It can pollute the nesting beach and create risks for turtles and other coastal wildlife.&quot;
+    },
+
+
+    {
+        image: &quot;assets/footprints.jpeg&quot;,
+
+        title: &quot;HUMAN FOOTPRINTS&quot;,
+
+        correct: true,
+
+        explanation:
+            &quot;Human activity on a nesting beach can disturb turtles and may damage or alter the surface around nests.&quot;
+    },
+
+
+    {
+        image: &quot;assets/sandheap.jpeg&quot;,
+
+        title: &quot;NATURAL SAND&quot;,
+
+        correct: false,
+
+        explanation:
+            &quot;Natural sand is part of the turtle&#x27;s nesting environment. The presence of sand itself is not a human-made disturbance.&quot;
+    },
+
+
+    {
+        image: &quot;assets/adult.jpeg&quot;,
+
+        title: &quot;NESTING TURTLE&quot;,
+
+        correct: false,
+
+        explanation:
+            &quot;The nesting turtle belongs on the beach. It is part of the natural ecosystem and is not a human-made threat.&quot;
+    }
+
+];
 
 
 /* =========================================================
-   ELEMENTS
+   RANDOMIZE OPTIONS
 ========================================================= */
 
-const m3QuestionElement =
-    document.getElementById("m3-question");
-
-const m3OptionsElement =
-    document.getElementById("m3-options");
-
-const m3FeedbackElement =
-    document.getElementById("m3-feedback");
-
-const m3QuestionCountElement =
-    document.getElementById("m3-questionCount");
-
-const m3ProgressTextElement =
-    document.getElementById("m3-progressText");
-
-const m3ProgressFillElement =
-    document.getElementById("m3-progressFill");
-
-const m3NextButton =
-    document.getElementById("m3-m3NextButton");
-
-const m3CompleteScreen =
-    document.getElementById("m3-complete");
-
-const m3CompleteButton =
-    document.getElementById("m3-m3CompleteButton");
+const shuffledThreats =
+    shuffle(threatOptions);
 
 
 /* =========================================================
-   LOAD QUESTION
+   GET GRID
 ========================================================= */
 
-function m3LoadQuestion(){
-
-    const q =
-        m3Questions[m3CurrentQuestion];
-
-
-    m3AnsweredCorrectly =
-        false;
+const threatGrid =
+    document.getElementById(
+        &quot;threatGrid&quot;
+    );
 
 
-    m3QuestionElement.textContent =
-        q.question;
+/* =========================================================
+   CREATE CARDS
+========================================================= */
+
+shuffledThreats.forEach(
+    function(threat, index) {
+
+        const card =
+            document.createElement(
+                &quot;button&quot;
+            );
+
+        card.type =
+            &quot;button&quot;;
+
+        card.className =
+            &quot;threat-card&quot;;
+
+        card.innerHTML = `
+
+            &lt;span class=&quot;threat-number&quot;&gt;
+                ${index + 1}
+            &lt;/span&gt;
+
+            &lt;img
+                src=&quot;${threat.image}&quot;
+                alt=&quot;${threat.title}&quot;
+            &gt;
+
+            &lt;span class=&quot;threat-title&quot;&gt;
+                ${threat.title}
+            &lt;/span&gt;
+
+        `;
 
 
-    m3QuestionCountElement.textContent =
-        `QUESTION ${m3CurrentQuestion + 1} / ${m3Questions.length}`;
+        /* =================================================
+           CARD CLICK
+        ================================================= */
+
+        card.addEventListener(
+            &quot;click&quot;,
+            function() {
+
+                if (
+                    card.classList.contains(
+                        &quot;correct&quot;
+                    )
+                ) {
+                    return;
+                }
 
 
-    m3ProgressTextElement.textContent =
-        `HATCHLING WATCH · ${m3CurrentQuestion + 1} / ${m3Questions.length}`;
+                /* =========================================
+                   CORRECT
+                ========================================= */
+
+                if (threat.correct) {
+
+                    card.classList.add(
+                        &quot;correct&quot;
+                    );
+
+                    found++;
+
+                    updateProgress();
 
 
-    m3ProgressFillElement.style.width =
-        `${((m3CurrentQuestion + 1) / m3Questions.length) * 100}%`;
+                    showThreatPopup(
+                        true,
+                        threat.title,
+                        threat.explanation
+                    );
 
 
-    m3FeedbackElement.textContent =
-        "Choose the response that best protects the hatchlings while minimising disturbance.";
+                    /* COMPLETE ONLY AFTER 4 CORRECT */
 
+                    if (
+                        found === 4 &amp;&amp;
+                        !missionCompleted
+                    ) {
 
-    m3FeedbackElement.style.color =
-        "rgba(239,239,232,.65)";
-
-
-    m3NextButton.classList.remove("ready");
-
-
-    m3NextButton.textContent =
-        "NEXT →";
-
-
-    m3OptionsElement.innerHTML =
-        "";
-
-
-    const shuffled =
-        shuffleOptions(
-            q.options,
-            q.correct
-        );
-
-
-    shuffled.forEach(
-        function(entry,index){
-
-            const button =
-                document.createElement("button");
-
-
-            button.type =
-                "button";
-
-
-            button.className =
-                "option";
-
-
-            const image =
-                document.createElement("img");
-
-
-            image.className =
-                "option-image";
-
-
-            image.src =
-                entry.option.image;
-
-
-            image.alt =
-                "";
-
-
-            image.onerror =
-                function(){
-
-                    if(
-                        entry.option.fallback &&
-                        image.src.indexOf(
-                            entry.option.fallback
-                        ) === -1
-                    ){
-
-                        image.src =
-                            entry.option.fallback;
+                        completeMission4();
 
                     }
 
-                };
+                }
 
 
-            const letter =
-                document.createElement("span");
+                /* =========================================
+                   WRONG
+                ========================================= */
+
+                else {
+
+                    card.classList.add(
+                        &quot;wrong&quot;
+                    );
 
 
-            letter.className =
-                "option-letter";
+                    showThreatPopup(
+                        false,
+                        threat.title,
+                        threat.explanation
+                    );
 
 
-            letter.textContent =
-                String.fromCharCode(
-                    65 + index
-                );
+                    setTimeout(
+                        function() {
 
+                            card.classList.remove(
+                                &quot;wrong&quot;
+                            );
 
-            const optionText =
-                document.createElement("span");
-
-
-            optionText.className =
-                "option-text";
-
-
-            optionText.textContent =
-                entry.option.text;
-
-
-            button.appendChild(
-                letter
-            );
-
-
-            button.appendChild(
-                image
-            );
-
-
-            button.appendChild(
-                optionText
-            );
-
-
-            button.addEventListener(
-                "click",
-                function(){
-
-                    m3CheckAnswer(
-                        entry.correct,
-                        button,
-                        q.explanation
+                        },
+                        450
                     );
 
                 }
-            );
+
+            }
+        );
 
 
-            m3OptionsElement.appendChild(
-                button
-            );
+        threatGrid.appendChild(
+            card
+        );
 
-        }
-    );
+    }
+);
+
+
+/* =========================================================
+   UPDATE PROGRESS
+========================================================= */
+
+function updateProgress() {
+
+    const counter =
+        document.getElementById(
+            &quot;threatCounter&quot;
+        );
+
+    const progress =
+        document.getElementById(
+            &quot;progress&quot;
+        );
+
+
+    counter.textContent =
+        &quot;THREATS FOUND · &quot; +
+        found +
+        &quot; / 4&quot;;
+
+
+    progress.style.width =
+        ((found / 4) * 100) +
+        &quot;%&quot;;
 
 }
 
 
 /* =========================================================
-   CHECK ANSWER
+   ANSWER POPUP
 ========================================================= */
 
-function m3CheckAnswer(
-    isCorrect,
-    selectedButton,
+function showThreatPopup(
+    correct,
+    title,
     explanation
-){
+) {
 
-    if(
-        m3AnsweredCorrectly
-    ){
+    const oldPopup =
+        document.querySelector(
+            &quot;.threat-popup&quot;
+        );
+
+
+    if (oldPopup) {
+        oldPopup.remove();
+    }
+
+
+    const popup =
+        document.createElement(
+            &quot;div&quot;
+        );
+
+
+    popup.className =
+        &quot;threat-popup&quot;;
+
+
+    popup.innerHTML = `
+
+        &lt;div class=&quot;popup-box&quot;&gt;
+
+            &lt;div class=&quot;popup-label&quot;&gt;
+
+                ${
+                    correct
+                    ? &quot;THREAT CONFIRMED&quot;
+                    : &quot;NOT A HUMAN-MADE THREAT&quot;
+                }
+
+            &lt;/div&gt;
+
+
+            &lt;h2&gt;
+                ${title}
+            &lt;/h2&gt;
+
+
+            &lt;p&gt;
+                ${explanation}
+            &lt;/p&gt;
+
+
+            &lt;button
+                type=&quot;button&quot;
+                id=&quot;closeThreatPopup&quot;
+            &gt;
+
+                CLOSE
+
+            &lt;/button&gt;
+
+        &lt;/div&gt;
+
+    `;
+
+
+    document.body.appendChild(
+        popup
+    );
+
+
+    document
+        .getElementById(
+            &quot;closeThreatPopup&quot;
+        )
+        .addEventListener(
+            &quot;click&quot;,
+            function() {
+
+                popup.remove();
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   MISSION 04 COMPLETE
+========================================================= */
+
+function completeMission4() {
+
+    /* Must be exactly 4 / 4 */
+
+    if (found !== 4) {
         return;
     }
 
 
-    if(isCorrect){
+    if (missionCompleted) {
+        return;
+    }
 
-        m3AnsweredCorrectly =
-            true;
+
+    missionCompleted = true;
 
 
-        selectedButton.classList.add(
-            "correct"
+    /* =====================================================
+       COMPLETE PROGRESS BAR
+    ===================================================== */
+
+    const progress =
+        document.getElementById(
+            &quot;progress&quot;
         );
 
 
-        m3FeedbackElement.textContent =
-            "✓ " + explanation;
+    if (progress) {
 
-
-        m3FeedbackElement.style.color =
-            "#73dfe1";
-
-
-        document
-            .querySelectorAll(".option")
-            .forEach(
-                function(button){
-
-                    button.disabled =
-                        true;
-
-                }
-            );
-
-
-        m3NextButton.classList.add(
-            "ready"
-        );
-
-
-        if(
-            m3CurrentQuestion ===
-            m3Questions.length - 1
-        ){
-
-            m3NextButton.textContent =
-                "COMPLETE MISSION →";
-
-        }
+        progress.style.width =
+            &quot;100%&quot;;
 
     }
 
-    else{
 
-        selectedButton.classList.add(
-            "wrong"
+    /* =====================================================
+       ENABLE NEXT BUTTON
+    ===================================================== */
+
+    const nextButton =
+        document.getElementById(
+            &quot;nextButton&quot;
         );
 
 
-        selectedButton.disabled =
-            true;
+    if (nextButton) {
+
+        nextButton.classList.add(
+            &quot;ready&quot;
+        );
+
+        nextButton.textContent =
+            &quot;CONTINUE →&quot;;
+
+    }
 
 
-        m3FeedbackElement.textContent =
-            "✕ Not quite. Think carefully about protecting the hatchling while disturbing it as little as possible.";
+    /* =====================================================
+       OPEN CONGRATULATIONS BOX
+    ===================================================== */
+
+    const completionPopup =
+        document.getElementById(
+            &quot;completionPopup&quot;
+        );
 
 
-        m3FeedbackElement.style.color =
-            "#d69a86";
+    if (completionPopup) {
+
+        completionPopup.classList.add(
+            &quot;show&quot;
+        );
 
     }
 
@@ -5128,267 +4751,107 @@ function m3CheckAnswer(
 
 
 /* =========================================================
-   NEXT
+   CLOSE CONGRATULATIONS BOX
 ========================================================= */
 
-m3NextButton.addEventListener(
-    "click",
-    function(){
-
-        if(
-            !m3AnsweredCorrectly
-        ){
-            return;
-        }
+const completionContinue =
+    document.getElementById(
+        &quot;completionContinue&quot;
+    );
 
 
-        m3CurrentQuestion++;
+if (completionContinue) {
+
+    completionContinue.addEventListener(
+        &quot;click&quot;,
+        function() {
+
+            const completionPopup =
+                document.getElementById(
+                    &quot;completionPopup&quot;
+                );
 
 
-        if(
-            m3CurrentQuestion <
-            m3Questions.length
-        ){
+            if (completionPopup) {
 
-            m3LoadQuestion();
+                completionPopup.classList.remove(
+                    &quot;show&quot;
+                );
 
-        }
-
-        else{
-
-            m3CompleteScreen.classList.add(
-                "show"
-            );
-
-            m3NextButton.classList.remove(
-                "ready"
-            );
+            }
 
         }
-
-    }
-);
-
-
-/* =========================================================
-   INFO MODAL
-========================================================= */
-
-const infoModal =
-    document.getElementById("m3-infoModal");
-
-const infoLabel =
-    document.getElementById("m3-infoLabel");
-
-const infoTitle =
-    document.getElementById("m3-infoTitle");
-
-const infoText =
-    document.getElementById("m3-infoText");
-
-const infoClose =
-    document.getElementById("m3-infoClose");
-
-
-function openInfo(
-    label,
-    title,
-    text
-){
-
-    infoLabel.textContent =
-        label;
-
-    infoTitle.textContent =
-        title;
-
-    infoText.textContent =
-        text;
-
-    infoModal.classList.add(
-        "show"
     );
 
 }
 
 
-function closeInfo(){
-
-    infoModal.classList.remove(
-        "show"
-    );
-
-}
-
-
-infoClose.addEventListener(
-    "click",
-    closeInfo
-);
-
-
-infoModal.addEventListener(
-    "click",
-    function(event){
-
-        if(
-            event.target === infoModal
-        ){
-
-            closeInfo();
-
-        }
-
-    }
-);
-
-
 /* =========================================================
-   FIELD NOTES
+   NEXT BUTTON
 ========================================================= */
 
 document
-    .getElementById("m3-fieldNotes")
+    .getElementById(
+        &quot;nextButton&quot;
+    )
     .addEventListener(
-        "click",
-        function(){
+        &quot;click&quot;,
+        function() {
 
-            openInfo(
+            if (!missionCompleted) {
+                return;
+            }
 
-                "FIELD NOTES",
-
-                "HATCHLING WATCH",
-
-                "Hatchlings normally orient toward the open sea using visual cues from the brighter seaward horizon. Artificial coastal lighting can interfere with this orientation. Keep nesting beaches dark, remove avoidable obstacles and minimise unnecessary handling. The safest conservation response is usually to address the human-created disturbance rather than interfere with the animal's natural movement."
-
-            );
+            /* Mission 05 can be connected here later. */
 
         }
     );
 
 
 /* =========================================================
-   TURTLE FACT
+   BACK BUTTON
 ========================================================= */
 
 document
-    .getElementById("m3-turtleFact")
+    .getElementById(
+        &quot;backButton&quot;
+    )
     .addEventListener(
-        "click",
-        function(){
+        &quot;click&quot;,
+        function() {
 
-            openInfo(
-
-                "TURTLE FACT",
-
-                "A JOURNEY THAT STARTS IN THE SAND",
-
-                "Olive Ridley hatchlings emerge after incubation and begin a dangerous journey toward the sea. Odisha's coast is one of the world's most important Olive Ridley nesting regions, including major sites such as Gahirmatha, Rushikulya and the Devi river mouth. During arribada, very large numbers of females gather to nest. Protecting the darkness and natural conditions of these beaches helps preserve one of Odisha's most remarkable natural phenomena."
-
-            );
+            window.parent.postMessage({ type: &quot;SEA_WHISPER_NAV&quot;, target: &quot;mission3&quot; }, &quot;*&quot;);
 
         }
     );
 
 
 /* =========================================================
-   BACK
+   INITIALIZE
 ========================================================= */
 
-document
-    .getElementById("m3-m3BackButton")
-    .addEventListener(
-        "click",
-        function(){
+updateProgress();
 
-            window.showMission2();
+&lt;/script&gt;
 
-        }
-    );
+&lt;/body&gt;
 
-
-/* =========================================================
-   COMPLETION
-========================================================= */
-
-m3CompleteButton.addEventListener(
-    "click",
-    function(){
-
-        window.showMission2();
-
-    }
-);
-
-
-/* =========================================================
-   ESC
-========================================================= */
-
-document.addEventListener(
-    "keydown",
-    function(event){
-
-        if(
-            event.key === "Escape"
-        ){
-
-            closeInfo();
-
-            m3CompleteScreen.classList.remove(
-                "show"
-            );
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   START
-========================================================= */
-
-m3LoadQuestion();
-
-
-})();
-
-/* =========================================================
-   MISSION 03 -> MISSION 02 NAVIGATION
-========================================================= */
-window.showMission2 = window.showMission2 || function(){
-    const intro = document.getElementById("introScene");
-    const m1 = document.getElementById("missionScene");
-    const m2 = document.getElementById("mission2Scene");
-    const m3 = document.getElementById("mission3Scene");
-    if (intro) intro.classList.add("hidden");
-    if (m1) m1.classList.add("hidden");
-    if (m3) m3.classList.add("hidden");
-    if (m2) m2.classList.remove("hidden");
-    const music = document.getElementById("musicControl");
-    if (music) {
-        music.classList.remove("intro-position");
-        music.classList.add("mission-position");
-    }
-};
-
-</script>
-
+&lt;/html&gt;"></iframe>
 <script>
-/* FINAL SCENE VISIBILITY GUARD */
-document.addEventListener("DOMContentLoaded", function(){
-    const scenes = [
-        document.getElementById("introScene"),
-        document.getElementById("missionScene"),
-        document.getElementById("mission2Scene"),
-        document.getElementById("mission3Scene")
-    ];
-    // Always start on the briefing page. Navigation functions control later scenes.
-    scenes.forEach(function(scene){ if(scene) scene.classList.add("hidden"); });
-    const intro = document.getElementById("introScene");
-    if(intro) intro.classList.remove("hidden");
-});
+(function(){
+  const m3 = document.getElementById('mission3Frame');
+  const m4 = document.getElementById('mission4Frame');
+  function show(target){
+    m3.style.display = target === 'mission3' ? 'block' : 'none';
+    m4.style.display = target === 'mission4' ? 'block' : 'none';
+    window.scrollTo(0,0);
+  }
+  window.addEventListener('message', function(event){
+    if (!event.data || event.data.type !== 'SEA_WHISPER_NAV') return;
+    if (event.data.target === 'mission3' || event.data.target === 'mission4') show(event.data.target);
+    else if (event.data.target === 'mission2') window.location.href = 'operation_sea_whisper.html';
+  });
+})();
 </script>
 </body>
 </html>
