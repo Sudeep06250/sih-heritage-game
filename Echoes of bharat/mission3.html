@@ -1,0 +1,4976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operation Sea Whisper — Missions 03 & 04</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#02080d;}
+#mission3Frame,#mission4Frame{position:fixed;inset:0;width:100%;height:100%;border:0;display:none;background:#02080d;}
+#mission3Frame{display:block;}
+
+#musicToggle{
+ position:fixed; z-index:9999; top:18px; right:22px;
+ min-width:132px; padding:9px 14px;
+ border:1px solid rgba(220,190,105,.65);
+ background:rgba(2,12,17,.82); color:#e4bf67;
+ font:700 9px Arial,sans-serif; letter-spacing:1.7px;
+ text-transform:uppercase; cursor:pointer;
+ backdrop-filter:blur(6px);
+ box-shadow:0 5px 18px rgba(0,0,0,.35);
+ transition:.2s ease;
+}
+#musicToggle:hover{border-color:#70dfe1;color:#70dfe1;}
+#musicToggle.off{color:rgba(235,239,235,.58); border-color:rgba(235,239,235,.28);}
+</style>
+</head>
+<body>
+<!-- One shared ocean ambience for Mission 03 + Mission 04.
+     It lives in the parent page so switching between the two
+     iframe missions never creates a second audio element. -->
+<audio id="seaWhisperOceanAudio" preload="auto" autoplay loop playsinline>
+    <source src="Ocean_sound.mp3" type="audio/mpeg">
+</audio>
+<button id="musicToggle" type="button" aria-pressed="true">♫ OCEAN SOUND: ON</button>
+
+<iframe id="mission3Frame" title="Operation Sea Whisper — Mission 03" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+
+&lt;head&gt;
+&lt;base href=&quot;./&quot;&gt;
+
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+
+&lt;title&gt;
+    Operation Sea Whisper — Mission 03
+&lt;/title&gt;
+
+
+&lt;style&gt;
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+
+    overflow: hidden;
+
+    background: #02080d;
+
+    color: #f4eee2;
+
+    font-family:
+        Georgia,
+        &quot;Times New Roman&quot;,
+        serif;
+}
+
+
+/* =========================================================
+   MAIN BACKGROUND
+========================================================= */
+
+.mission {
+
+    position: relative;
+
+    width: 100vw;
+    height: 100vh;
+
+    overflow: hidden;
+
+    background-image:
+
+        linear-gradient(
+            90deg,
+            rgba(0, 5, 10, 0.88) 0%,
+            rgba(0, 7, 12, 0.70) 38%,
+            rgba(0, 7, 12, 0.25) 72%,
+            rgba(0, 5, 10, 0.42) 100%
+        ),
+
+        linear-gradient(
+            180deg,
+            rgba(0, 4, 8, 0.16) 0%,
+            rgba(0, 4, 8, 0.08) 45%,
+            rgba(0, 4, 8, 0.62) 100%
+        ),
+
+        url(&quot;assets/mode2.jpeg&quot;);
+
+    background-size: cover;
+
+    background-position: center;
+
+    background-repeat: no-repeat;
+}
+
+
+/* =========================================================
+   VIGNETTE
+========================================================= */
+
+.mission::after {
+
+    content: &quot;&quot;;
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            transparent 34%,
+            rgba(0,0,0,0.38) 100%
+        );
+
+    z-index: 1;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header {
+
+    position: absolute;
+
+    z-index: 20;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 58px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 3.7vw;
+
+    border-bottom:
+        1px solid rgba(230,235,225,0.13);
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0,4,8,0.78),
+            rgba(0,4,8,0.10)
+        );
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.brand {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    color: #e4bf67;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    letter-spacing: 2.6px;
+
+    text-transform: uppercase;
+}
+
+
+.brand-symbol {
+
+    width: 29px;
+
+    height: 29px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border:
+        1px solid #dcb968;
+
+    border-radius: 50%;
+
+    font-size: 9px;
+}
+
+
+.mission-id {
+
+    color:
+        rgba(235,240,236,0.48);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   CONTENT
+   COMPACTED SO NOTHING TOUCHES THE BOTTOM
+========================================================= */
+
+.content {
+
+    position: absolute;
+
+    z-index: 10;
+
+    left: 4vw;
+
+    top: 8.5%;
+
+    width: 680px;
+}
+
+
+/* =========================================================
+   EYEBROW
+========================================================= */
+
+.eyebrow {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 7px;
+
+    color: #70dfe1;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    letter-spacing: 3px;
+
+    text-transform: uppercase;
+}
+
+
+.eyebrow::before {
+
+    content: &quot;&quot;;
+
+    width: 36px;
+
+    height: 1px;
+
+    background: #70dfe1;
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.title {
+
+    color: #fff8e8;
+
+    font-size:
+        clamp(42px, 4.2vw, 63px);
+
+    line-height: 0.84;
+
+    font-weight: 500;
+
+    text-transform: uppercase;
+
+    text-shadow:
+        0 5px 24px rgba(0,0,0,0.95);
+}
+
+
+.title span {
+
+    display: block;
+
+    margin-top: 5px;
+
+    color: #e3bd66;
+
+    font-size: 0.61em;
+
+    letter-spacing: 2px;
+}
+
+
+/* =========================================================
+   DIVIDER
+========================================================= */
+
+.divider {
+
+    width: 105px;
+
+    height: 1px;
+
+    margin: 11px 0 9px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #dfbc68,
+            transparent
+        );
+}
+
+
+/* =========================================================
+   STORY
+========================================================= */
+
+.story {
+
+    width: 610px;
+
+    color:
+        rgba(249,245,235,0.90);
+
+    font-size: 14px;
+
+    line-height: 1.32;
+
+    text-shadow:
+        0 2px 9px rgba(0,0,0,0.95);
+}
+
+
+.story strong {
+
+    color: #70dfe1;
+}
+
+
+/* =========================================================
+   QUIZ PANEL
+========================================================= */
+
+.quiz-panel {
+
+    margin-top: 11px;
+
+    width: 680px;
+
+    padding:
+        14px 20px 11px;
+
+    border-left:
+        4px solid #70dfe1;
+
+    border-top:
+        1px solid rgba(110,220,225,0.18);
+
+    border-bottom:
+        1px solid rgba(110,220,225,0.14);
+
+    background:
+        rgba(1,10,16,0.89);
+
+    backdrop-filter: blur(8px);
+
+    box-shadow:
+        0 18px 40px rgba(0,0,0,0.45);
+}
+
+
+/* =========================================================
+   QUIZ HEADER
+========================================================= */
+
+.quiz-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 7px;
+}
+
+
+.quiz-label {
+
+    color: #70dfe1;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    font-weight: bold;
+
+    letter-spacing: 2.4px;
+
+    text-transform: uppercase;
+}
+
+
+.question-count {
+
+    color:
+        rgba(237,239,233,0.48);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    letter-spacing: 1.7px;
+}
+
+
+/* =========================================================
+   QUESTION
+========================================================= */
+
+.question {
+
+    min-height: 45px;
+
+    color: #fff7e7;
+
+    font-size: 18px;
+
+    line-height: 1.20;
+
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   OPTIONS
+========================================================= */
+
+.options {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 8px;
+
+    margin-top: 9px;
+}
+
+
+/* =========================================================
+   OPTION CARD
+========================================================= */
+
+.option {
+
+    position: relative;
+
+    min-height: 78px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 6px;
+
+    border:
+        1px solid rgba(218,191,111,0.35);
+
+    background:
+        rgba(8,20,27,0.82);
+
+    color:
+        rgba(247,242,231,0.88);
+
+    font-family:
+        Georgia,
+        &quot;Times New Roman&quot;,
+        serif;
+
+    font-size: 11.5px;
+
+    line-height: 1.25;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+
+/* =========================================================
+   OPTION IMAGE
+========================================================= */
+
+.option-image {
+
+    width: 67px;
+
+    height: 64px;
+
+    flex-shrink: 0;
+
+    object-fit: cover;
+
+    border:
+        1px solid rgba(230,220,190,0.18);
+
+    filter:
+        brightness(0.78);
+
+    transition:
+        filter 0.2s ease;
+}
+
+
+.option:hover {
+
+    border-color:
+        rgba(112,224,226,0.78);
+
+    background:
+        rgba(18,42,49,0.90);
+
+    color: white;
+}
+
+
+.option:hover .option-image {
+
+    filter:
+        brightness(1);
+}
+
+
+/* =========================================================
+   OPTION LETTER
+========================================================= */
+
+.option-letter {
+
+    position: absolute;
+
+    top: 5px;
+
+    left: 5px;
+
+    width: 19px;
+
+    height: 19px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border:
+        1px solid rgba(219,190,105,0.65);
+
+    border-radius: 50%;
+
+    background:
+        rgba(2,10,15,0.85);
+
+    color: #dfbd6b;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    font-weight: bold;
+
+    z-index: 3;
+}
+
+
+/* =========================================================
+   OPTION TEXT
+========================================================= */
+
+.option-text {
+
+    padding:
+        4px 6px 4px 0;
+}
+
+
+/* =========================================================
+   CORRECT
+========================================================= */
+
+.option.correct {
+
+    border-color:
+        #6fe0e1;
+
+    background:
+        rgba(26,72,76,0.78);
+
+    color: #e9ffff;
+}
+
+
+/* =========================================================
+   WRONG
+========================================================= */
+
+.option.wrong {
+
+    border-color:
+        #b87867;
+
+    background:
+        rgba(82,39,32,0.55);
+
+    color:
+        rgba(255,225,215,0.8);
+}
+
+
+/* =========================================================
+   FEEDBACK
+========================================================= */
+
+.feedback {
+
+    min-height: 22px;
+
+    margin-top: 6px;
+
+    color:
+        rgba(239,239,232,0.65);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+
+    line-height: 1.3;
+}
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.progress-area {
+
+    margin-top: 4px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.progress-text {
+
+    color:
+        rgba(236,239,234,0.45);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 7px;
+
+    letter-spacing: 1.5px;
+
+    white-space: nowrap;
+}
+
+
+.progress-bar {
+
+    width: 160px;
+
+    height: 3px;
+
+    background:
+        rgba(255,255,255,0.12);
+
+    overflow: hidden;
+}
+
+
+.progress-fill {
+
+    width: 25%;
+
+    height: 100%;
+
+    background: #70dfe1;
+
+    transition:
+        width 0.3s ease;
+}
+
+
+/* =========================================================
+   FIELD TIP
+========================================================= */
+
+.tip {
+
+    position: absolute;
+
+    z-index: 15;
+
+    right: 4vw;
+
+    top: 11vh;
+
+    width: 155px;
+
+    padding: 15px;
+
+    transform: rotate(2deg);
+
+    background:
+        #d8c18c;
+
+    color:
+        #342c1d;
+
+    box-shadow:
+        0 14px 30px rgba(0,0,0,0.45);
+}
+
+
+.tip::before {
+
+    content: &quot;&quot;;
+
+    position: absolute;
+
+    top: -7px;
+
+    left: 16px;
+
+    width: 33px;
+
+    height: 14px;
+
+    background:
+        rgba(205,181,127,0.65);
+}
+
+
+.tip-title {
+
+    margin-bottom: 7px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+}
+
+
+.tip-text {
+
+    font-size: 12px;
+
+    line-height: 1.42;
+}
+
+
+/* =========================================================
+   BOTTOM TOOLS
+   MOVED DOWN AND KEPT CLEAR OF QUIZ
+========================================================= */
+
+.bottom-tools {
+
+    position: absolute;
+
+    z-index: 20;
+
+    left: 4vw;
+
+    bottom: 4.8vh;
+
+    display: flex;
+
+    gap: 28px;
+}
+
+
+.tool {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    border: none;
+
+    background: none;
+
+    color: #d9b968;
+
+    cursor: pointer;
+
+    font-family: Arial, sans-serif;
+}
+
+
+.tool-icon {
+
+    width: 38px;
+
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border:
+        1px solid #d9b968;
+
+    border-radius: 50%;
+
+    font-size: 14px;
+}
+
+
+.tool-label {
+
+    display: block;
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    letter-spacing: 1.6px;
+
+    text-transform: uppercase;
+}
+
+
+.tool-small {
+
+    display: block;
+
+    margin-top: 4px;
+
+    color:
+        rgba(235,239,235,0.43);
+
+    font-size: 8px;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer {
+
+    position: absolute;
+
+    z-index: 25;
+
+    left: 4vw;
+
+    right: 4vw;
+
+    bottom: 10px;
+
+    height: 30px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    border-top:
+        1px solid rgba(230,235,225,0.12);
+}
+
+
+.back {
+
+    border: none;
+
+    background: none;
+
+    color:
+        rgba(230,235,230,0.45);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    letter-spacing: 1.7px;
+
+    text-transform: uppercase;
+
+    cursor: pointer;
+}
+
+
+.back:hover {
+
+    color: #70dfe1;
+}
+
+
+.next {
+
+    padding:
+        8px 20px;
+
+    border:
+        1px solid rgba(220,190,105,0.55);
+
+    background:
+        rgba(2,12,17,0.68);
+
+    color:
+        #e1bd67;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    cursor: pointer;
+
+    opacity: 0.35;
+
+    pointer-events: none;
+}
+
+
+.next.ready {
+
+    opacity: 1;
+
+    pointer-events: auto;
+}
+
+
+.next.ready:hover {
+
+    color: #70dfe1;
+
+    border-color: #70dfe1;
+}
+
+
+/* =========================================================
+   INFO MODAL
+========================================================= */
+
+.info-modal {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 100;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 30px;
+
+    background:
+        rgba(0,5,9,0.76);
+
+    backdrop-filter: blur(6px);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+}
+
+
+.info-modal.show {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+}
+
+
+.info-box {
+
+    width: 520px;
+
+    max-width: 90vw;
+
+    padding: 27px 30px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(4,19,27,0.98),
+            rgba(1,10,16,0.98)
+        );
+
+    border:
+        1px solid rgba(112,224,226,0.35);
+
+    border-left:
+        4px solid #70dfe1;
+
+    box-shadow:
+        0 28px 70px rgba(0,0,0,0.78);
+}
+
+
+.info-label {
+
+    margin-bottom: 8px;
+
+    color: #70dfe1;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    letter-spacing: 2.5px;
+}
+
+
+.info-title {
+
+    margin-bottom: 14px;
+
+    color: #e4bf67;
+
+    font-size: 27px;
+}
+
+
+.info-text {
+
+    color:
+        rgba(244,241,232,0.82);
+
+    font-size: 14px;
+
+    line-height: 1.55;
+}
+
+
+.info-close {
+
+    margin-top: 18px;
+
+    padding: 9px 20px;
+
+    border:
+        1px solid rgba(217,185,104,0.55);
+
+    background:
+        transparent;
+
+    color: #dfbd68;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   COMPLETION
+========================================================= */
+
+.complete {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 100;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background:
+        rgba(0,5,9,0.80);
+
+    backdrop-filter: blur(6px);
+
+    opacity: 0;
+
+    visibility: hidden;
+}
+
+
+.complete.show {
+
+    opacity: 1;
+
+    visibility: visible;
+}
+
+
+.complete-box {
+
+    width: 440px;
+
+    max-width: 88vw;
+
+    padding: 30px;
+
+    text-align: center;
+
+    border:
+        1px solid rgba(112,224,226,0.45);
+
+    background:
+        rgba(2,12,18,0.96);
+
+    box-shadow:
+        0 30px 70px rgba(0,0,0,0.75);
+}
+
+
+.complete-label {
+
+    color: #70dfe1;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    letter-spacing: 2.5px;
+
+    margin-bottom: 12px;
+}
+
+
+.complete h2 {
+
+    color: #e4c16d;
+
+    font-size: 29px;
+
+    margin-bottom: 12px;
+}
+
+
+.complete p {
+
+    color:
+        rgba(240,240,233,0.76);
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    margin-bottom: 22px;
+}
+
+
+.complete-button {
+
+    padding:
+        11px 23px;
+
+    border:
+        1px solid #d9b968;
+
+    background:
+        transparent;
+
+    color: #e4c16d;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .content {
+
+        width: 600px;
+    }
+
+    .quiz-panel {
+
+        width: 600px;
+    }
+
+    .tip {
+
+        right: 2vw;
+    }
+
+}
+
+
+@media (max-width: 800px) {
+
+    body {
+
+        overflow: auto;
+    }
+
+    .mission {
+
+        min-height: 900px;
+
+        height: auto;
+    }
+
+    .content {
+
+        position: relative;
+
+        top: auto;
+
+        left: auto;
+
+        width: auto;
+
+        margin: 0 22px;
+
+        padding-top: 80px;
+
+        padding-bottom: 150px;
+    }
+
+    .story {
+
+        width: auto;
+    }
+
+    .quiz-panel {
+
+        width: auto;
+    }
+
+    .tip {
+
+        display: none;
+    }
+
+    .bottom-tools {
+
+        left: 22px;
+
+        bottom: 55px;
+    }
+
+}
+
+
+@media (max-width: 550px) {
+
+    .options {
+
+        grid-template-columns: 1fr;
+    }
+
+    .question {
+
+        font-size: 18px;
+    }
+
+    .title {
+
+        font-size: 43px;
+    }
+
+    .option {
+
+        min-height: 82px;
+    }
+
+    .option-image {
+
+        width: 65px;
+
+        height: 65px;
+    }
+
+}
+
+&lt;/style&gt;
+
+&lt;/head&gt;
+
+
+&lt;body&gt;
+
+
+&lt;main class=&quot;mission&quot;&gt;
+
+
+&lt;!-- =======================================================
+     HEADER
+======================================================= --&gt;
+
+&lt;header class=&quot;header&quot;&gt;
+
+    &lt;div class=&quot;brand&quot;&gt;
+
+        &lt;div class=&quot;brand-symbol&quot;&gt;
+            ◈
+        &lt;/div&gt;
+
+        OPERATION SEA WHISPER
+
+    &lt;/div&gt;
+
+
+    &lt;div class=&quot;mission-id&quot;&gt;
+
+        FIELD OPERATION · 03 / 06
+
+    &lt;/div&gt;
+
+&lt;/header&gt;
+
+
+
+&lt;!-- =======================================================
+     CONTENT
+======================================================= --&gt;
+
+&lt;section class=&quot;content&quot;&gt;
+
+
+    &lt;div class=&quot;eyebrow&quot;&gt;
+
+        HATCHLING WATCH · ODISHA COAST
+
+    &lt;/div&gt;
+
+
+    &lt;h1 class=&quot;title&quot;&gt;
+
+        FIND THE
+
+        &lt;span&gt;
+            WAY HOME
+        &lt;/span&gt;
+
+    &lt;/h1&gt;
+
+
+    &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+
+
+    &lt;p class=&quot;story&quot;&gt;
+
+        The beach is quiet.
+
+        Then the sand begins to move.
+
+        Tiny hatchlings emerge from beneath
+        the nest — but something is wrong.
+
+        They are moving away from the ocean.
+
+        &lt;strong&gt;
+            Your next decision could determine
+            whether they reach the sea.
+        &lt;/strong&gt;
+
+    &lt;/p&gt;
+
+
+
+    &lt;!-- =================================================
+         QUIZ
+    ================================================== --&gt;
+
+    &lt;div class=&quot;quiz-panel&quot;&gt;
+
+
+        &lt;div class=&quot;quiz-header&quot;&gt;
+
+            &lt;div class=&quot;quiz-label&quot;&gt;
+
+                FIELD INVESTIGATION · 03
+
+            &lt;/div&gt;
+
+
+            &lt;div
+                class=&quot;question-count&quot;
+                id=&quot;questionCount&quot;
+            &gt;
+
+                QUESTION 1 / 4
+
+            &lt;/div&gt;
+
+        &lt;/div&gt;
+
+
+        &lt;div
+            class=&quot;question&quot;
+            id=&quot;question&quot;
+        &gt;&lt;/div&gt;
+
+
+        &lt;div
+            class=&quot;options&quot;
+            id=&quot;options&quot;
+        &gt;&lt;/div&gt;
+
+
+        &lt;div
+            class=&quot;feedback&quot;
+            id=&quot;feedback&quot;
+        &gt;&lt;/div&gt;
+
+
+        &lt;div class=&quot;progress-area&quot;&gt;
+
+            &lt;div
+                class=&quot;progress-text&quot;
+                id=&quot;progressText&quot;
+            &gt;
+
+                HATCHLING WATCH · 1 / 4
+
+            &lt;/div&gt;
+
+
+            &lt;div class=&quot;progress-bar&quot;&gt;
+
+                &lt;div
+                    class=&quot;progress-fill&quot;
+                    id=&quot;progressFill&quot;
+                &gt;&lt;/div&gt;
+
+            &lt;/div&gt;
+
+        &lt;/div&gt;
+
+    &lt;/div&gt;
+
+&lt;/section&gt;
+
+
+
+&lt;!-- =======================================================
+     FIELD TIP
+======================================================= --&gt;
+
+&lt;div class=&quot;tip&quot;&gt;
+
+    &lt;div class=&quot;tip-title&quot;&gt;
+
+        FIELD TIP
+
+    &lt;/div&gt;
+
+
+    &lt;div class=&quot;tip-text&quot;&gt;
+
+        Hatchlings do not need
+        to be carried to the sea
+        simply because they are
+        small.
+
+        &lt;br&gt;&lt;br&gt;
+
+        First understand
+        what is affecting
+        their direction.
+
+    &lt;/div&gt;
+
+&lt;/div&gt;
+
+
+
+&lt;!-- =======================================================
+     BOTTOM TOOLS
+======================================================= --&gt;
+
+&lt;div class=&quot;bottom-tools&quot;&gt;
+
+
+    &lt;button
+        class=&quot;tool&quot;
+        id=&quot;fieldNotes&quot;
+        type=&quot;button&quot;
+    &gt;
+
+        &lt;span class=&quot;tool-icon&quot;&gt;
+            ◉
+        &lt;/span&gt;
+
+        &lt;span&gt;
+
+            &lt;span class=&quot;tool-label&quot;&gt;
+                Field Notes
+            &lt;/span&gt;
+
+            &lt;span class=&quot;tool-small&quot;&gt;
+                Click to read
+            &lt;/span&gt;
+
+        &lt;/span&gt;
+
+    &lt;/button&gt;
+
+
+
+    &lt;button
+        class=&quot;tool&quot;
+        id=&quot;turtleFact&quot;
+        type=&quot;button&quot;
+    &gt;
+
+        &lt;span class=&quot;tool-icon&quot;&gt;
+            ♢
+        &lt;/span&gt;
+
+        &lt;span&gt;
+
+            &lt;span class=&quot;tool-label&quot;&gt;
+                Turtle Fact
+            &lt;/span&gt;
+
+            &lt;span class=&quot;tool-small&quot;&gt;
+                Learn a fact
+            &lt;/span&gt;
+
+        &lt;/span&gt;
+
+    &lt;/button&gt;
+
+
+&lt;/div&gt;
+
+
+
+&lt;!-- =======================================================
+     INFO MODAL
+======================================================= --&gt;
+
+&lt;div
+    class=&quot;info-modal&quot;
+    id=&quot;infoModal&quot;
+&gt;
+
+    &lt;div class=&quot;info-box&quot;&gt;
+
+        &lt;div
+            class=&quot;info-label&quot;
+            id=&quot;infoLabel&quot;
+        &gt;
+            FIELD NOTES
+        &lt;/div&gt;
+
+
+        &lt;div
+            class=&quot;info-title&quot;
+            id=&quot;infoTitle&quot;
+        &gt;
+            Hatchling Watch
+        &lt;/div&gt;
+
+
+        &lt;div
+            class=&quot;info-text&quot;
+            id=&quot;infoText&quot;
+        &gt;&lt;/div&gt;
+
+
+        &lt;button
+            class=&quot;info-close&quot;
+            id=&quot;infoClose&quot;
+            type=&quot;button&quot;
+        &gt;
+
+            CLOSE
+
+        &lt;/button&gt;
+
+    &lt;/div&gt;
+
+&lt;/div&gt;
+
+
+
+&lt;!-- =======================================================
+     COMPLETION
+======================================================= --&gt;
+
+&lt;div
+    class=&quot;complete&quot;
+    id=&quot;complete&quot;
+&gt;
+
+    &lt;div class=&quot;complete-box&quot;&gt;
+
+        &lt;div class=&quot;complete-label&quot;&gt;
+
+            FIELD OPERATION · 03
+
+        &lt;/div&gt;
+
+
+        &lt;h2&gt;
+
+            HATCHLINGS REACH THE SEA
+
+        &lt;/h2&gt;
+
+
+        &lt;p&gt;
+
+            You identified the safest responses
+            without interfering unnecessarily
+            with the hatchlings&#x27; natural journey.
+
+            &lt;br&gt;&lt;br&gt;
+
+            Mission 03 complete.
+
+        &lt;/p&gt;
+
+
+        &lt;button
+            class=&quot;complete-button&quot;
+            id=&quot;completeButton&quot;
+            type=&quot;button&quot;
+        &gt;
+
+            CONTINUE TO MISSION 04 →
+
+        &lt;/button&gt;
+
+    &lt;/div&gt;
+
+&lt;/div&gt;
+
+
+
+&lt;!-- =======================================================
+     FOOTER
+======================================================= --&gt;
+
+&lt;footer class=&quot;footer&quot;&gt;
+
+
+    &lt;button
+        class=&quot;back&quot;
+        id=&quot;backButton&quot;
+        type=&quot;button&quot;
+    &gt;
+
+        ← MISSION 02
+
+    &lt;/button&gt;
+
+
+    &lt;button
+        class=&quot;next&quot;
+        id=&quot;nextButton&quot;
+        type=&quot;button&quot;
+    &gt;
+
+        NEXT →
+
+    &lt;/button&gt;
+
+&lt;/footer&gt;
+
+
+
+&lt;script&gt;
+
+/* =========================================================
+   MISSION 03 QUESTIONS
+========================================================= */
+
+const questions = [
+
+    {
+
+        question:
+            &quot;You see several hatchlings emerging at night. Instead of moving toward the ocean, they are crawling toward a brightly lit building. What should be addressed FIRST?&quot;,
+
+        options: [
+
+            {
+                /*
+                   If flashlight.jpeg exists, it will be used.
+                   If it does not, ocean.jpeg is shown instead,
+                   so there will never be a broken image.
+                */
+                image:
+                    &quot;assets/flashlight.jpeg&quot;,
+
+                fallback:
+                    &quot;assets/ocean.jpeg&quot;,
+
+                text:
+                    &quot;Remove, shield or reduce the artificial light visible from the beach.&quot;
+            },
+
+            {
+                image:
+                    &quot;assets/adult.jpeg&quot;,
+
+                text:
+                    &quot;Pick up every hatchling and carry them directly into the water.&quot;
+            },
+
+            {
+                image:
+                    &quot;assets/plasticbottle.jpeg&quot;,
+
+                text:
+                    &quot;Use a bright phone flashlight to create a new path toward the sea.&quot;
+            },
+
+            {
+                image:
+                    &quot;assets/sandpit.jpeg&quot;,
+
+                text:
+                    &quot;Make loud noises so the hatchlings turn around.&quot;
+            }
+
+        ],
+
+        correct: 0,
+
+        explanation:
+            &quot;Correct. Artificial light can disrupt hatchlings&#x27; natural seaward orientation. The first response should be to address the light source rather than handling the hatchlings unnecessarily.&quot;
+
+    },
+
+
+    {
+
+        question:
+            &quot;Why do newly emerged hatchlings normally move toward the open ocean at night?&quot;,
+
+        options: [
+
+            {
+                image:
+                    &quot;assets/ocean.jpeg&quot;,
+
+                text:
+                    &quot;They use visual cues from the brighter seaward horizon to orient away from the darker landward silhouette.&quot;
+            },
+
+            {
+                image:
+                    &quot;assets/adult.jpeg&quot;,
+
+                text:
+                    &quot;They can smell the exact location of the sea from the nest.&quot;
+            },
+
+            {
+                image:
+                    &quot;assets/flashlight.jpeg&quot;,
+
+                fallback:
+                    &quot;assets/ocean.jpeg&quot;,
+
+                text:
+                    &quot;They follow the strongest artificial light because it resembles moonlight.&quot;
+            },
+
+            {
+                image:
+                    &quot;assets/plasticbottle.jpeg&quot;,
+
+                text:
+                    &quot;They instinctively follow objects that reflect light on the beach.&quot;
+            }
+
+        ],
+
+        correct: 0,
+
+        explanation:
+            &quot;Correct. Hatchlings use visual orientation cues. The open seaward horizon is normally brighter than the landward side, helping them find the ocean.&quot;
+
+    },
+
+
+    {
+
+        question:
+            &quot;A volunteer finds a hatchling crawling across a beach where a small sand ridge is blocking its path. What is the most appropriate principle to follow?&quot;,
+
+        options: [
+
+            {
+                image:
+                    &quot;assets/sandheap.jpeg&quot;,
+
+                text:
+                    &quot;Remove or reduce the obstacle only if it can be done safely without unnecessarily handling the hatchling.&quot;
+            },
+
+            {
+                image:
+                    &quot;assets/adult.jpeg&quot;,
+
+                text:
+                    &quot;Carry the hatchling immediately because every minute on land is dangerous.&quot;
+            },
+
+            {
+                image:
+                    &quot;assets/flashlight.jpeg&quot;,
+
+                fallback:
+                    &quot;assets/ocean.jpeg&quot;,
+
+                text:
+                    &quot;Shine a light behind it so it moves faster toward the ocean.&quot;
+            },
+
+            {
+                image:
+                    &quot;assets/plasticbottle.jpeg&quot;,
+
+                text:
+                    &quot;Leave the obstacle because human intervention is never appropriate.&quot;
+            }
+
+        ],
+
+        correct: 0,
+
+        explanation:
+            &quot;Correct. The goal is to remove avoidable human-created obstacles while keeping intervention as limited as possible.&quot;
+
+    },
+
+
+    {
+
+        question:
+            &quot;A hatchling reaches the shoreline, but a person suggests holding it for a photograph before releasing it. Which response best reflects responsible conservation practice?&quot;,
+
+        options: [
+
+            {
+                image:
+                    &quot;assets/adult.jpeg&quot;,
+
+                text:
+                    &quot;Do not handle it for a photograph. Allow the hatchling to continue its natural journey unless trained responders have a specific reason to intervene.&quot;
+            },
+
+            {
+                image:
+                    &quot;assets/flashlight.jpeg&quot;,
+
+                fallback:
+                    &quot;assets/ocean.jpeg&quot;,
+
+                text:
+                    &quot;Hold it briefly because a photograph cannot affect its survival.&quot;
+            },
+
+            {
+                image:
+                    &quot;assets/plasticbottle.jpeg&quot;,
+
+                text:
+                    &quot;Move it to a brighter part of the beach so the photograph is clearer.&quot;
+            },
+
+            {
+                image:
+                    &quot;assets/ocean.jpeg&quot;,
+
+                text:
+                    &quot;Carry it back to the nest so it can try the journey again.&quot;
+            }
+
+        ],
+
+        correct: 0,
+
+        explanation:
+            &quot;Correct. Wildlife observation should minimise unnecessary handling and disturbance. The objective is to protect the hatchling&#x27;s natural journey, not turn it into an interaction.&quot;
+
+    }
+
+];
+
+
+/* =========================================================
+   GAME STATE
+========================================================= */
+
+let currentQuestion = 0;
+
+let answeredCorrectly = false;
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const questionElement =
+    document.getElementById(&quot;question&quot;);
+
+const optionsElement =
+    document.getElementById(&quot;options&quot;);
+
+const feedbackElement =
+    document.getElementById(&quot;feedback&quot;);
+
+const questionCountElement =
+    document.getElementById(&quot;questionCount&quot;);
+
+const progressTextElement =
+    document.getElementById(&quot;progressText&quot;);
+
+const progressFillElement =
+    document.getElementById(&quot;progressFill&quot;);
+
+const nextButton =
+    document.getElementById(&quot;nextButton&quot;);
+
+const backButton =
+    document.getElementById(&quot;backButton&quot;);
+
+const completeScreen =
+    document.getElementById(&quot;complete&quot;);
+
+const completeButton =
+    document.getElementById(&quot;completeButton&quot;);
+
+
+/* =========================================================
+   LOAD QUESTION
+========================================================= */
+
+function loadQuestion() {
+
+    const q =
+        questions[currentQuestion];
+
+
+    answeredCorrectly =
+        false;
+
+
+    questionElement.textContent =
+        q.question;
+
+
+    questionCountElement.textContent =
+        `QUESTION ${currentQuestion + 1} / ${questions.length}`;
+
+
+    progressTextElement.textContent =
+        `HATCHLING WATCH · ${currentQuestion + 1} / ${questions.length}`;
+
+
+    progressFillElement.style.width =
+        `${((currentQuestion + 1) / questions.length) * 100}%`;
+
+
+    feedbackElement.textContent =
+        &quot;Choose the response that best protects the hatchlings while minimising disturbance.&quot;;
+
+
+    feedbackElement.style.color =
+        &quot;rgba(239,239,232,0.65)&quot;;
+
+
+    nextButton.classList.remove(
+        &quot;ready&quot;
+    );
+
+
+    optionsElement.innerHTML =
+        &quot;&quot;;
+
+
+    q.options.forEach(
+        function(optionData, index) {
+
+
+            const button =
+                document.createElement(&quot;button&quot;);
+
+
+            button.type =
+                &quot;button&quot;;
+
+
+            button.className =
+                &quot;option&quot;;
+
+
+            const image =
+                document.createElement(&quot;img&quot;);
+
+
+            image.className =
+                &quot;option-image&quot;;
+
+
+            image.src =
+                optionData.image;
+
+
+            image.alt =
+                &quot;&quot;;
+
+
+            /*
+               Prevent broken image icons.
+               If the requested image is missing,
+               use the fallback image.
+            */
+
+            image.onerror =
+                function() {
+
+                    if (
+                        optionData.fallback &amp;&amp;
+                        image.src.indexOf(
+                            optionData.fallback
+                        ) === -1
+                    ) {
+
+                        image.src =
+                            optionData.fallback;
+
+                    }
+
+                };
+
+
+            const letter =
+                document.createElement(&quot;span&quot;);
+
+
+            letter.className =
+                &quot;option-letter&quot;;
+
+
+            letter.textContent =
+                String.fromCharCode(
+                    65 + index
+                );
+
+
+            const optionText =
+                document.createElement(&quot;span&quot;);
+
+
+            optionText.className =
+                &quot;option-text&quot;;
+
+
+            optionText.textContent =
+                optionData.text;
+
+
+            button.appendChild(
+                letter
+            );
+
+
+            button.appendChild(
+                image
+            );
+
+
+            button.appendChild(
+                optionText
+            );
+
+
+            button.addEventListener(
+                &quot;click&quot;,
+                function() {
+
+                    checkAnswer(
+                        index,
+                        button
+                    );
+
+                }
+            );
+
+
+            optionsElement.appendChild(
+                button
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   CHECK ANSWER
+========================================================= */
+
+function checkAnswer(
+    selectedIndex,
+    selectedButton
+) {
+
+    if (answeredCorrectly) {
+
+        return;
+
+    }
+
+
+    const q =
+        questions[currentQuestion];
+
+
+    if (
+        selectedIndex === q.correct
+    ) {
+
+        answeredCorrectly =
+            true;
+
+
+        selectedButton.classList.add(
+            &quot;correct&quot;
+        );
+
+
+        feedbackElement.textContent =
+            &quot;✓ &quot; + q.explanation;
+
+
+        feedbackElement.style.color =
+            &quot;#73dfe1&quot;;
+
+
+        document
+            .querySelectorAll(&quot;.option&quot;)
+            .forEach(
+                function(option, index) {
+
+                    option.disabled =
+                        true;
+
+
+                    if (
+                        index === q.correct
+                    ) {
+
+                        option.classList.add(
+                            &quot;correct&quot;
+                        );
+
+                    }
+
+                }
+            );
+
+
+        nextButton.classList.add(
+            &quot;ready&quot;
+        );
+
+    }
+
+    else {
+
+        selectedButton.classList.add(
+            &quot;wrong&quot;
+        );
+
+
+        feedbackElement.textContent =
+            &quot;✕ Not quite. Think about the principle of protecting the hatchlings while allowing their natural behaviour to continue.&quot;;
+
+
+        feedbackElement.style.color =
+            &quot;#d69a86&quot;;
+
+
+        selectedButton.disabled =
+            true;
+
+    }
+
+}
+
+
+/* =========================================================
+   NEXT QUESTION
+========================================================= */
+
+nextButton.addEventListener(
+    &quot;click&quot;,
+    function() {
+
+
+        if (!answeredCorrectly) {
+
+            return;
+
+        }
+
+
+        currentQuestion++;
+
+
+        if (
+            currentQuestion &lt;
+            questions.length
+        ) {
+
+            loadQuestion();
+
+        }
+
+        else {
+
+            completeMission();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   COMPLETE MISSION
+========================================================= */
+
+function completeMission() {
+
+    completeScreen.classList.add(
+        &quot;show&quot;
+    );
+
+
+    nextButton.classList.remove(
+        &quot;ready&quot;
+    );
+
+}
+
+
+/* =========================================================
+   MISSION 04
+========================================================= */
+
+completeButton.addEventListener(
+    &quot;click&quot;,
+    function() {
+
+        window.parent.postMessage({ type: &quot;SEA_WHISPER_NAV&quot;, target: &quot;mission4&quot; }, &quot;*&quot;);
+
+    }
+);
+
+
+/* =========================================================
+   BACK TO MISSION 02
+========================================================= */
+
+backButton.addEventListener(
+    &quot;click&quot;,
+    function() {
+
+        window.parent.postMessage({ type: &quot;SEA_WHISPER_NAV&quot;, target: &quot;mission2&quot; }, &quot;*&quot;);
+
+    }
+);
+
+
+/* =========================================================
+   INFORMATION MODAL
+========================================================= */
+
+const infoModal =
+    document.getElementById(&quot;infoModal&quot;);
+
+const infoLabel =
+    document.getElementById(&quot;infoLabel&quot;);
+
+const infoTitle =
+    document.getElementById(&quot;infoTitle&quot;);
+
+const infoText =
+    document.getElementById(&quot;infoText&quot;);
+
+const infoClose =
+    document.getElementById(&quot;infoClose&quot;);
+
+
+function openInfo(
+    label,
+    title,
+    text
+) {
+
+    infoLabel.textContent =
+        label;
+
+    infoTitle.textContent =
+        title;
+
+    infoText.textContent =
+        text;
+
+    infoModal.classList.add(
+        &quot;show&quot;
+    );
+
+}
+
+
+function closeInfo() {
+
+    infoModal.classList.remove(
+        &quot;show&quot;
+    );
+
+}
+
+
+infoClose.addEventListener(
+    &quot;click&quot;,
+    closeInfo
+);
+
+
+infoModal.addEventListener(
+    &quot;click&quot;,
+    function(event) {
+
+        if (
+            event.target === infoModal
+        ) {
+
+            closeInfo();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   FIELD NOTES
+========================================================= */
+
+document
+    .getElementById(&quot;fieldNotes&quot;)
+    .addEventListener(
+        &quot;click&quot;,
+        function() {
+
+            openInfo(
+
+                &quot;FIELD NOTES&quot;,
+
+                &quot;HATCHLING WATCH&quot;,
+
+                &quot;Hatchlings normally orient toward the open sea using visual cues from the brighter seaward horizon. Artificial coastal lighting can interfere with this orientation. Keep nesting beaches dark, remove avoidable obstacles and minimise unnecessary handling. The safest conservation response is usually to address the human-created disturbance rather than interfere with the animal&#x27;s natural movement.&quot;
+
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   TURTLE FACT
+========================================================= */
+
+document
+    .getElementById(&quot;turtleFact&quot;)
+    .addEventListener(
+        &quot;click&quot;,
+        function() {
+
+            openInfo(
+
+                &quot;TURTLE FACT&quot;,
+
+                &quot;A JOURNEY THAT STARTS IN THE SAND&quot;,
+
+                &quot;Olive Ridley hatchlings emerge after incubation and begin a dangerous journey toward the sea. Odisha&#x27;s coast is one of the world&#x27;s most important Olive Ridley nesting regions, including major sites such as Gahirmatha, Rushikulya and the Devi river mouth. During arribada, very large numbers of females gather to nest. Protecting the darkness and natural conditions of these beaches helps preserve one of Odisha&#x27;s most remarkable natural phenomena.&quot;
+
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   ESC CLOSE
+========================================================= */
+
+document.addEventListener(
+    &quot;keydown&quot;,
+    function(event) {
+
+        if (
+            event.key === &quot;Escape&quot;
+        ) {
+
+            closeInfo();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   START
+========================================================= */
+
+loadQuestion();
+
+&lt;/script&gt;
+
+
+&lt;/main&gt;
+
+&lt;/body&gt;
+
+&lt;/html&gt;"></iframe>
+<iframe id="mission4Frame" title="Operation Sea Whisper — Mission 04" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+
+&lt;head&gt;
+&lt;base href=&quot;./&quot;&gt;
+
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+
+&lt;title&gt;Operation Sea Whisper — Mission 04&lt;/title&gt;
+
+&lt;style&gt;
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    overflow: hidden;
+    background: #030a10;
+    color: #f4eee1;
+    font-family: Georgia, &quot;Times New Roman&quot;, serif;
+}
+
+
+/* =========================================================
+   MAIN PAGE
+========================================================= */
+
+.mission {
+
+    position: relative;
+
+    width: 100vw;
+    height: 100vh;
+
+    overflow: hidden;
+
+    background-image:
+
+        linear-gradient(
+            90deg,
+            rgba(0, 5, 10, 0.84) 0%,
+            rgba(0, 7, 12, 0.60) 38%,
+            rgba(0, 7, 12, 0.22) 72%,
+            rgba(0, 5, 10, 0.30) 100%
+        ),
+
+        linear-gradient(
+            180deg,
+            rgba(0, 4, 8, 0.12) 0%,
+            rgba(0, 5, 10, 0.10) 45%,
+            rgba(0, 4, 8, 0.62) 100%
+        ),
+
+        url(&quot;assets/mode2.jpeg&quot;);
+
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header {
+
+    position: absolute;
+
+    z-index: 20;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 4vw;
+
+    border-bottom:
+        1px solid rgba(225, 235, 230, 0.10);
+}
+
+
+.brand {
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    color: #e6c36f;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    letter-spacing: 2.5px;
+
+    text-transform: uppercase;
+}
+
+
+.brand-circle {
+
+    width: 29px;
+    height: 29px;
+
+    border:
+        1px solid rgba(230, 195, 111, 0.75);
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 9px;
+}
+
+
+.operation {
+
+    color:
+        rgba(220, 231, 226, 0.52);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
+
+.content {
+
+    position: absolute;
+
+    z-index: 10;
+
+    top: 11vh;
+
+    left: 3.8vw;
+
+    width: 760px;
+}
+
+
+/* =========================================================
+   EYEBROW
+========================================================= */
+
+.eyebrow {
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 8px;
+
+    color: #73dfe1;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    letter-spacing: 3px;
+
+    text-transform: uppercase;
+}
+
+
+.eyebrow::before {
+
+    content: &quot;&quot;;
+
+    width: 38px;
+    height: 1px;
+
+    background: #73dfe1;
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.title {
+
+    color: #fff8ea;
+
+    font-size:
+        clamp(52px, 5vw, 74px);
+
+    line-height: 0.84;
+
+    font-weight: 500;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+
+    text-shadow:
+        0 4px 20px rgba(0,0,0,0.8);
+}
+
+
+.title span {
+
+    display: block;
+
+    margin-top: 4px;
+
+    color: #e5c36e;
+
+    font-size: 0.62em;
+
+    letter-spacing: 2px;
+}
+
+
+/* =========================================================
+   DIVIDER
+========================================================= */
+
+.divider {
+
+    width: 95px;
+    height: 1px;
+
+    margin:
+        12px 0 10px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #d9b55e,
+            transparent
+        );
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.description {
+
+    width: 700px;
+
+    color:
+        rgba(247, 242, 231, 0.92);
+
+    font-size: 15px;
+
+    line-height: 1.38;
+
+    text-shadow:
+        0 2px 10px rgba(0,0,0,0.8);
+}
+
+
+.description strong {
+    color: #71dfe1;
+}
+
+
+/* =========================================================
+   INVESTIGATION BOX
+========================================================= */
+
+.investigation {
+
+    width: 760px;
+
+    margin-top: 13px;
+
+    padding:
+        13px 20px 12px;
+
+    border-left:
+        4px solid #70dfe1;
+
+    border-top:
+        1px solid rgba(113, 223, 225, 0.12);
+
+    border-bottom:
+        1px solid rgba(113, 223, 225, 0.12);
+
+    background:
+        rgba(1, 12, 18, 0.88);
+
+    box-shadow:
+        0 16px 35px rgba(0,0,0,0.35);
+
+    backdrop-filter:
+        blur(7px);
+}
+
+
+/* =========================================================
+   INVESTIGATION HEADER
+========================================================= */
+
+.investigation-top {
+
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 6px;
+}
+
+
+.investigation-label {
+
+    color: #71dfe1;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    font-weight: bold;
+
+    letter-spacing: 2.4px;
+
+    text-transform: uppercase;
+}
+
+
+.threat-counter {
+
+    color:
+        rgba(221, 231, 226, 0.50);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    font-weight: bold;
+
+    letter-spacing: 1.4px;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   QUESTION
+========================================================= */
+
+.question {
+
+    color: #fff8ea;
+
+    font-size: 20px;
+
+    line-height: 1.18;
+
+    font-weight: bold;
+
+    margin-bottom: 10px;
+}
+
+
+/* =========================================================
+   THREAT GRID
+========================================================= */
+
+.threat-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 8px;
+
+    width: 100%;
+}
+
+
+/* =========================================================
+   THREAT CARD
+========================================================= */
+
+.threat-card {
+
+    position: relative;
+
+    height: 112px;
+
+    padding: 0;
+
+    overflow: hidden;
+
+    border:
+        1px solid rgba(222, 188, 99, 0.50);
+
+    background: #07131a;
+
+    cursor: pointer;
+
+    text-align: left;
+
+    transition:
+        transform 0.22s ease,
+        border-color 0.22s ease,
+        box-shadow 0.22s ease;
+}
+
+
+.threat-card:hover {
+
+    transform: translateY(-3px);
+
+    border-color: #73dfe1;
+
+    box-shadow:
+        0 9px 20px rgba(80, 200, 210, 0.18);
+}
+
+
+.threat-card img {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+
+    opacity: 0.84;
+
+    transition:
+        transform 0.25s ease,
+        opacity 0.25s ease;
+}
+
+
+.threat-card:hover img {
+
+    opacity: 1;
+
+    transform: scale(1.06);
+}
+
+
+/* =========================================================
+   IMAGE OVERLAY
+========================================================= */
+
+.threat-card::after {
+
+    content: &quot;&quot;;
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            transparent 30%,
+            rgba(0,0,0,0.90) 100%
+        );
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   NUMBER
+========================================================= */
+
+.threat-number {
+
+    position: absolute;
+
+    z-index: 4;
+
+    top: 7px;
+    left: 7px;
+
+    width: 21px;
+    height: 21px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border:
+        1px solid #d8b65e;
+
+    border-radius: 50%;
+
+    background:
+        rgba(2, 11, 16, 0.82);
+
+    color: #e5c16b;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   CARD TITLE
+========================================================= */
+
+.threat-title {
+
+    position: absolute;
+
+    z-index: 5;
+
+    left: 9px;
+    right: 7px;
+
+    bottom: 8px;
+
+    color: #f5f0e5;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    font-weight: bold;
+
+    letter-spacing: 1.15px;
+
+    text-transform: uppercase;
+
+    text-shadow:
+        0 2px 7px #000;
+}
+
+
+/* =========================================================
+   CORRECT
+========================================================= */
+
+.threat-card.correct {
+
+    border:
+        2px solid #71e0e1;
+
+    box-shadow:
+        0 0 20px rgba(113,224,225,0.25);
+}
+
+
+.threat-card.correct::after {
+
+    background:
+        linear-gradient(
+            transparent 20%,
+            rgba(0, 45, 48, 0.78) 100%
+        );
+}
+
+
+/* =========================================================
+   WRONG
+========================================================= */
+
+.threat-card.wrong {
+
+    border:
+        2px solid #c77d69;
+
+    animation:
+        shake 0.28s ease;
+}
+
+
+@keyframes shake {
+
+    20% {
+        transform: translateX(-4px);
+    }
+
+    40% {
+        transform: translateX(4px);
+    }
+
+    60% {
+        transform: translateX(-3px);
+    }
+
+    80% {
+        transform: translateX(3px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+
+/* =========================================================
+   BOTTOM INVESTIGATION INFO
+========================================================= */
+
+.investigation-bottom {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-top: 8px;
+
+    min-height: 14px;
+}
+
+
+.scan-text {
+
+    color:
+        rgba(223, 231, 226, 0.54);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 7px;
+
+    line-height: 1;
+
+    letter-spacing: 1.1px;
+
+    text-transform: uppercase;
+}
+
+
+.progress-area {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    width: 235px;
+}
+
+
+.progress-label {
+
+    color:
+        rgba(223, 231, 226, 0.45);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 7px;
+
+    letter-spacing: 1.1px;
+
+    white-space: nowrap;
+
+    text-transform: uppercase;
+}
+
+
+.progress-track {
+
+    flex: 1;
+
+    height: 3px;
+
+    background:
+        rgba(214, 228, 224, 0.14);
+
+    overflow: hidden;
+}
+
+
+.progress {
+
+    width: 0%;
+
+    height: 100%;
+
+    background: #71dfe1;
+
+    transition:
+        width 0.35s ease;
+}
+
+
+/* =========================================================
+   FIELD TIP
+========================================================= */
+
+.field-tip {
+
+    position: absolute;
+
+    z-index: 15;
+
+    top: 5vh;
+
+    right: 4vw;
+
+    width: 150px;
+
+    min-height: 160px;
+
+    padding:
+        17px 14px;
+
+    background:
+        #dfc681;
+
+    color:
+        #25302e;
+
+    transform:
+        rotate(1.8deg);
+
+    box-shadow:
+        0 10px 24px rgba(0,0,0,0.32);
+}
+
+
+.field-tip::before {
+
+    content: &quot;&quot;;
+
+    position: absolute;
+
+    top: -8px;
+
+    left: 25px;
+
+    width: 45px;
+    height: 15px;
+
+    background:
+        rgba(214,190,123,0.82);
+}
+
+
+.field-tip-title {
+
+    margin-bottom: 8px;
+
+    color: #273331;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+}
+
+
+.field-tip p {
+
+    margin-bottom: 9px;
+
+    font-size: 11px;
+
+    line-height: 1.45;
+}
+
+
+/* =========================================================
+   ANSWER POPUP
+========================================================= */
+
+.threat-popup {
+
+    position: fixed;
+
+    z-index: 100;
+
+    inset: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background:
+        rgba(0, 5, 9, 0.78);
+
+    backdrop-filter:
+        blur(8px);
+}
+
+
+.popup-box {
+
+    width:
+        min(520px, 88vw);
+
+    padding:
+        28px 30px;
+
+    border-left:
+        4px solid #73e0e1;
+
+    border-top:
+        1px solid rgba(113,224,225,0.20);
+
+    border-right:
+        1px solid rgba(113,224,225,0.20);
+
+    border-bottom:
+        1px solid rgba(113,224,225,0.20);
+
+    background:
+        rgba(3, 17, 23, 0.98);
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,0.65);
+}
+
+
+.popup-label {
+
+    margin-bottom: 8px;
+
+    color: #73e0e1;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    font-weight: bold;
+
+    letter-spacing: 2.5px;
+
+    text-transform: uppercase;
+}
+
+
+.popup-box h2 {
+
+    margin-bottom: 12px;
+
+    color: #e5c16c;
+
+    font-size: 25px;
+
+    line-height: 1.1;
+
+    text-transform: uppercase;
+}
+
+
+.popup-box p {
+
+    color:
+        rgba(244,239,227,0.91);
+
+    font-size: 14px;
+
+    line-height: 1.55;
+
+    margin-bottom: 18px;
+}
+
+
+.popup-box button {
+
+    padding:
+        9px 18px;
+
+    border:
+        1px solid rgba(225,194,109,0.60);
+
+    background:
+        rgba(3,13,19,0.70);
+
+    color: #e5c16c;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    cursor: pointer;
+
+    text-transform: uppercase;
+}
+
+
+.popup-box button:hover {
+
+    border-color: #73e0e1;
+
+    color: #73e0e1;
+}
+
+
+/* =========================================================
+   MISSION COMPLETE POPUP
+========================================================= */
+
+.completion-popup {
+
+    position: fixed;
+
+    z-index: 200;
+
+    inset: 0;
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background:
+        rgba(0, 4, 8, 0.78);
+
+    backdrop-filter:
+        blur(9px);
+}
+
+
+.completion-popup.show {
+
+    display: flex;
+
+    animation:
+        popupFadeIn 0.35s ease;
+}
+
+
+@keyframes popupFadeIn {
+
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+/* =========================================================
+   COMPLETION BOX
+========================================================= */
+
+.completion-box {
+
+    position: relative;
+
+    width:
+        min(620px, 86vw);
+
+    padding:
+        34px 38px 30px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(4, 22, 29, 0.98),
+            rgba(1, 11, 17, 0.98)
+        );
+
+    border-left:
+        4px solid #73e0e1;
+
+    border-top:
+        1px solid rgba(115, 224, 225, 0.35);
+
+    border-right:
+        1px solid rgba(115, 224, 225, 0.18);
+
+    border-bottom:
+        1px solid rgba(115, 224, 225, 0.18);
+
+    box-shadow:
+        0 30px 90px rgba(0,0,0,0.72),
+        0 0 45px rgba(71,203,211,0.10);
+
+    animation:
+        completionRise 0.45s ease;
+}
+
+
+@keyframes completionRise {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(20px)
+            scale(0.97);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+
+    }
+}
+
+
+/* =========================================================
+   COMPLETION TOP LABEL
+========================================================= */
+
+.completion-popup-label {
+
+    margin-bottom: 12px;
+
+    color: #73e0e1;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    letter-spacing: 3px;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   COMPLETION HEADING
+========================================================= */
+
+.completion-popup h2 {
+
+    margin-bottom: 18px;
+
+    color: #e5c16c;
+
+    font-family:
+        Georgia,
+        &quot;Times New Roman&quot;,
+        serif;
+
+    font-size:
+        clamp(30px, 4vw, 43px);
+
+    line-height: 0.95;
+
+    font-weight: 500;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   COMPLETION DIVIDER
+========================================================= */
+
+.completion-popup-divider {
+
+    width: 110px;
+
+    height: 1px;
+
+    margin-bottom: 18px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #73e0e1,
+            transparent
+        );
+}
+
+
+/* =========================================================
+   COMPLETION MESSAGE
+========================================================= */
+
+.completion-popup p {
+
+    margin-bottom: 12px;
+
+    color:
+        rgba(245,241,230,0.90);
+
+    font-size: 15px;
+
+    line-height: 1.55;
+}
+
+
+.completion-popup strong {
+
+    color: #73e0e1;
+}
+
+
+/* =========================================================
+   COMPLETION FINAL LINE
+========================================================= */
+
+.completion-final-line {
+
+    margin-top: 20px;
+
+    padding-top: 14px;
+
+    border-top:
+        1px solid rgba(220,231,226,0.12);
+
+    color:
+        rgba(229,193,108,0.78);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   COMPLETION CONTINUE
+========================================================= */
+
+.completion-continue {
+
+    margin-top: 22px;
+
+    padding:
+        11px 21px;
+
+    border:
+        1px solid rgba(229,193,108,0.65);
+
+    background:
+        rgba(3,13,19,0.75);
+
+    color:
+        #e5c16c;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    cursor: pointer;
+
+    text-transform: uppercase;
+
+    transition: 0.25s ease;
+}
+
+
+.completion-continue:hover {
+
+    border-color: #73e0e1;
+
+    color: #73e0e1;
+
+    background:
+        rgba(20,62,68,0.55);
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer {
+
+    position: absolute;
+
+    z-index: 20;
+
+    left: 3.8vw;
+
+    right: 4vw;
+
+    bottom: 10px;
+
+    height: 29px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    border-top:
+        1px solid rgba(220,231,226,0.12);
+}
+
+
+.back {
+
+    border: none;
+
+    background: none;
+
+    color:
+        rgba(222,231,227,0.45);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    letter-spacing: 1.5px;
+
+    cursor: pointer;
+
+    text-transform: uppercase;
+}
+
+
+.back:hover {
+    color: #73e0e1;
+}
+
+
+.next {
+
+    padding:
+        8px 18px;
+
+    border:
+        1px solid rgba(225,194,109,0.38);
+
+    background:
+        rgba(2,12,17,0.65);
+
+    color:
+        rgba(225,194,109,0.45);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    letter-spacing: 1.7px;
+
+    cursor: default;
+
+    text-transform: uppercase;
+}
+
+
+.next.ready {
+
+    color: #e5c16c;
+
+    border-color:
+        rgba(225,194,109,0.75);
+
+    cursor: pointer;
+}
+
+
+.next.ready:hover {
+
+    color: #73e0e1;
+
+    border-color: #73e0e1;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    body {
+        overflow: auto;
+    }
+
+    .mission {
+
+        height: auto;
+
+        min-height: 100vh;
+
+        overflow: hidden;
+
+        padding-bottom: 75px;
+    }
+
+    .content {
+
+        position: relative;
+
+        top: auto;
+
+        left: auto;
+
+        width: auto;
+
+        margin: 0 20px;
+
+        padding-top: 85px;
+    }
+
+    .description {
+        width: auto;
+    }
+
+    .investigation {
+        width: 100%;
+    }
+
+    .threat-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .field-tip {
+        display: none;
+    }
+
+    .footer {
+        left: 20px;
+        right: 20px;
+    }
+
+}
+
+
+@media (max-width: 520px) {
+
+    .threat-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .threat-card {
+        height: 145px;
+    }
+
+    .title {
+        font-size: 46px;
+    }
+
+    .question {
+        font-size: 18px;
+    }
+
+    .completion-box {
+
+        padding:
+            27px 24px 25px;
+    }
+
+}
+
+&lt;/style&gt;
+
+&lt;/head&gt;
+
+
+&lt;body&gt;
+
+
+&lt;main class=&quot;mission&quot;&gt;
+
+
+&lt;!-- =====================================================
+     HEADER
+===================================================== --&gt;
+
+&lt;header class=&quot;header&quot;&gt;
+
+    &lt;div class=&quot;brand&quot;&gt;
+
+        &lt;div class=&quot;brand-circle&quot;&gt;
+            ◈
+        &lt;/div&gt;
+
+        &lt;span&gt;
+            Operation Sea Whisper
+        &lt;/span&gt;
+
+    &lt;/div&gt;
+
+
+    &lt;div class=&quot;operation&quot;&gt;
+
+        FIELD OPERATION · 04 / 06
+
+    &lt;/div&gt;
+
+&lt;/header&gt;
+
+
+
+&lt;!-- =====================================================
+     MAIN CONTENT
+===================================================== --&gt;
+
+&lt;section class=&quot;content&quot;&gt;
+
+
+    &lt;div class=&quot;eyebrow&quot;&gt;
+
+        NIGHT PATROL · ODISHA COAST
+
+    &lt;/div&gt;
+
+
+    &lt;h1 class=&quot;title&quot;&gt;
+
+        LIGHTS
+
+        &lt;span&gt;
+            OUT
+        &lt;/span&gt;
+
+    &lt;/h1&gt;
+
+
+    &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+
+
+    &lt;p class=&quot;description&quot;&gt;
+
+        The nesting beach is finally quiet.
+        Then your patrol scanner detects several disturbances.
+
+        &lt;strong&gt;
+            Four of them are human-made.
+        &lt;/strong&gt;
+
+        Find them and secure the beach before the night&#x27;s
+        nesting activity is disturbed.
+
+    &lt;/p&gt;
+
+
+
+    &lt;!-- =================================================
+         INVESTIGATION
+    ================================================== --&gt;
+
+    &lt;section class=&quot;investigation&quot;&gt;
+
+
+        &lt;div class=&quot;investigation-top&quot;&gt;
+
+            &lt;div class=&quot;investigation-label&quot;&gt;
+
+                NIGHT PATROL · 04
+
+            &lt;/div&gt;
+
+
+            &lt;div
+                id=&quot;threatCounter&quot;
+                class=&quot;threat-counter&quot;
+            &gt;
+
+                THREATS FOUND · 0 / 4
+
+            &lt;/div&gt;
+
+        &lt;/div&gt;
+
+
+
+        &lt;div class=&quot;question&quot;&gt;
+
+            Tap the things that
+            &lt;span style=&quot;color:#73e0e1;&quot;&gt;
+                should not be here.
+            &lt;/span&gt;
+
+        &lt;/div&gt;
+
+
+
+        &lt;div
+            id=&quot;threatGrid&quot;
+            class=&quot;threat-grid&quot;
+        &gt;&lt;/div&gt;
+
+
+
+        &lt;div
+            id=&quot;feedback&quot;
+            class=&quot;feedback&quot;
+        &gt;&lt;/div&gt;
+
+
+
+        &lt;div class=&quot;investigation-bottom&quot;&gt;
+
+
+            &lt;div class=&quot;scan-text&quot;&gt;
+
+                Scan the beach carefully.
+
+            &lt;/div&gt;
+
+
+            &lt;div class=&quot;progress-area&quot;&gt;
+
+                &lt;div class=&quot;progress-label&quot;&gt;
+
+                    BEACH SECURED
+
+                &lt;/div&gt;
+
+
+                &lt;div class=&quot;progress-track&quot;&gt;
+
+                    &lt;div
+                        id=&quot;progress&quot;
+                        class=&quot;progress&quot;
+                    &gt;&lt;/div&gt;
+
+                &lt;/div&gt;
+
+            &lt;/div&gt;
+
+
+        &lt;/div&gt;
+
+
+    &lt;/section&gt;
+
+
+&lt;/section&gt;
+
+
+
+&lt;!-- =====================================================
+     FIELD TIP
+===================================================== --&gt;
+
+&lt;aside class=&quot;field-tip&quot;&gt;
+
+
+    &lt;div class=&quot;field-tip-title&quot;&gt;
+
+        FIELD TIP
+
+    &lt;/div&gt;
+
+
+    &lt;p&gt;
+
+        Not every unusual
+        disturbance is equally
+        dangerous.
+
+    &lt;/p&gt;
+
+
+    &lt;p&gt;
+
+        Look for disturbances
+        caused by people.
+
+    &lt;/p&gt;
+
+
+    &lt;p&gt;
+
+        Protect the beach
+        without disturbing
+        the nest.
+
+    &lt;/p&gt;
+
+
+&lt;/aside&gt;
+
+
+
+&lt;!-- =====================================================
+     CONGRATULATIONS BOX
+===================================================== --&gt;
+
+&lt;div
+    id=&quot;completionPopup&quot;
+    class=&quot;completion-popup&quot;
+&gt;
+
+    &lt;div class=&quot;completion-box&quot;&gt;
+
+
+        &lt;div class=&quot;completion-popup-label&quot;&gt;
+
+            ✦ FIELD OPERATION COMPLETE ✦
+
+        &lt;/div&gt;
+
+
+        &lt;h2&gt;
+
+            CONGRATULATIONS
+
+        &lt;/h2&gt;
+
+
+        &lt;div class=&quot;completion-popup-divider&quot;&gt;&lt;/div&gt;
+
+
+        &lt;p&gt;
+
+            &lt;strong&gt;
+                YOU HAVE PASSED MISSION 04
+            &lt;/strong&gt;
+
+        &lt;/p&gt;
+
+
+        &lt;p&gt;
+
+            You successfully identified all four
+            human-made threats on the nesting beach.
+
+        &lt;/p&gt;
+
+
+        &lt;p&gt;
+
+            Your careful observations helped protect
+            the nesting turtle and kept the beach safer
+            during its journey.
+
+        &lt;/p&gt;
+
+
+        &lt;p&gt;
+
+            You didn&#x27;t just complete the mission —
+            &lt;strong&gt;
+                you helped protect a part of
+                Odisha&#x27;s coastal heritage.
+            &lt;/strong&gt;
+
+        &lt;/p&gt;
+
+
+        &lt;div class=&quot;completion-final-line&quot;&gt;
+
+            ✦ THE TURTLE&#x27;S JOURNEY IS SAFER BECAUSE OF YOU ✦
+
+        &lt;/div&gt;
+
+
+        &lt;button
+            id=&quot;completionContinue&quot;
+            class=&quot;completion-continue&quot;
+            type=&quot;button&quot;
+        &gt;
+
+            CONTINUE →
+
+        &lt;/button&gt;
+
+
+    &lt;/div&gt;
+
+&lt;/div&gt;
+
+
+
+&lt;!-- =====================================================
+     FOOTER
+===================================================== --&gt;
+
+&lt;footer class=&quot;footer&quot;&gt;
+
+
+    &lt;button
+        id=&quot;backButton&quot;
+        class=&quot;back&quot;
+        type=&quot;button&quot;
+    &gt;
+
+        ← MISSION 03
+
+    &lt;/button&gt;
+
+
+    &lt;button
+        id=&quot;nextButton&quot;
+        class=&quot;next&quot;
+        type=&quot;button&quot;
+    &gt;
+
+        NEXT →
+
+    &lt;/button&gt;
+
+
+&lt;/footer&gt;
+
+
+&lt;/main&gt;
+
+
+
+&lt;script&gt;
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+let found = 0;
+
+let missionCompleted = false;
+
+
+/* =========================================================
+   SHUFFLE
+========================================================= */
+
+function shuffle(array) {
+
+    const shuffled = [...array];
+
+    for (
+        let i = shuffled.length - 1;
+        i &gt; 0;
+        i--
+    ) {
+
+        const j =
+            Math.floor(
+                Math.random() * (i + 1)
+            );
+
+        [
+            shuffled[i],
+            shuffled[j]
+        ] =
+        [
+            shuffled[j],
+            shuffled[i]
+        ];
+
+    }
+
+    return shuffled;
+}
+
+
+/* =========================================================
+   OPTIONS
+========================================================= */
+
+const threatOptions = [
+
+    {
+        image: &quot;assets/dogsniffing.jpeg&quot;,
+
+        title: &quot;DOG NEAR NEST&quot;,
+
+        correct: true,
+
+        explanation:
+            &quot;A dog near a nesting area can disturb a nesting turtle, interfere with natural nesting behaviour, and potentially damage nests or eggs.&quot;
+    },
+
+
+    {
+        image: &quot;assets/lamp.jpeg&quot;,
+
+        title: &quot;ARTIFICIAL LIGHT&quot;,
+
+        correct: true,
+
+        explanation:
+            &quot;Artificial light can interfere with the natural behaviour of nesting turtles and can also affect hatchlings when they emerge and orient toward the sea.&quot;
+    },
+
+
+    {
+        image: &quot;assets/plasticbottle.jpeg&quot;,
+
+        title: &quot;PLASTIC WASTE&quot;,
+
+        correct: true,
+
+        explanation:
+            &quot;Plastic waste is a human-made hazard. It can pollute the nesting beach and create risks for turtles and other coastal wildlife.&quot;
+    },
+
+
+    {
+        image: &quot;assets/footprints.jpeg&quot;,
+
+        title: &quot;HUMAN FOOTPRINTS&quot;,
+
+        correct: true,
+
+        explanation:
+            &quot;Human activity on a nesting beach can disturb turtles and may damage or alter the surface around nests.&quot;
+    },
+
+
+    {
+        image: &quot;assets/sandheap.jpeg&quot;,
+
+        title: &quot;NATURAL SAND&quot;,
+
+        correct: false,
+
+        explanation:
+            &quot;Natural sand is part of the turtle&#x27;s nesting environment. The presence of sand itself is not a human-made disturbance.&quot;
+    },
+
+
+    {
+        image: &quot;assets/adult.jpeg&quot;,
+
+        title: &quot;NESTING TURTLE&quot;,
+
+        correct: false,
+
+        explanation:
+            &quot;The nesting turtle belongs on the beach. It is part of the natural ecosystem and is not a human-made threat.&quot;
+    }
+
+];
+
+
+/* =========================================================
+   RANDOMIZE OPTIONS
+========================================================= */
+
+const shuffledThreats =
+    shuffle(threatOptions);
+
+
+/* =========================================================
+   GET GRID
+========================================================= */
+
+const threatGrid =
+    document.getElementById(
+        &quot;threatGrid&quot;
+    );
+
+
+/* =========================================================
+   CREATE CARDS
+========================================================= */
+
+shuffledThreats.forEach(
+    function(threat, index) {
+
+        const card =
+            document.createElement(
+                &quot;button&quot;
+            );
+
+        card.type =
+            &quot;button&quot;;
+
+        card.className =
+            &quot;threat-card&quot;;
+
+        card.innerHTML = `
+
+            &lt;span class=&quot;threat-number&quot;&gt;
+                ${index + 1}
+            &lt;/span&gt;
+
+            &lt;img
+                src=&quot;${threat.image}&quot;
+                alt=&quot;${threat.title}&quot;
+            &gt;
+
+            &lt;span class=&quot;threat-title&quot;&gt;
+                ${threat.title}
+            &lt;/span&gt;
+
+        `;
+
+
+        /* =================================================
+           CARD CLICK
+        ================================================= */
+
+        card.addEventListener(
+            &quot;click&quot;,
+            function() {
+
+                if (
+                    card.classList.contains(
+                        &quot;correct&quot;
+                    )
+                ) {
+                    return;
+                }
+
+
+                /* =========================================
+                   CORRECT
+                ========================================= */
+
+                if (threat.correct) {
+
+                    card.classList.add(
+                        &quot;correct&quot;
+                    );
+
+                    found++;
+
+                    updateProgress();
+
+
+                    showThreatPopup(
+                        true,
+                        threat.title,
+                        threat.explanation
+                    );
+
+
+                    /* COMPLETE ONLY AFTER 4 CORRECT */
+
+                    if (
+                        found === 4 &amp;&amp;
+                        !missionCompleted
+                    ) {
+
+                        completeMission4();
+
+                    }
+
+                }
+
+
+                /* =========================================
+                   WRONG
+                ========================================= */
+
+                else {
+
+                    card.classList.add(
+                        &quot;wrong&quot;
+                    );
+
+
+                    showThreatPopup(
+                        false,
+                        threat.title,
+                        threat.explanation
+                    );
+
+
+                    setTimeout(
+                        function() {
+
+                            card.classList.remove(
+                                &quot;wrong&quot;
+                            );
+
+                        },
+                        450
+                    );
+
+                }
+
+            }
+        );
+
+
+        threatGrid.appendChild(
+            card
+        );
+
+    }
+);
+
+
+/* =========================================================
+   UPDATE PROGRESS
+========================================================= */
+
+function updateProgress() {
+
+    const counter =
+        document.getElementById(
+            &quot;threatCounter&quot;
+        );
+
+    const progress =
+        document.getElementById(
+            &quot;progress&quot;
+        );
+
+
+    counter.textContent =
+        &quot;THREATS FOUND · &quot; +
+        found +
+        &quot; / 4&quot;;
+
+
+    progress.style.width =
+        ((found / 4) * 100) +
+        &quot;%&quot;;
+
+}
+
+
+/* =========================================================
+   ANSWER POPUP
+========================================================= */
+
+function showThreatPopup(
+    correct,
+    title,
+    explanation
+) {
+
+    const oldPopup =
+        document.querySelector(
+            &quot;.threat-popup&quot;
+        );
+
+
+    if (oldPopup) {
+        oldPopup.remove();
+    }
+
+
+    const popup =
+        document.createElement(
+            &quot;div&quot;
+        );
+
+
+    popup.className =
+        &quot;threat-popup&quot;;
+
+
+    popup.innerHTML = `
+
+        &lt;div class=&quot;popup-box&quot;&gt;
+
+            &lt;div class=&quot;popup-label&quot;&gt;
+
+                ${
+                    correct
+                    ? &quot;THREAT CONFIRMED&quot;
+                    : &quot;NOT A HUMAN-MADE THREAT&quot;
+                }
+
+            &lt;/div&gt;
+
+
+            &lt;h2&gt;
+                ${title}
+            &lt;/h2&gt;
+
+
+            &lt;p&gt;
+                ${explanation}
+            &lt;/p&gt;
+
+
+            &lt;button
+                type=&quot;button&quot;
+                id=&quot;closeThreatPopup&quot;
+            &gt;
+
+                CLOSE
+
+            &lt;/button&gt;
+
+        &lt;/div&gt;
+
+    `;
+
+
+    document.body.appendChild(
+        popup
+    );
+
+
+    document
+        .getElementById(
+            &quot;closeThreatPopup&quot;
+        )
+        .addEventListener(
+            &quot;click&quot;,
+            function() {
+
+                popup.remove();
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   MISSION 04 COMPLETE
+========================================================= */
+
+function completeMission4() {
+
+    /* Must be exactly 4 / 4 */
+
+    if (found !== 4) {
+        return;
+    }
+
+
+    if (missionCompleted) {
+        return;
+    }
+
+
+    missionCompleted = true;
+
+
+    /* =====================================================
+       COMPLETE PROGRESS BAR
+    ===================================================== */
+
+    const progress =
+        document.getElementById(
+            &quot;progress&quot;
+        );
+
+
+    if (progress) {
+
+        progress.style.width =
+            &quot;100%&quot;;
+
+    }
+
+
+    /* =====================================================
+       ENABLE NEXT BUTTON
+    ===================================================== */
+
+    const nextButton =
+        document.getElementById(
+            &quot;nextButton&quot;
+        );
+
+
+    if (nextButton) {
+
+        nextButton.classList.add(
+            &quot;ready&quot;
+        );
+
+        nextButton.textContent =
+            &quot;CONTINUE →&quot;;
+
+    }
+
+
+    /* =====================================================
+       OPEN CONGRATULATIONS BOX
+    ===================================================== */
+
+    const completionPopup =
+        document.getElementById(
+            &quot;completionPopup&quot;
+        );
+
+
+    if (completionPopup) {
+
+        completionPopup.classList.add(
+            &quot;show&quot;
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   CLOSE CONGRATULATIONS BOX
+========================================================= */
+
+const completionContinue =
+    document.getElementById(
+        &quot;completionContinue&quot;
+    );
+
+
+if (completionContinue) {
+
+    completionContinue.addEventListener(
+        &quot;click&quot;,
+        function() {
+
+            const completionPopup =
+                document.getElementById(
+                    &quot;completionPopup&quot;
+                );
+
+
+            if (completionPopup) {
+
+                completionPopup.classList.remove(
+                    &quot;show&quot;
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   NEXT BUTTON
+========================================================= */
+
+document
+    .getElementById(
+        &quot;nextButton&quot;
+    )
+    .addEventListener(
+        &quot;click&quot;,
+        function() {
+
+            if (!missionCompleted) {
+                return;
+            }
+
+            /* Mission 05 can be connected here later. */
+
+        }
+    );
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+document
+    .getElementById(
+        &quot;backButton&quot;
+    )
+    .addEventListener(
+        &quot;click&quot;,
+        function() {
+
+            window.parent.postMessage({ type: &quot;SEA_WHISPER_NAV&quot;, target: &quot;mission3&quot; }, &quot;*&quot;);
+
+        }
+    );
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+updateProgress();
+
+&lt;/script&gt;
+
+&lt;/body&gt;
+
+&lt;/html&gt;"></iframe>
+<script>
+(function(){
+  const m3 = document.getElementById('mission3Frame');
+  const m4 = document.getElementById('mission4Frame');
+  const oceanAudio = document.getElementById('seaWhisperOceanAudio');
+
+  /* Keep the ocean ambience running for BOTH missions. */
+  oceanAudio.loop = true;
+  oceanAudio.playsInline = true;
+  oceanAudio.preload = 'auto';
+  oceanAudio.volume = 0.32;
+
+  function keepOceanLooping(){
+    if (oceanAudio.currentTime >= oceanAudio.duration - 0.15) {
+      oceanAudio.currentTime = 0;
+    }
+    oceanAudio.play().catch(function(){
+      /* Autoplay can be blocked by the browser. The first user
+         interaction will retry playback below. */
+    });
+  }
+
+  oceanAudio.addEventListener('ended', function(){
+    oceanAudio.currentTime = 0;
+    keepOceanLooping();
+  });
+
+  /* Retry after a user interaction if Chrome blocked autoplay. */
+  ['click','pointerdown','keydown','touchstart'].forEach(function(type){
+    window.addEventListener(type, function(){
+      if (oceanAudio.paused) keepOceanLooping();
+    }, {passive:true});
+  });
+
+  /* Start immediately when autoplay is permitted. */
+  keepOceanLooping();
+
+  function show(target){
+    m3.style.display = target === 'mission3' ? 'block' : 'none';
+    m4.style.display = target === 'mission4' ? 'block' : 'none';
+    window.scrollTo(0,0);
+    /* Never recreate/restart the audio when switching missions. */
+    if (oceanAudio.paused) keepOceanLooping();
+  }
+
+  window.addEventListener('message', function(event){
+    if (!event.data || event.data.type !== 'SEA_WHISPER_NAV') return;
+    if (event.data.target === 'mission3' || event.data.target === 'mission4') {
+      show(event.data.target);
+    } else if (event.data.target === 'mission2') {
+      window.location.href = 'operation_sea_whisper.html';
+    }
+  });
+})();
+</script>
+
+<script>
+(function(){
+  const audio=document.getElementById('seaWhisperOceanAudio');
+  const toggle=document.getElementById('musicToggle');
+  const saved=localStorage.getItem('seaWhisperOceanSound');
+  audio.loop=true;
+  audio.volume=0.32;
+
+  function updateButton(){
+    const on=!audio.muted && !audio.paused;
+    toggle.textContent=on ? '♫ OCEAN SOUND: ON' : '♫ OCEAN SOUND: OFF';
+    toggle.classList.toggle('off',!on);
+    toggle.setAttribute('aria-pressed',String(on));
+  }
+
+  function playOcean(){
+    audio.muted=false;
+    const attempt=audio.play();
+    if(attempt && attempt.catch) attempt.catch(()=>updateButton());
+    updateButton();
+  }
+
+  function stopOcean(){
+    audio.pause();
+    audio.muted=true;
+    updateButton();
+  }
+
+  if(saved==='off'){
+    audio.muted=true;
+    updateButton();
+  }else{
+    playOcean();
+  }
+
+  toggle.addEventListener('click',function(){
+    if(audio.paused || audio.muted){
+      localStorage.setItem('seaWhisperOceanSound','on');
+      playOcean();
+    }else{
+      localStorage.setItem('seaWhisperOceanSound','off');
+      stopOcean();
+    }
+  });
+
+  // Browsers may block autoplay until the user's first interaction.
+  document.addEventListener('pointerdown',function(){
+    if(localStorage.getItem('seaWhisperOceanSound')!=='off' && audio.paused) playOcean();
+  },{once:false});
+
+  audio.addEventListener('ended',function(){
+    if(localStorage.getItem('seaWhisperOceanSound')!=='off') playOcean();
+  });
+  audio.addEventListener('play',updateButton);
+  audio.addEventListener('pause',updateButton);
+})();
+</script>
+</body>
+</html>

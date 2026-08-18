@@ -258,9 +258,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.warn('Endpoint submission warning (handled gracefully):', err);
             }
 
-            // Smooth transition & redirect to the next quest page
+            // Smooth transition & redirect to the interactive map
             setTimeout(() => {
-                window.location.href = 'odisha_games.html';
+                window.location.href = 'map.html';
             }, 600);
         } else {
             // Shake first invalid field
@@ -271,10 +271,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Toast button click -> Redirect to next quest page
+    // Toast button click -> Redirect to map page
     toastOkBtn.addEventListener('click', () => {
         successToast.classList.remove('show');
-        window.location.href = 'odisha_games.html';
+        window.location.href = 'map.html';
     });
 
     // 5. Audio Control via Dedicated Button
