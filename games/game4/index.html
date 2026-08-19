@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Heritage Quest - Restore the Past</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body class="heritage-game">
+
+    <!-- =====================================
+         HEADER
+    ====================================== -->
+
+    <header class="game-header">
+
+        <div class="logo">
+            🏛️ Heritage Quest
+        </div>
+
+        <div class="header-right">
+
+            <span>
+                ⭐ Score:
+                <b id="score">0</b>
+            </span>
+
+            <span>
+                ❤️ Lives:
+                <b id="lives">3</b>
+            </span>
+
+            <span>
+                ⏱️
+                <b id="timer">60</b>s
+            </span>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================
+         MAIN GAME AREA
+    ====================================== -->
+
+    <main class="game-container">
+
+
+        <!-- =================================
+             INTRO SCREEN
+        ================================== -->
+
+        <section id="introScreen"
+                 class="screen">
+
+            <div class="intro-card">
+
+                <div class="heritage-icon">
+                    🏛️
+                </div>
+
+                <h1>
+                    Restore the Past
+                </h1>
+
+                <p>
+                    Odisha's heritage is waiting to be
+                    restored. Arrange the broken pieces
+                    and bring the heritage back to life.
+                </p>
+
+
+                <div class="levels-preview">
+
+
+                    <div class="level-preview">
+
+                        <span>🏛️</span>
+
+                        <strong>
+                            Level 1
+                        </strong>
+
+                        <small>
+                            Konark • 4 Pieces
+                        </small>
+
+                    </div>
+
+
+                    <div class="level-preview">
+
+                        <span>🎨</span>
+
+                        <strong>
+                            Level 2
+                        </strong>
+
+                        <small>
+                            Pattachitra • 9 Pieces
+                        </small>
+
+                    </div>
+
+
+                    <div class="level-preview">
+
+                        <span>📜</span>
+
+                        <strong>
+                            Level 3
+                        </strong>
+
+                        <small>
+                            Rashi Patra • 16 Pieces
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <button id="startButton"
+                        class="main-button">
+
+                    Start Restoration
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================
+             PUZZLE SCREEN
+        ================================== -->
+
+        <section id="puzzleScreen"
+                 class="screen hidden">
+
+
+            <div class="level-info">
+
+                <p id="levelNumber">
+                    LEVEL 1
+                </p>
+
+                <h1 id="levelTitle">
+                    Restore the Konark Sun Temple
+                </h1>
+
+                <p id="levelDescription">
+                    Rebuild the iconic monument of Odisha.
+                </p>
+
+            </div>
+
+
+            <div class="puzzle-area">
+
+
+                <!-- BROKEN PIECES -->
+
+                <div class="puzzle-section">
+
+                    <h3>
+                        Broken Pieces
+                    </h3>
+
+                    <div id="piecesContainer"
+                         class="pieces-container">
+                    </div>
+
+                </div>
+
+
+
+                <!-- PUZZLE BOARD -->
+
+                <div class="puzzle-section">
+
+                    <h3>
+                        Restore Here
+                    </h3>
+
+                    <div id="puzzleBoard"
+                         class="puzzle-board">
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <p class="instruction">
+                🖱️ Drag a piece and place it
+                in the correct position.<br>
+                <span class="mobile-instruction">📱 On mobile: tap a piece, then tap its correct slot.</span>
+            </p>
+
+        </section>
+
+
+
+        <!-- =================================
+             SUCCESS SCREEN
+        ================================== -->
+
+        <section id="successScreen"
+                 class="screen hidden">
+
+
+            <div class="success-layout">
+
+
+                <!-- LEFT FACTS -->
+
+                <div class="fact-panel">
+
+                    <div class="fact-title"
+                         id="leftFactTitle">
+
+                        🏛️ Temple Facts
+
+                    </div>
+
+
+                    <div class="fact">
+
+                        <span id="factIcon1">
+                            📍
+                        </span>
+
+                        <p>
+
+                            <b id="factLabel1">
+                                Location
+                            </b>
+
+                            <br>
+
+                            <span id="factText1">
+                                Konark, Odisha
+                            </span>
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="fact">
+
+                        <span id="factIcon2">
+                            🕰️
+                        </span>
+
+                        <p>
+
+                            <b id="factLabel2">
+                                Built
+                            </b>
+
+                            <br>
+
+                            <span id="factText2">
+                                13th Century
+                            </span>
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="fact">
+
+                        <span id="factIcon3">
+                            ☀️
+                        </span>
+
+                        <p>
+
+                            <b id="factLabel3">
+                                Dedicated to
+                            </b>
+
+                            <br>
+
+                            <span id="factText3">
+                                Sun God, Surya
+                            </span>
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- CENTER SUCCESS CARD -->
+
+                <div class="success-card">
+
+                    <div class="success-icon">
+                        🎉
+                    </div>
+
+                    <h1>
+                        Heritage Restored!
+                    </h1>
+
+                    <p id="successMessage">
+                        Amazing! You restored
+                        the Konark Sun Temple.
+                    </p>
+
+                    <div class="reward">
+                        ⭐ +100 Points
+                    </div>
+
+                    <button id="nextButton"
+                            class="main-button">
+
+                        Next Level →
+
+                    </button>
+
+                </div>
+
+
+
+                <!-- RIGHT FACTS -->
+
+                <div class="fact-panel">
+
+                    <div class="fact-title"
+                         id="rightFactTitle">
+
+                        ✨ Did You Know?
+
+                    </div>
+
+
+                    <div class="fact">
+
+                        <span id="factIcon4">
+                            🛞
+                        </span>
+
+                        <p id="factText4">
+
+                            The temple is designed
+                            as <b>Surya's giant chariot.</b>
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="fact">
+
+                        <span id="factIcon5">
+                            ☀️
+                        </span>
+
+                        <p id="factText5">
+
+                            It has
+                            <b>24 beautifully carved wheels.</b>
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="fact">
+
+                        <span id="factIcon6">
+                            🏛️
+                        </span>
+
+                        <p id="factText6">
+
+                            It is a
+                            <b>UNESCO World Heritage Site.</b>
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================
+             GAME OVER SCREEN
+        ================================== -->
+
+        <section id="gameOverScreen"
+                 class="screen hidden">
+
+            <div class="success-card">
+
+                <div class="success-icon">
+                    💔
+                </div>
+
+                <h1>
+                    Restoration Failed
+                </h1>
+
+                <p>
+                    You ran out of lives.
+                    Try restoring the heritage again.
+                </p>
+
+                <button id="restartButton"
+                        class="main-button">
+
+                    Try Again
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================
+             FINAL SCREEN
+        ================================== -->
+
+        <section id="finalScreen"
+                 class="screen hidden">
+
+
+            <div class="final-card">
+
+
+                <!-- BIG KEY -->
+
+                <div class="key-icon">
+                    🗝️
+                </div>
+
+
+                <div class="unlock-badge">
+                    🔓 REWARD UNLOCKED
+                </div>
+
+
+                <h1>
+                    You Unlocked a Key!
+                </h1>
+
+
+                <p class="unlock-text">
+
+                    You have successfully restored
+                    all three pieces of Odisha's heritage.
+
+                </p>
+
+
+                <div class="final-score">
+
+                    ⭐ Final Score:
+
+                    <span id="finalScore">
+                        0
+                    </span>
+
+                </div>
+
+
+                <p class="final-message">
+
+                    "Preserve the past.
+                    Inspire the future."
+
+                </p>
+
+
+                <button id="playAgainButton"
+                        class="main-button">
+
+                    Play Again
+
+                </button>
+
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =====================================
+         JAVASCRIPT
+    ====================================== -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

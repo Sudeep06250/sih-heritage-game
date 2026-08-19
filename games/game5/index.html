@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Konark: The Lost Wheel</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <audio id="bgMusic" src="assets/Sun Temple Run.mp3" preload="auto" autoplay loop playsinline></audio>
+  <button id="musicBtn" class="music-btn" type="button" aria-label="Toggle music">🔊</button>
+  <main class="game-shell">
+    <canvas id="gameCanvas"></canvas>
+
+    <header class="hud">
+      <div class="hud-group">
+        <div class="hearts" id="hearts"></div>
+        <div class="panel"><span>★</span><b id="score">0</b></div>
+      </div>
+
+      <div class="location" id="location">KONARK TEMPLE</div>
+
+      <div class="hud-group right">
+        <div class="panel"><span>☀</span><b id="coins">0</b></div>
+        <div class="panel"><span>↔</span><b id="distance">0 m</b></div>
+        <button class="hud-btn" id="pauseBtn">Ⅱ</button>
+      </div>
+    </header>
+
+    <div class="powerups">
+      <div class="power" id="shieldPower">🛡️</div>
+      <div class="power" id="magnetPower">🧲</div>
+      <div class="power" id="energyPower">⚡</div>
+    </div>
+
+    <section class="start-screen" id="startScreen">
+      <div class="title-card">
+        <div class="small-title">HERITAGE RUN</div>
+        <h1>KONARK</h1>
+        <h2>THE LOST WHEEL</h2>
+        <p>Run through the ancient paths and collect the four sacred heritage discoveries.</p>
+        <button id="startBtn" class="main-btn">PLAY</button>
+        <div class="controls-line">↑ / SPACE = JUMP &nbsp; • &nbsp; ↓ = SLIDE &nbsp; • &nbsp; P = PAUSE</div>
+      </div>
+    </section>
+
+    <section class="overlay hidden" id="pauseOverlay">
+      <div class="overlay-card">
+        <div class="small-title">JOURNEY PAUSED</div>
+        <h2>PAUSED</h2>
+        <div class="pause-actions">
+          <button id="resumeBtn" class="main-btn">RESUME</button>
+          <button id="quitBtn" class="main-btn quit-btn">QUIT GAME</button>
+        </div>
+        <div class="controls-line">ESC / P = resume</div>
+      </div>
+    </section>
+
+    <section class="overlay hidden" id="gameOverOverlay">
+      <div class="overlay-card">
+        <div class="small-title">JOURNEY ENDED</div>
+        <h2>GAME OVER</h2>
+        <p>Score: <b id="finalScore">0</b></p>
+        <p>Distance: <b id="finalDistance">0 m</b></p>
+        <button id="restartBtn" class="main-btn">RESTART</button>
+      </div>
+    </section>
+
+    <div class="mobile-controls">
+      <button id="leftPad" aria-label="left">◀</button>
+      <button id="jumpPad" aria-label="jump">▲</button>
+      <button id="slidePad" aria-label="slide">▼</button>
+    </div>
+  
+    <section class="overlay hidden" id="levelCompleteOverlay">
+  <div class="sparkle-layer" id="completionSparkles" aria-hidden="true"></div>
+  <div class="sparkle-burst sparkle-burst-left" aria-hidden="true"></div>
+  <div class="sparkle-burst sparkle-burst-right" aria-hidden="true"></div>
+  <div class="overlay-card completion-card final-collection-card">
+    <div class="small-title">KONARK HERITAGE</div>
+    <h2>JOURNEY COMPLETE</h2>
+    <p>You collected all four heritage elements. Now discover what you found.</p>
+    <div class="completion-stats">
+      <div><strong id="finalScoreComplete">0</strong><span>FINAL SCORE</span></div>
+      <div><strong>7000</strong><span>TARGET</span></div>
+      <div><strong id="collectionCount">0 / 4</strong><span>COLLECTED</span></div>
+    </div>
+    <div class="collection-scroll">
+      <div class="collection-grid" id="finalCollectionGrid"></div>
+    </div>
+    <button id="completeContinueBtn" class="main-btn">CONTINUE</button>
+  </div>
+</section>
+
+
+<section class="heritage-overlay hidden" id="heritageOverlay">
+  <div class="heritage-card">
+    <button class="heritage-close" id="heritageCloseBtn" aria-label="Close">×</button>
+    <div class="heritage-kicker">HERITAGE DISCOVERY</div>
+    <h2 id="heritageTitle">Konark Sun Wheel</h2>
+    <div class="heritage-body">
+      <div class="heritage-art" id="heritageArt">
+        <div class="heritage-art-icon" id="heritageIcon">☀️</div>
+      </div>
+      <div class="heritage-copy">
+        <p id="heritageHistory"></p>
+        <div class="heritage-fact" id="heritageFact"></div>
+      </div>
+    </div>
+    <button class="main-btn heritage-continue" id="heritageContinueBtn">CONTINUE JOURNEY</button>
+  </div>
+</section>
+
+      </div>
+</main>
+
+  <script src="game.js"></script>
+</body>
+</html>

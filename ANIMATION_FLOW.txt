@@ -1,0 +1,14 @@
+BHARAT QUEST PAGE FLOW
+
+Website -> Animation -> Main Index Page -> Player Info
+
+1. index.html is now the website entry point and shows the animation.
+2. When the animation finishes, or Skip Intro is clicked, it opens home.html.
+3. home.html is the ORIGINAL index.html page from the uploaded project; its design/content is preserved.
+4. The existing Ready to explore button on home.html continues to playerinfo.html through the existing script.js.
+
+No login.html is used.
+
+The original index.html had to be renamed to home.html because the website can only have one root index.html. The page itself is unchanged.
+
+Animation file: assets/animation-video.mp4

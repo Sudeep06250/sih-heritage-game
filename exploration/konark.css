@@ -1,0 +1,1325 @@
+/* =========================================================
+   KONARK — ECHOES OF THE SUN
+   MAIN GAME STYLESHEET
+========================================================= */
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    font-family: "Segoe UI", system-ui, sans-serif;
+
+    background: #05070f;
+    color: white;
+}
+
+
+/* =========================================================
+   MAIN GAME
+========================================================= */
+
+.game {
+    position: relative;
+
+    width: 100%;
+    height: 100vh;
+
+    overflow: hidden;
+
+    background-image:
+        linear-gradient(
+            rgba(2, 8, 18, 0.10),
+            rgba(2, 8, 18, 0.16)
+        ),
+        url("assets/konark-background.png");
+
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+
+/* Dark edge effect */
+
+.game::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    z-index: 1;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            circle at center,
+            transparent 40%,
+            rgba(0, 0, 0, 0.25) 100%
+        );
+}
+
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.top-bar {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    z-index: 100;
+
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 20px 32px;
+}
+
+
+/* Brand */
+
+.brand {
+    color: #22d3ee;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    letter-spacing: 0.30em;
+
+    text-shadow:
+        0 0 10px rgba(34, 211, 238, 0.25);
+}
+
+
+/* Right controls */
+
+.top-right-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+
+/* =========================================================
+   DISCOVERIES
+========================================================= */
+
+.discoveries {
+    padding: 12px 24px;
+
+    border-radius: 40px;
+
+    background:
+        rgba(4, 12, 24, 0.82);
+
+    border:
+        1px solid
+        rgba(34, 211, 238, 0.65);
+
+    backdrop-filter: blur(10px);
+
+    font-size: 16px;
+    font-weight: 600;
+
+    box-shadow:
+        0 0 20px
+        rgba(34, 211, 238, 0.15);
+}
+
+#clueCount {
+    color: #22d3ee;
+    font-weight: 900;
+}
+
+
+/* =========================================================
+   SOUND BUTTON
+========================================================= */
+
+.sound-button {
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    border: 2px solid #22d3ee;
+
+    background:
+        rgba(5, 15, 25, 0.85);
+
+    color: white;
+
+    font-size: 20px;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+
+    box-shadow:
+        0 0 15px
+        rgba(34, 211, 238, 0.25);
+}
+
+.sound-button:hover {
+    transform: scale(1.08);
+
+    background:
+        rgba(34, 211, 238, 0.15);
+
+    box-shadow:
+        0 0 25px
+        rgba(34, 211, 238, 0.5);
+}
+
+.sound-button:active {
+    transform: scale(0.95);
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.intro-title {
+    position: absolute;
+
+    top: 6%;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 50%;
+
+    text-align: center;
+
+    z-index: 80;
+
+    pointer-events: none;
+}
+
+.intro-title h1 {
+    font-size:
+        clamp(42px, 5.5vw, 70px);
+
+    font-weight: 900;
+
+    letter-spacing: 0.10em;
+
+    color: white;
+
+    text-shadow:
+        0 3px 10px rgba(0, 0, 0, 0.95),
+        0 0 20px rgba(34, 211, 238, 0.25);
+}
+
+.intro-title p {
+    margin-top: 2px;
+
+    font-size: 13px;
+
+    letter-spacing: 0.38em;
+
+    color: white;
+
+    text-shadow:
+        0 2px 8px black;
+}
+
+
+/* =========================================================
+   DISCOVERY OBJECTS
+========================================================= */
+
+.object {
+    position: absolute;
+
+    z-index: 50;
+
+    width: 52px;
+    height: 52px;
+
+    padding: 3px;
+
+    border-radius: 50%;
+
+    border: 3px solid #22d3ee;
+
+    background:
+        rgba(4, 12, 25, 0.92);
+
+    color: white;
+
+    cursor: pointer;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    appearance: none;
+    -webkit-appearance: none;
+
+    box-shadow:
+        0 0 14px
+        rgba(34, 211, 238, 0.85),
+
+        0 0 32px
+        rgba(34, 211, 238, 0.40);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        opacity 0.4s ease;
+}
+
+
+/* Object becomes visible */
+
+.object.show {
+    opacity: 1;
+
+    pointer-events: auto;
+
+    animation:
+        glow 2s infinite;
+}
+
+
+/* Hover */
+
+.object:hover {
+    transform: scale(1.08);
+
+    box-shadow:
+        0 0 25px #22d3ee,
+
+        0 0 50px
+        rgba(34, 211, 238, 0.70);
+}
+
+
+/* Click */
+
+.object:active {
+    transform: scale(0.95);
+}
+
+
+/* Images */
+
+.object img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+}
+
+
+/* =========================================================
+   DISCOVERY LABEL
+========================================================= */
+
+.object-label {
+    position: absolute;
+
+    top: calc(100% + 3px);
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 100px;
+
+    text-align: center;
+
+    white-space: normal;
+
+    color: white;
+
+    font-size: 8px;
+
+    line-height: 1.1;
+
+    font-weight: 800;
+
+    letter-spacing: 0.04em;
+
+    text-shadow:
+        0 2px 6px black,
+        0 0 5px black;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   LEFT SIDE DISCOVERIES
+========================================================= */
+
+.wheel {
+    left: 8%;
+    top: 17%;
+}
+
+.food {
+    left: 8%;
+    top: 36%;
+}
+
+.architecture {
+    left: 8%;
+    top: 55%;
+}
+
+.history {
+    left: 8%;
+    top: 73%;
+}
+
+
+/* =========================================================
+   RIGHT SIDE DISCOVERIES
+========================================================= */
+
+.horse {
+    right: 8%;
+    top: 17%;
+}
+
+.music {
+    right: 8%;
+    top: 36%;
+}
+
+.dancer {
+    right: 8%;
+    top: 55%;
+}
+
+.surya {
+    right: 8%;
+    top: 73%;
+}
+
+
+/* =========================================================
+   GLOW ANIMATION
+========================================================= */
+
+@keyframes glow {
+
+    0%,
+    100% {
+        box-shadow:
+            0 0 14px
+            rgba(34, 211, 238, 0.80),
+
+            0 0 32px
+            rgba(34, 211, 238, 0.40);
+    }
+
+    50% {
+        box-shadow:
+            0 0 24px
+            rgba(34, 211, 238, 1),
+
+            0 0 48px
+            rgba(34, 211, 238, 0.70);
+    }
+}
+
+
+/* =========================================================
+   GUIDE
+========================================================= */
+
+.guide {
+    position: absolute;
+
+    left: 50%;
+    bottom: 13%;
+
+    transform: translateX(-50%);
+
+    z-index: 60;
+}
+
+.guide-circle {
+    width: 52px;
+    height: 52px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background:
+        radial-gradient(
+            circle,
+            #172a46,
+            #07101e
+        );
+
+    border:
+        3px solid #22d3ee;
+
+    box-shadow:
+        0 0 18px
+        rgba(34, 211, 238, 0.55),
+
+        0 0 35px
+        rgba(34, 211, 238, 0.25);
+
+    font-size: 22px;
+}
+
+
+/* =========================================================
+   GUIDE DIALOGUE
+========================================================= */
+
+.dialogue {
+    position: absolute;
+
+    left: 50%;
+    bottom: 3%;
+
+    transform: translateX(-50%);
+
+    width: min(620px, 70%);
+
+    padding: 12px 18px;
+
+    z-index: 100;
+
+    border-radius: 16px;
+
+    background:
+        rgba(3, 9, 18, 0.90);
+
+    border:
+        1px solid
+        rgba(34, 211, 238, 0.50);
+
+    backdrop-filter: blur(14px);
+
+    box-shadow:
+        0 0 30px
+        rgba(34, 211, 238, 0.15);
+}
+
+.dialogue-name {
+    color: #22d3ee;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.18em;
+
+    margin-bottom: 4px;
+}
+
+.dialogue-text {
+    color: #edf4ff;
+
+    font-size: 12px;
+
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   START BUTTON
+========================================================= */
+
+.start-button {
+    margin-top: 7px;
+
+    padding: 8px 18px;
+
+    border: none;
+
+    border-radius: 30px;
+
+    background: #22d3ee;
+
+    color: #041018;
+
+    font-size: 11px;
+
+    font-weight: 900;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.start-button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 5px 18px
+        rgba(34, 211, 238, 0.35);
+}
+
+.start-button:active {
+    transform: scale(0.97);
+}
+
+
+/* =========================================================
+   INFORMATION POPUP
+========================================================= */
+
+.popup {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 200;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background:
+        rgba(0, 0, 0, 0.76);
+
+    backdrop-filter: blur(8px);
+}
+
+.popup.active {
+    display: flex;
+}
+
+
+/* Popup box */
+
+.popup-box {
+    position: relative;
+
+    width: min(510px, 92%);
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    padding: 22px;
+
+    border-radius: 22px;
+
+    background: #091322;
+
+    border:
+        1px solid
+        rgba(34, 211, 238, 0.55);
+
+    box-shadow:
+        0 0 55px
+        rgba(34, 211, 238, 0.25);
+
+    text-align: center;
+
+    scrollbar-width: thin;
+    scrollbar-color:
+        #22d3ee
+        rgba(255, 255, 255, 0.05);
+}
+
+
+/* Popup scrollbar - Chrome/Edge */
+
+.popup-box::-webkit-scrollbar {
+    width: 6px;
+}
+
+.popup-box::-webkit-scrollbar-track {
+    background:
+        rgba(255, 255, 255, 0.04);
+}
+
+.popup-box::-webkit-scrollbar-thumb {
+    background: #22d3ee;
+
+    border-radius: 10px;
+}
+
+
+/* Close */
+
+.close-x {
+    position: absolute;
+
+    top: 10px;
+    right: 12px;
+
+    width: 34px;
+    height: 34px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.10);
+
+    color: white;
+
+    font-size: 24px;
+
+    cursor: pointer;
+
+    z-index: 5;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.close-x:hover {
+    background:
+        rgba(255, 255, 255, 0.18);
+
+    transform: scale(1.05);
+}
+
+
+/* Popup image */
+
+.popup-image {
+    display: block;
+
+    width: 100%;
+    height: 240px;
+
+    object-fit: cover;
+
+    border-radius: 15px;
+
+    margin-bottom: 14px;
+}
+
+
+/* Category */
+
+.popup-category {
+    color: #22d3ee;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.2em;
+}
+
+
+/* Popup title */
+
+.popup-box h2 {
+    margin-top: 7px;
+    margin-bottom: 10px;
+
+    font-size: 25px;
+}
+
+
+/* Popup information */
+
+.popup-box p {
+    color: #b9c5d9;
+
+    font-size: 14px;
+
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   MUSIC PLAYER
+========================================================= */
+
+.music-player {
+    display: none;
+
+    margin-top: 18px;
+
+    padding: 15px;
+
+    border-radius: 15px;
+
+    background:
+        rgba(34, 211, 238, 0.06);
+
+    border:
+        1px solid
+        rgba(34, 211, 238, 0.28);
+}
+
+.music-player.active {
+    display: block;
+}
+
+
+/* Play music */
+
+.play-music-button {
+    padding: 11px 22px;
+
+    border:
+        1px solid #22d3ee;
+
+    border-radius: 999px;
+
+    background:
+        rgba(34, 211, 238, 0.12);
+
+    color: #22d3ee;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.play-music-button:hover {
+    background:
+        rgba(34, 211, 238, 0.20);
+
+    transform: translateY(-1px);
+}
+
+.play-music-button:active {
+    transform: scale(0.97);
+}
+
+
+/* Music status */
+
+.music-status {
+    margin-top: 8px;
+
+    color: #8e9bb3;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   COLLECT BUTTON
+========================================================= */
+
+.collect-button {
+    margin-top: 17px;
+
+    padding: 11px 23px;
+
+    border-radius: 30px;
+
+    border:
+        1px solid
+        rgba(34, 211, 238, 0.65);
+
+    background:
+        rgba(34, 211, 238, 0.12);
+
+    color: white;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.collect-button:hover {
+    background:
+        rgba(34, 211, 238, 0.20);
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 5px 20px
+        rgba(34, 211, 238, 0.18);
+}
+
+.collect-button:active {
+    transform: scale(0.97);
+}
+
+
+/* =========================================================
+   KEY SCREEN
+========================================================= */
+
+.key-message {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 300;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    background:
+        rgba(0, 0, 0, 0.80);
+
+    backdrop-filter: blur(10px);
+}
+
+.key-message.active {
+    display: flex;
+}
+
+
+/* Key box */
+
+.key-box {
+    width: min(470px, 90%);
+
+    padding: 35px 25px;
+
+    text-align: center;
+
+    border-radius: 25px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0c1b30,
+            #07101e
+        );
+
+    border:
+        1px solid
+        rgba(34, 211, 238, 0.65);
+
+    box-shadow:
+        0 0 60px
+        rgba(34, 211, 238, 0.28);
+}
+
+
+/* Key icon */
+
+.key-icon {
+    font-size: 65px;
+
+    margin-bottom: 5px;
+}
+
+
+/* Completion label */
+
+.complete-label {
+    color: #22d3ee;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.18em;
+
+    margin-bottom: 8px;
+}
+
+
+/* Key heading */
+
+.key-box h2 {
+    font-size: 24px;
+
+    margin-bottom: 10px;
+}
+
+
+/* Key description */
+
+.key-box p {
+    color: #b8c4d8;
+
+    line-height: 1.5;
+}
+
+
+/* Continue button */
+
+.key-box button {
+    margin-top: 20px;
+
+    padding: 12px 23px;
+
+    border: none;
+
+    border-radius: 30px;
+
+    background: #22d3ee;
+
+    color: #041018;
+
+    font-weight: 900;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.key-box button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 5px 20px
+        rgba(34, 211, 238, 0.35);
+}
+
+.key-box button:active {
+    transform: scale(0.97);
+}
+
+
+/* =========================================================
+   RESPONSIVE — TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .top-bar {
+        padding: 16px 22px;
+    }
+
+    .object {
+        width: 52px;
+        height: 52px;
+    }
+
+    .wheel,
+    .food,
+    .architecture,
+    .history {
+        left: 5%;
+    }
+
+    .horse,
+    .music,
+    .dancer,
+    .surya {
+        right: 5%;
+    }
+
+    .object-label {
+        font-size: 8px;
+        width: 100px;
+    }
+
+    .dialogue {
+        width: min(620px, 78%);
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE — MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+
+    .top-bar {
+        padding: 12px;
+    }
+
+
+    /* Brand */
+
+    .brand {
+        font-size: 9px;
+
+        letter-spacing: 0.20em;
+    }
+
+
+    /* Sound */
+
+    .sound-button {
+        width: 36px;
+        height: 36px;
+
+        font-size: 17px;
+    }
+
+
+    /* Discoveries */
+
+    .top-right-controls {
+        gap: 8px;
+    }
+
+    .discoveries {
+        padding: 8px 12px;
+
+        font-size: 10px;
+    }
+
+
+    /* Title */
+
+    .intro-title {
+        top: 8%;
+
+        width: 65%;
+    }
+
+    .intro-title h1 {
+        font-size: 34px;
+    }
+
+    .intro-title p {
+        font-size: 8px;
+
+        letter-spacing: 0.28em;
+    }
+
+
+    /* Discovery objects */
+
+    .object {
+        width: 52px;
+        height: 52px;
+    }
+
+
+    /* Left */
+
+    .wheel,
+    .food,
+    .architecture,
+    .history {
+        left: 3%;
+    }
+
+
+    /* Right */
+
+    .horse,
+    .music,
+    .dancer,
+    .surya {
+        right: 3%;
+    }
+
+
+    /* Labels */
+
+    .object-label {
+        font-size: 7px;
+
+        width: 90px;
+
+        top: calc(100% + 3px);
+    }
+
+
+    /* Guide */
+
+    .guide {
+        bottom: 13%;
+    }
+
+    .guide-circle {
+        width: 48px;
+        height: 48px;
+
+        font-size: 21px;
+    }
+
+
+    /* Dialogue */
+
+    .dialogue {
+        width: 90%;
+
+        bottom: 2%;
+
+        padding: 10px 14px;
+    }
+
+    .dialogue-text {
+        font-size: 11px;
+    }
+
+    .start-button {
+        padding: 7px 15px;
+
+        font-size: 10px;
+    }
+
+
+    /* Popup */
+
+    .popup {
+        padding: 12px;
+    }
+
+    .popup-box {
+        width: 94%;
+
+        max-height: 92vh;
+
+        padding: 18px;
+    }
+
+    .popup-image {
+        height: 190px;
+    }
+
+    .popup-box h2 {
+        font-size: 21px;
+    }
+
+    .popup-box p {
+        font-size: 13px;
+    }
+
+
+    /* Key screen */
+
+    .key-box {
+        width: 90%;
+
+        padding: 28px 18px;
+    }
+
+    .key-icon {
+        font-size: 55px;
+    }
+
+    .key-box h2 {
+        font-size: 21px;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL SCREENS
+========================================================= */
+
+@media (max-width: 420px) {
+
+    .top-bar {
+        padding: 9px;
+    }
+
+    .brand {
+        font-size: 8px;
+    }
+
+    .sound-button {
+        width: 32px;
+        height: 32px;
+
+        font-size: 15px;
+    }
+
+    .discoveries {
+        padding: 7px 9px;
+
+        font-size: 9px;
+    }
+
+    .top-right-controls {
+        gap: 5px;
+    }
+
+    .intro-title h1 {
+        font-size: 29px;
+    }
+
+    .intro-title p {
+        font-size: 7px;
+    }
+
+    .object {
+        width: 48px;
+        height: 48px;
+
+        border-width: 2px;
+    }
+
+    .object-label {
+        font-size: 6.5px;
+
+        width: 82px;
+    }
+
+    .dialogue {
+        width: 92%;
+    }
+
+    .popup-image {
+        height: 165px;
+    }
+}
+
+/* Final cross-device safety layer */
+html, body { max-width: 100%; overflow-x: hidden; }
+button, a, input, select, textarea { touch-action: manipulation; }
+img, video, canvas, svg { max-width: 100%; }
+@media (max-width: 650px) {
+  body { min-width: 0; }
+  .topbar, .header, .hud, .controls { max-width: 100vw; }
+}

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Krama Khoja (କ୍ରମ ଖୋଜ) — Odisha Coastal Heritage Sequence Quest</title>
+  <meta name="description" content="Discover Odisha's rich heritage through sequential reconstruction puzzles — Puri Sand Art, Sacred Shankha Craft, Tarakasi Silver Filigree, and Jagannath Khasta Gaza.">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+  <!-- Fullscreen Beach Background (Image 3) & Atmospheric Overlay -->
+  <div class="bg-beach-fixed"></div>
+  <div class="bg-overlay-glass"></div>
+
+  <!-- Global Application Shell -->
+  <div class="app-shell">
+
+    <!-- Top Navigation Header -->
+    <header class="navbar">
+      <div class="brand" id="brand-home" style="cursor: pointer;">
+        <span class="brand-icon">🏖️</span>
+        <div class="brand-titles">
+          <h1>KRAMA KHOJA — କ୍ରମ ଖୋଜ</h1>
+          <p>The Heritage Sequence Game</p>
+        </div>
+      </div>
+
+      <nav class="nav-links">
+        <button id="nav-btn-home" class="nav-link active">🏠 Home</button>
+        <button id="nav-btn-instructions" class="nav-link">📖 How to Play</button>
+        <button id="nav-btn-lvl1" class="nav-link">🏖️ Lvl 1: Sand Art</button>
+        <button id="nav-btn-lvl2" class="nav-link">🐚 Lvl 2: Sankha</button>
+        <button id="nav-btn-lvl3" class="nav-link">💍 Lvl 3: Tarakasi</button>
+        <button id="nav-btn-lvl4" class="nav-link">🥮 Lvl 4: Khasta Gaza</button>
+      </nav>
+
+      <div class="header-status">
+        <div class="stat-pill score">
+          <span class="pill-label">Score</span>
+          <span id="score-val" class="pill-val">0</span>
+        </div>
+        <div class="stat-pill streak">
+          <span class="pill-label">Streak</span>
+          <span id="streak-val" class="pill-val">🔥 0</span>
+        </div>
+        <button id="btn-sound-toggle" class="audio-toggle-btn">🔊 Sound: ON</button>
+      </div>
+    </header>
+
+    <!-- Main View Switcher Container -->
+    <main class="main-content">
+
+      <!-- ==========================================
+           SCREEN 1: OPENING / LANDING PAGE
+           ========================================== -->
+      <section id="view-opening" class="view-screen active">
+        <div class="hero-board">
+          <div class="board-badge">Puri & Cuttack Chapters • Odisha</div>
+          <h2 class="hero-title">KRAMA KHOJA — କ୍ରମ ଖୋଜ:</h2>
+          <p class="hero-sub-title">The Heritage Sequence Game</p>
+          <p class="hero-desc">
+            Explore traditional sand art, conch shell bangles, Cuttack silver filigree, and Jagannath Khasta Gaza. Observe the steps of heritage creation and figure out <strong>"What Comes Next?"</strong>
+          </p>
+          <div class="hero-actions">
+            <button id="btn-start-adventure" class="btn btn-gold btn-large">
+              🎮 Start Game (Level 1)
+            </button>
+            <button id="btn-view-rules" class="btn btn-glass btn-large">
+              📖 How to Play
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 Level Preview Cards Grid -->
+        <div class="level-cards-container-4">
+          <div class="level-preview-card" id="card-lvl-1">
+            <div class="card-num-badge">1</div>
+            <div class="card-image-box">
+              <img src="images/sand_art_hero.jpg" alt="Sand Castle">
+              <span class="card-tag">Puri Coast</span>
+            </div>
+            <div class="card-body">
+              <h3>🏖️ Puri Sand Art</h3>
+              <p>Reconstruct how Sudarshan Patnaik creates large-scale sand installations on Puri Beach.</p>
+              <button class="btn btn-sm btn-gold">Play Level 1 ➔</button>
+            </div>
+          </div>
+
+          <div class="level-preview-card" id="card-lvl-2">
+            <div class="card-num-badge">2</div>
+            <div class="card-image-box">
+              <img src="images/sankha_hero.jpg" alt="Sankha Bangles">
+              <span class="card-tag">Conch Shell Craft</span>
+            </div>
+            <div class="card-body">
+              <h3>🐚 Sankha Bangles</h3>
+              <p>Trace the manual carving of conch shells into sacred bangles by Puri Sankharis.</p>
+              <button class="btn btn-sm btn-gold">Play Level 2 ➔</button>
+            </div>
+          </div>
+
+          <div class="level-preview-card" id="card-lvl-3">
+            <div class="card-num-badge">3</div>
+            <div class="card-image-box">
+              <img src="images/tarakasi_hero.jpg" alt="Tarakasi Silver Filigree">
+              <span class="card-tag">Silver Filigree</span>
+            </div>
+            <div class="card-body">
+              <h3>💍 Tarakasi Filigree</h3>
+              <p>Discover the glorious heritage art of twisting fine silver wires by Cuttack Karigars.</p>
+              <button class="btn btn-sm btn-gold">Play Level 3 ➔</button>
+            </div>
+          </div>
+
+          <div class="level-preview-card" id="card-lvl-4">
+            <div class="card-num-badge">4</div>
+            <div class="card-image-box">
+              <img src="images/khasta_gaza_hero.jpg" alt="Khasta Gaza">
+              <span class="card-tag">Jagannath Sweet</span>
+            </div>
+            <div class="card-body">
+              <h3>🥮 Khasta Gaza</h3>
+              <p>Trace the steps of preparing flaky, ghee-fried layered Khasta Gaza sweet of Puri.</p>
+              <button class="btn btn-sm btn-gold">Play Level 4 ➔</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SCREEN 2: INSTRUCTION PAGE
+           ========================================== -->
+      <section id="view-instructions" class="view-screen">
+        <div class="glass-panel ornate-panel">
+          <h2 class="panel-heading">HOW TO PLAY KRAM KHOJ</h2>
+          <p class="panel-sub">Reconstruct the story and learn tiny heritage facts!</p>
+
+          <div class="rules-grid">
+            <div class="rule-card">
+              <div class="rule-icon">🔍</div>
+              <div class="rule-content">
+                <h4>1. Observe the steps of heritage creation</h4>
+                <p>Each level shows 3 consecutive stages of traditional creation with real step cards.</p>
+              </div>
+            </div>
+
+            <div class="rule-card">
+              <div class="rule-icon">❓</div>
+              <div class="rule-content">
+                <h4>2. Choose the correct next stage</h4>
+                <p>Pick the logical Step 4 from 3 options (A, B, or C) to complete the sequence flow.</p>
+              </div>
+            </div>
+
+            <div class="rule-card">
+              <div class="rule-icon">📖</div>
+              <div class="rule-content">
+                <h4>3. Reconstruct the story</h4>
+                <p>Complete all 4 heritage levels: Sand Art ➔ Sankha Bangles ➔ Tarakasi ➔ Khasta Gaza!</p>
+              </div>
+            </div>
+
+            <div class="rule-card">
+              <div class="rule-icon">📜</div>
+              <div class="rule-content">
+                <h4>4. Learn a tiny fact!</h4>
+                <p>Unlock authentic heritage facts, sources, and earn +100 Correct, -25 Wrong, Streak Bonus!</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-footer">
+            <button id="btn-begin-game" class="btn btn-gold btn-large">
+              LET'S START! ➔
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SCREEN 3: INTERACTIVE GAMEPLAY SCREEN
+           ========================================== -->
+      <section id="view-game" class="view-screen">
+        <div class="glass-panel game-panel">
+          
+          <!-- Level Header & Progress Indicator -->
+          <div class="level-top-bar">
+            <div class="level-badge-tag">
+              <span id="game-level-icon">🏖️</span>
+              <div>
+                <h2 id="game-level-name">LEVEL 1: PURI BEACH SAND ART</h2>
+                <p id="game-level-subtitle">Reconstruct the sequence of sand sculpture creation</p>
+              </div>
+            </div>
+
+            <div class="level-step-indicator">
+              <button id="btn-view-chart" class="btn btn-sm btn-glass" style="margin-right: 10px; display: none;">
+                🖼️ View Full Reference Screenshot
+              </button>
+              <span>Progress: </span>
+              <strong id="step-count-text">Step 4 Target</strong>
+            </div>
+          </div>
+
+          <!-- Prompt Question -->
+          <div class="prompt-box">
+            <h3 id="game-question">What comes next in the sequence?</h3>
+          </div>
+
+          <!-- Sequence Cards Track (Steps 1, 2, 3 + Slot 4 Target) -->
+          <div id="sequence-track" class="sequence-track">
+            <!-- Dynamically Populated Cards 1, 2, 3 and Target Slot 4 -->
+          </div>
+
+          <!-- Choice Cards Grid (Options A, B, C) -->
+          <div class="choices-section">
+            <h4 class="choices-title">Select the correct Step 4:</h4>
+            <div id="choices-grid" class="choices-grid">
+              <!-- Dynamically Populated Option Cards -->
+            </div>
+          </div>
+
+          <!-- Controls & Hint Drawer -->
+          <div class="game-controls-bar">
+            <button id="btn-hint" class="btn btn-hint">
+              ❓ Need a Hint?
+            </button>
+            <button id="btn-restart-lvl" class="btn btn-secondary">
+              🔄 Restart Level
+            </button>
+          </div>
+
+          <div id="hint-drawer" class="hint-drawer">
+            <span class="hint-icon">💡</span>
+            <div class="hint-content">
+              <strong>Heritage Hint:</strong>
+              <p id="hint-text">Think about the finish! The final piece is always the goal.</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SCREEN 4: LEVEL FACT & BADGE UNLOCK SCREEN
+           ========================================== -->
+      <section id="view-fact" class="view-screen">
+        <div class="glass-panel fact-panel">
+          <div class="fact-header">
+            <span class="source-verified-tag">Verified Source ✓</span>
+            <span class="fact-level-num" id="fact-level-num">Level 1 Completed</span>
+          </div>
+
+          <div class="badge-unlocked-card">
+            <div class="badge-icon" id="fact-badge-icon">🏆</div>
+            <div class="badge-text">
+              <span class="badge-label">BADGE UNLOCKED</span>
+              <h3 id="fact-badge-title">Master Sand Sculptor</h3>
+              <p id="fact-badge-desc">Mastered the large-scale sand art installations of Puri Beach</p>
+            </div>
+          </div>
+
+          <div class="fact-body-card">
+            <h3 id="fact-title">DID YOU KNOW?</h3>
+            <p id="fact-text">
+              Odisha is famous for its intricate sand art, particularly the large-scale installations at Puri Beach created by the internationally renowned Sudarshan Patnaik.
+            </p>
+            <div class="fact-source-footer" id="fact-source">
+              Source: Odisha is famous for its intricate sand art, particularly the large-scale installations at Puri Beach Tourism, June 2022.
+            </div>
+          </div>
+
+          <div class="fact-actions">
+            <button id="btn-view-chart-fact" class="btn btn-glass" style="display: none; margin-right: 12px;">
+              🖼️ View Full Reference Screenshot
+            </button>
+            <button id="btn-next-level" class="btn btn-gold btn-large">
+              NEXT LEVEL: Sankha Bangles 🐚 ➔
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SCREEN 5: MASTER VICTORY & SUMMARY SCREEN
+           ========================================== -->
+      <section id="view-victory" class="view-screen">
+        <div class="glass-panel victory-panel">
+          <div class="victory-header">
+            <span class="victory-icon">🎉</span>
+            <h2>HERITAGE RECONSTRUCTION COMPLETE!</h2>
+            <p>You have successfully reconstructed all 4 traditional heritage sequences of Odisha!</p>
+          </div>
+
+          <div class="victory-stats-box">
+            <div class="v-stat">
+              <span class="v-label">Final Score</span>
+              <span class="v-val" id="final-score">400</span>
+            </div>
+            <div class="v-stat">
+              <span class="v-label">Max Streak</span>
+              <span class="v-val" id="final-streak">🔥 4</span>
+            </div>
+            <div class="v-stat">
+              <span class="v-label">Artisan Badges</span>
+              <span class="v-val">4 / 4 🏆</span>
+            </div>
+          </div>
+
+          <!-- Unlocked Badges Showcase -->
+          <div class="badges-showcase">
+            <h3>Your Earned Artisan Badges</h3>
+            <div class="badges-grid-4">
+              <div class="badge-item">
+                <span class="b-icon">🏆</span>
+                <h4>Master Sand Sculptor</h4>
+                <p>Puri Sand Art</p>
+              </div>
+              <div class="badge-item">
+                <span class="b-icon">🐚</span>
+                <h4>Master Shankha Artisan</h4>
+                <p>Conch Shell Craft</p>
+              </div>
+              <div class="badge-item">
+                <span class="b-icon">💎</span>
+                <h4>Filigree Karigar Master</h4>
+                <p>Tarakasi Silver Filigree</p>
+              </div>
+              <div class="badge-item">
+                <span class="b-icon">🥮</span>
+                <h4>Mahaprasad Master Chef</h4>
+                <p>Puri Khasta Gaza</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="victory-actions">
+            <button id="btn-replay-all" class="btn btn-gold btn-large">
+              🔄 Play Heritage Journey Again
+            </button>
+            <button id="btn-home-victory" class="btn btn-glass btn-large">
+              🏠 Back to Home
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- Full Chart Lightbox Modal -->
+  <div id="chart-lightbox" class="lightbox-overlay">
+    <div class="lightbox-content">
+      <button class="btn-close-lightbox" id="btn-close-lightbox">✖ Close</button>
+      <img id="chart-full-img" src="" alt="Full Infographic Chart">
+    </div>
+  </div>
+
+  <!-- Audio Effects Synthesizer & App Logic -->
+  <script src="data/sequences.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Odisha Culinary Challenge</title>
+  
+  <!-- Google Fonts: Open Sans & Kalam (Traditional Handwritten Style) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@700&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+
+  <!-- Screen 1: Cover Page (Closed Door) -->
+  <div id="start-page" onclick="goToMenu()">
+    <div class="cover-container">
+      <h1 class="main-title">Odia Randhana</h1>
+      <button class="enter-btn">CLICK TO START</button>
+    </div>
+  </div>
+
+  <!-- Screen 2: Dish Selection Menu -->
+  <div id="selection-menu" style="display: none;">
+    <h1 class="traveller-heading">Hi! Traveller</h1>
+    <h2>Select Your Dish</h2>
+    <div class="menu-buttons">
+      <button class="unlocked-btn" onclick="selectDish('Chhena Poda')">
+        🔓 Chhena Poda
+      </button>
+      <button id="btn-dalma" class="locked-btn" disabled>
+        🔒 Dalma
+      </button>
+      <button id="btn-rasagola" class="locked-btn" disabled>
+        🔒 Rasagola
+      </button>
+    </div>
+  </div>
+
+  <!-- Game HUD -->
+  <div id="ui" style="display: none;">
+    <div id="timer">Time Left: <span id="time">10</span>s</div>
+    <div id="instructions">Memorize the authentic ingredients!</div>
+  </div>
+
+  <!-- Victory Story Modal -->
+  <div id="victory-modal" style="display: none;">
+    <div class="modal-content">
+      <h2>The Legend of Chhena Poda</h2>
+      <p>Originating in Nayagarh, Odisha, Chhena Poda ("Baked Cheese") was invented by Sudarsan Sahoo in the mid-20th century. By leaving caramelised cottage cheese, sugar, and cashews overnight in a dying charcoal oven, he created Odisha’s signature roasted dessert!</p>
+      <p class="points-earned">+100 Points Earned! 🔓 Dalma Unlocked!</p>
+      <button onclick="returnToMenu()">CONTINUE TO MENU</button>
+    </div>
+  </div>
+
+  <!-- Game Over Modal -->
+  <div id="loss-modal" style="display: none;">
+    <div class="modal-content loss-content">
+      <h2 class="loss-title">YOU LOST</h2>
+      <p class="eerie-text">
+        Whispers say that beneath the shadow of Konark’s Sun Temple, an ancient artisan attempted to bake a caramelized offering of cottage cheese to appease the sun deity before the final crown stone was set. But the recipe was corrupted, and the offering burned into ash. As night fell, the sea roared, taking the master architect’s son into its dark depths—leaving only the scorched, bitter scent of burnt chhena lingering in the hollow temple walls forever...
+      </p>
+      <button onclick="returnToMenu()">TRY AGAIN</button>
+    </div>
+  </div>
+
+  <!-- Bottom Corner Audio Controls (Hidden on Cover Screen) -->
+<div id="audio-controls" style="display: none;">
+  <div id="left-audio-btn" onclick="playMusic()">Click for Music</div>
+  <div id="right-audio-btn" ondblclick="muteMusic()">Double click to Mute</div>
+</div>
+
+  <script src="main.js"></script>
+</body>
+</html>

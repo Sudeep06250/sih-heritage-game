@@ -1,0 +1,311 @@
+/* ==========================================
+   1. GLOBAL STYLES & RESET
+   ========================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  overflow: hidden;
+  font-family: 'Open Sans', Arial, sans-serif;
+  background-color: #000;
+}
+
+/* Hide any AI/Gemini star or sparkle icons */
+.gemini-star,
+.sparkle-icon,
+[class*="gemini"],
+[class*="sparkle"],
+[id*="gemini"],
+[id*="sparkle"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+/* ==========================================
+   2. SCREEN 1: COVER PAGE (Closed Door)
+   ========================================== */
+#start-page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url('assets/closed.jpeg') no-repeat center center/cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  cursor: pointer;
+}
+
+.cover-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 75vh;
+}
+
+/* Traditional Handwriting Font Style (Olive Green at 512px) */
+.main-title {
+  font-family: 'Kalam', cursive, sans-serif;
+  font-size: 150px;
+  font-weight: 600;
+  color: #f4d213e7; /* Dark Olive Green */
+  text-shadow: 
+    1px 1px 10px #000000,
+    0 0 15px rgba(85, 107, 47, 0.8),
+    -2px -2px 0 #ee8f13f1,  
+     2px -2px 0 #ee8f13f1,
+    -2px  2px 0 #ee8f13f1,
+     2px  2px 0 #ee8f13f1;
+  letter-spacing: 2px;
+  margin-top: -100px;
+  text-align: center;
+}
+
+.enter-btn {
+  padding: 16px 36px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #1a1a1a;
+  background: #ffcc00;
+  border: 3px solid #8b0000;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.7);
+  transition: transform 0.2s, background 0.2s;
+}
+
+.enter-btn:hover {
+  background: #ffa500;
+  transform: scale(1.08);
+}
+
+/* ==========================================
+   3. SCREEN 2: SELECTION MENU (Open Door BG)
+   ========================================== */
+   /* ==========================================
+   AUDIO CONTROLS OVERLAY (Bottom Corners)
+   ========================================== */
+#audio-controls {
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  width: 100vw;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 25px;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+#left-audio-btn,
+#right-audio-btn {
+  pointer-events: auto;
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.75);
+  color: #ffcc00;
+  border: 2px solid #ffcc00;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  user-select: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+  transition: transform 0.2s, background 0.2s;
+}
+
+#left-audio-btn:hover,
+#right-audio-btn:hover {
+  background: #ffcc00;
+  color: #1a1a1a;
+  transform: scale(1.05);
+}
+#selection-menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url('assets/open.jpeg') no-repeat center center / cover !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 90;
+  color: #fff;
+}
+
+.traveller-heading {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 38px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 5px;
+  text-shadow: 2px 2px 8px #000;
+}
+
+#selection-menu h2 {
+  font-size: 28px;
+  color: #ffcc00;
+  margin-bottom: 25px;
+  background: rgba(0, 0, 0, 0.65);
+  padding: 8px 22px;
+  border-radius: 8px;
+  text-shadow: 2px 2px 6px #000;
+}
+
+.menu-buttons {
+  display: flex;
+  gap: 20px;
+}
+
+/* Unlocked Option Buttons */
+.unlocked-btn {
+  padding: 15px 28px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #1a1a1a;
+  background: #ffcc00;
+  border: 2px solid #2e7d32;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  transition: transform 0.2s, background 0.2s;
+}
+
+.unlocked-btn:hover {
+  background: #ffa500;
+  transform: scale(1.08);
+}
+
+/* Locked Option Buttons */
+.locked-btn {
+  padding: 15px 28px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #888888;
+  background: rgba(50, 50, 50, 0.85);
+  border: 2px solid #555555;
+  border-radius: 8px;
+  cursor: not-allowed;
+  box-shadow: none;
+  opacity: 0.75;
+}
+
+/* ==========================================
+   4. IN-GAME HUD
+   ========================================== */
+#ui {
+  position: absolute;
+  top: 20px;
+  width: 100%;
+  text-align: center;
+  color: #ffffff;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 24px;
+  text-shadow: 2px 2px 4px #000;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ==========================================
+   5. MODAL POPUPS (VICTORY & LOSS)
+   ========================================== */
+#victory-modal, #loss-modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+  color: #fff;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.modal-content {
+  background: #2b1810;
+  border: 3px solid #ffcc00;
+  border-radius: 12px;
+  padding: 30px;
+  max-width: 520px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.9);
+}
+
+.modal-content h2 {
+  color: #ffcc00;
+  margin-top: 0;
+  font-size: 28px;
+}
+
+.modal-content p {
+  line-height: 1.6;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.points-earned {
+  font-weight: bold;
+  color: #4caf50;
+  font-size: 18px !important;
+  margin: 20px 0;
+}
+
+.modal-content button {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  background: #ffcc00;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #1a1a1a;
+  transition: transform 0.2s;
+}
+
+.modal-content button:hover {
+  transform: scale(1.05);
+}
+
+/* Eerie Konark Myth Loss Modal */
+.loss-content {
+  background: #120303 !important;
+  border: 3px solid #8b0000 !important;
+  box-shadow: 0 0 25px rgba(255, 0, 0, 0.5) !important;
+}
+
+.loss-title {
+  color: #ff3333 !important;
+  font-size: 32px;
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px #8b0000;
+}
+
+.eerie-text {
+  color: #d1c4c4;
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.loss-content button {
+  background: #8b0000 !important;
+  color: #ffffff !important;
+  border: 1px solid #ff3333 !important;
+  margin-top: 15px;
+}
+
+.loss-content button:hover {
+  background: #b30000 !important;
+}
