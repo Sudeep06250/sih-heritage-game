@@ -559,6 +559,20 @@
     <button class="unlock-toast-close" id="closeToastBtn">✕</button>
   </div>
 
+  <!-- Rajasthan Realm Modal -->
+  <div id="rajasthanModal" style="position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;background:rgba(5,7,15,0.85);backdrop-filter:blur(10px);padding:20px;">
+    <div style="width:100%;max-width:480px;background:linear-gradient(145deg,rgba(30,22,12,0.96),rgba(14,10,6,0.98));border:1.5px solid #f59e0b;border-radius:24px;padding:32px 24px;text-align:center;box-shadow:0 25px 60px rgba(0,0,0,0.9),0 0 40px rgba(245,158,11,0.3);position:relative;">
+      <div style="font-size:42px;margin-bottom:10px;">🏰 🐪 🎶</div>
+      <span style="display:inline-block;background:rgba(245,158,11,0.2);border:1px solid #f59e0b;color:#fef08a;font-size:11px;font-weight:800;letter-spacing:2px;padding:4px 14px;border-radius:999px;margin-bottom:12px;">REALM UNLOCKED</span>
+      <h2 style="color:#fef08a;font-size:24px;margin:0 0 10px;font-weight:800;letter-spacing:0.5px;">Welcome to Rajasthan!</h2>
+      <p style="color:#cbd5e1;font-size:13.5px;line-height:1.6;margin:0 0 24px;">Your mastery of Odisha's sacred sounds has opened the gateway to Rajasthan! Explore royal desert lore, Mehrangarh melodies, and folk ballads.</p>
+      <div style="display:flex;gap:12px;justify-content:center;">
+        <button id="closeRajModalBtn" type="button" style="padding:12px 24px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:999px;color:#fff;font-weight:700;font-size:13px;cursor:pointer;">Stay on Map</button>
+        <button id="exploreRajBtn" type="button" style="padding:12px 28px;background:linear-gradient(135deg,#f59e0b,#d97706);border:none;border-radius:999px;color:#080c1a;font-weight:800;font-size:13px;cursor:pointer;box-shadow:0 4px 15px rgba(245,158,11,0.4);">Enter Realm →</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Badges HUD Shelf -->
   <div class="hud-badges-bar" id="badgesHud">
     <!-- Populated dynamically via JS -->
@@ -756,7 +770,16 @@
         easeLinearity: 0.2,
       });
       setTimeout(function () {
-        alert("🏰 Welcome to Rajasthan: Land of Royal Forts, Desert Ragas & Folklore!\n\nYour Sound Identifier mastery has opened this sacred realm. Quests and royal soundscapes coming up next!");
+        var modal = document.getElementById("rajasthanModal");
+        if (modal) {
+          modal.style.display = "flex";
+          document.getElementById("closeRajModalBtn").onclick = function() {
+            modal.style.display = "none";
+          };
+          document.getElementById("exploreRajBtn").onclick = function() {
+            modal.style.display = "none";
+          };
+        }
       }, 950);
     }
 
