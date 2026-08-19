@@ -617,34 +617,46 @@
       return window.innerWidth < 768 ? [0, 0] : [-125, 0];
     }
 
-    /* Render Player Badges Shelf */
+    /* Render Player Badges Shelf (Strictly Unique Deduplicated Badges) */
     function renderBadgesHUD() {
       var container = document.getElementById("badgesHud");
       if (!container) return;
-      var badges = [];
+      var rawBadges = [];
       try {
-        badges = JSON.parse(localStorage.getItem("user_badges") || "[]");
-      } catch (e) { badges = []; }
+        rawBadges = JSON.parse(localStorage.getItem("user_badges") || "[]");
+      } catch (e) { rawBadges = []; }
 
-      // Auto-populate if user has already unlocked rajasthan or completed quest
-      if ((unlockedStates.indexOf("rajasthan") !== -1 || localStorage.getItem("completed_odisha_sound_quest") === "true") && badges.length === 0) {
-        badges = [{ id: "kalinga_veera", title: "KalingaVeera", image: "assets/odisha-badge.jpg" }];
-        try { localStorage.setItem("user_badges", JSON.stringify(badges)); } catch (e) {}
+      // Auto-populate if user has unlocked rajasthan or completed quest
+      if ((unlockedStates.indexOf("rajasthan") !== -1 || localStorage.getItem("completed_odisha_sound_quest") === "true") && rawBadges.length === 0) {
+        rawBadges = [{ id: "kalinga_veera", title: "KalingaVeera", image: "assets/odisha-badge.jpg" }];
       }
 
-      if (badges.length > 0) {
-        // Normalize any old badge name to strictly "KalingaVeera"
-        badges.forEach(function(b) {
+      // Deduplicate badges strictly by ID / Title
+      var uniqueMap = {};
+      var cleanBadges = [];
+      rawBadges.forEach(function(b) {
+        if (!b) return;
+        // Map all legacy odisha badges to unified kalinga_veera
+        if (b.id === "odisha_master" || b.id === "dhwani_ratna" || b.id === "odisha" || b.id === "kalinga_veera" || b.title === "Odisha" || b.title === "KalingaVeera") {
+          b.id = "kalinga_veera";
           b.title = "KalingaVeera";
           b.image = "assets/odisha-badge.jpg";
-        });
-        try { localStorage.setItem("user_badges", JSON.stringify(badges)); } catch (e) {}
+        }
+        var key = b.id || b.title;
+        if (!uniqueMap[key]) {
+          uniqueMap[key] = true;
+          cleanBadges.push(b);
+        }
+      });
 
-        container.innerHTML = badges.map(function(b) {
+      try { localStorage.setItem("user_badges", JSON.stringify(cleanBadges)); } catch (e) {}
+
+      if (cleanBadges.length > 0) {
+        container.innerHTML = cleanBadges.map(function(b) {
           var badgeImg = b.image || "assets/odisha-badge.jpg";
-          return '<div class="badge-chip" title="KalingaVeera Badge">'
-               + '<img src="' + badgeImg + '" class="badge-thumb" alt="KalingaVeera Badge" />'
-               + '<span>KalingaVeera</span>'
+          return '<div class="badge-chip" title="' + (b.subtitle || (b.title + ' Badge')) + '">'
+               + '<img src="' + badgeImg + '" class="badge-thumb" alt="' + b.title + '" />'
+               + '<span>' + b.title + '</span>'
                + '</div>';
         }).join("");
       } else {

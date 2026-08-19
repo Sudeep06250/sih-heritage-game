@@ -1142,19 +1142,18 @@ function beginJourney() {
             const checkFinishInterval = setInterval(function() {
                 const completion = doc.getElementById('completion');
                 if (completion && completion.classList.contains('show') && !doc.getElementById('unlockedStateReward')) {
-                    // 1. Award Official KalingaVeera Heritage Badge
+                    // 1. Award Official KalingaVeera Heritage Badge (Strictly Unique)
                     let userBadges = [];
                     try { userBadges = JSON.parse(localStorage.getItem('user_badges') || '[]'); } catch(e) {}
-                    if (!userBadges.some(b => b.id === 'kalinga_veera')) {
-                        userBadges.push({
-                            id: 'kalinga_veera',
-                            title: 'KalingaVeera',
-                            subtitle: 'Master of Odisha Heritage & Sacred Echoes',
-                            region: 'Odisha',
-                            image: 'assets/odisha-badge.jpg'
-                        });
-                        localStorage.setItem('user_badges', JSON.stringify(userBadges));
-                    }
+                    userBadges = userBadges.filter(b => b && b.id !== 'kalinga_veera' && b.id !== 'odisha_master' && b.id !== 'dhwani_ratna' && b.title !== 'Odisha' && b.title !== 'KalingaVeera');
+                    userBadges.push({
+                        id: 'kalinga_veera',
+                        title: 'KalingaVeera',
+                        subtitle: 'Master of Odisha Heritage & Sacred Echoes',
+                        region: 'Odisha',
+                        image: 'assets/odisha-badge.jpg'
+                    });
+                    localStorage.setItem('user_badges', JSON.stringify(userBadges));
 
                     // 2. Unlock Rajasthan in unlocked_states
                     let unlockedStates = ['odisha'];
